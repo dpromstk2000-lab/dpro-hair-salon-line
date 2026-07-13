@@ -1,0 +1,1678 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#14211d">
+  <title>DPRO 美容室 LINE｜営業前システムチェック</title>
+  <meta name="description" content="DPRO 美容室 LINEの営業前デモ準備・API・DB・予約・カルテ確認画面">
+  <style>
+    :root {
+      --bg: #f2f5f3;
+      --surface: #ffffff;
+      --surface-soft: #f7faf8;
+      --ink: #17211d;
+      --muted: #627069;
+      --line: #d9e2dd;
+      --brand: #173f34;
+      --brand-2: #286c59;
+      --brand-soft: #e7f2ed;
+      --gold: #a8782f;
+      --gold-soft: #fbf4e8;
+      --ok: #176b43;
+      --ok-soft: #e8f7ef;
+      --warn: #9a5b00;
+      --warn-soft: #fff4dd;
+      --error: #b42318;
+      --error-soft: #fff0ee;
+      --info: #245ca8;
+      --info-soft: #edf4ff;
+      --shadow: 0 12px 34px rgba(22, 45, 36, 0.09);
+      --radius: 18px;
+      --radius-sm: 12px;
+      --max: 1280px;
+    }
+
+    * { box-sizing: border-box; }
+
+    html {
+      font-size: 16px;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at 10% 0%, rgba(40, 108, 89, .10), transparent 32rem),
+        radial-gradient(circle at 100% 18%, rgba(168, 120, 47, .10), transparent 30rem),
+        var(--bg);
+      color: var(--ink);
+      font-family:
+        -apple-system, BlinkMacSystemFont, "Segoe UI", "Hiragino Sans",
+        "Yu Gothic UI", "Yu Gothic", Meiryo, sans-serif;
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    button, input, select, textarea {
+      font: inherit;
+    }
+
+    button, a {
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    .shell {
+      width: min(calc(100% - 32px), var(--max));
+      margin: 0 auto;
+      padding: 28px 0 64px;
+    }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      padding: 30px;
+      border-radius: 24px;
+      background:
+        linear-gradient(135deg, rgba(255,255,255,.08), transparent 42%),
+        linear-gradient(135deg, #14211d, #194c3e 70%, #276b58);
+      color: #fff;
+      box-shadow: 0 20px 50px rgba(20, 54, 44, .20);
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      width: 260px;
+      height: 260px;
+      border: 1px solid rgba(255,255,255,.16);
+      border-radius: 50%;
+      right: -90px;
+      top: -110px;
+      box-shadow: 0 0 0 34px rgba(255,255,255,.035);
+    }
+
+    .hero__top {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      min-height: 34px;
+      padding: 5px 12px;
+      border: 1px solid rgba(255,255,255,.22);
+      border-radius: 999px;
+      background: rgba(255,255,255,.10);
+      color: #f8f6ee;
+      font-size: .9rem;
+      font-weight: 800;
+      letter-spacing: .04em;
+    }
+
+    h1 {
+      margin: 12px 0 6px;
+      font-size: clamp(1.7rem, 4.5vw, 2.7rem);
+      line-height: 1.25;
+      letter-spacing: .01em;
+    }
+
+    .hero__lead {
+      margin: 0;
+      max-width: 780px;
+      color: rgba(255,255,255,.82);
+      font-size: clamp(1rem, 2vw, 1.12rem);
+    }
+
+    .hero__meta {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 22px;
+    }
+
+    .meta-chip {
+      display: inline-flex;
+      align-items: center;
+      min-height: 38px;
+      padding: 7px 12px;
+      border-radius: 10px;
+      background: rgba(255,255,255,.10);
+      border: 1px solid rgba(255,255,255,.15);
+      color: rgba(255,255,255,.90);
+      font-size: .9rem;
+      font-weight: 700;
+    }
+
+    .hero__stamp {
+      position: relative;
+      z-index: 1;
+      min-width: 210px;
+      padding: 16px 18px;
+      border-radius: 16px;
+      background: rgba(255,255,255,.10);
+      border: 1px solid rgba(255,255,255,.16);
+    }
+
+    .hero__stamp-label {
+      color: rgba(255,255,255,.66);
+      font-size: .82rem;
+      font-weight: 800;
+    }
+
+    .hero__stamp-value {
+      margin-top: 5px;
+      font-size: 1.02rem;
+      font-weight: 900;
+      word-break: break-word;
+    }
+
+    .grid {
+      display: grid;
+      gap: 18px;
+    }
+
+    .grid--two {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    }
+
+    .grid--stats {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .section {
+      margin-top: 22px;
+    }
+
+    .card {
+      min-width: 0;
+      padding: 22px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--surface);
+      box-shadow: var(--shadow);
+    }
+
+    .card--soft {
+      background: var(--surface-soft);
+      box-shadow: none;
+    }
+
+    .section-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      margin-bottom: 16px;
+    }
+
+    .section-title h2,
+    .section-title h3 {
+      margin: 0;
+      line-height: 1.35;
+    }
+
+    .section-title h2 {
+      font-size: clamp(1.2rem, 2.7vw, 1.5rem);
+    }
+
+    .section-title h3 {
+      font-size: 1.08rem;
+    }
+
+    .section-note {
+      color: var(--muted);
+      font-size: .94rem;
+    }
+
+    .control-row {
+      display: flex;
+      gap: 10px;
+      align-items: end;
+      flex-wrap: wrap;
+    }
+
+    .field {
+      flex: 1 1 260px;
+    }
+
+    .field label {
+      display: block;
+      margin-bottom: 7px;
+      font-size: .9rem;
+      color: var(--muted);
+      font-weight: 800;
+    }
+
+    input[type="text"],
+    input[type="password"] {
+      width: 100%;
+      min-height: 48px;
+      padding: 10px 13px;
+      border: 1px solid #bdcbc4;
+      border-radius: 11px;
+      background: #fff;
+      color: var(--ink);
+      outline: none;
+      transition: .16s ease;
+    }
+
+    input:focus {
+      border-color: var(--brand-2);
+      box-shadow: 0 0 0 4px rgba(40,108,89,.12);
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-height: 46px;
+      padding: 10px 16px;
+      border: 1px solid transparent;
+      border-radius: 11px;
+      cursor: pointer;
+      font-weight: 850;
+      text-decoration: none;
+      transition: transform .14s ease, opacity .14s ease, box-shadow .14s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+    }
+
+    .btn:disabled {
+      cursor: wait;
+      opacity: .6;
+      transform: none;
+    }
+
+    .btn--primary {
+      background: var(--brand);
+      color: #fff;
+      box-shadow: 0 7px 18px rgba(23,63,52,.18);
+    }
+
+    .btn--accent {
+      background: var(--gold);
+      color: #fff;
+      box-shadow: 0 7px 18px rgba(168,120,47,.17);
+    }
+
+    .btn--soft {
+      background: var(--brand-soft);
+      color: var(--brand);
+      border-color: #c7ded4;
+    }
+
+    .btn--danger {
+      background: #fff;
+      color: var(--error);
+      border-color: #ecc8c3;
+    }
+
+    .btn--wide {
+      width: 100%;
+    }
+
+    .action-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .status-banner {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: 14px;
+      align-items: center;
+      padding: 18px;
+      border-radius: 15px;
+      border: 1px solid var(--line);
+      background: var(--surface-soft);
+    }
+
+    .status-banner[data-state="ok"] {
+      border-color: #a9d5bd;
+      background: var(--ok-soft);
+    }
+
+    .status-banner[data-state="warning"] {
+      border-color: #e5c987;
+      background: var(--warn-soft);
+    }
+
+    .status-banner[data-state="error"] {
+      border-color: #e3aaa2;
+      background: var(--error-soft);
+    }
+
+    .status-banner[data-state="loading"] {
+      border-color: #aac6eb;
+      background: var(--info-soft);
+    }
+
+    .status-icon {
+      display: grid;
+      place-items: center;
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      background: #fff;
+      font-size: 1.25rem;
+      font-weight: 950;
+      box-shadow: 0 4px 14px rgba(23,50,40,.08);
+    }
+
+    .status-title {
+      font-size: 1.08rem;
+      font-weight: 900;
+    }
+
+    .status-detail {
+      margin-top: 2px;
+      color: var(--muted);
+      font-size: .92rem;
+    }
+
+    .status-time {
+      color: var(--muted);
+      font-size: .84rem;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .check-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .check-row {
+      display: grid;
+      grid-template-columns: 34px minmax(0, 1fr) auto;
+      gap: 11px;
+      align-items: center;
+      min-height: 62px;
+      padding: 11px 13px;
+      border: 1px solid var(--line);
+      border-radius: 13px;
+      background: #fff;
+    }
+
+    .check-dot {
+      display: grid;
+      place-items: center;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: #eef2ef;
+      color: var(--muted);
+      font-weight: 950;
+    }
+
+    .check-row[data-state="ok"] .check-dot {
+      background: var(--ok-soft);
+      color: var(--ok);
+    }
+
+    .check-row[data-state="warning"] .check-dot {
+      background: var(--warn-soft);
+      color: var(--warn);
+    }
+
+    .check-row[data-state="error"] .check-dot {
+      background: var(--error-soft);
+      color: var(--error);
+    }
+
+    .check-row[data-state="loading"] .check-dot {
+      background: var(--info-soft);
+      color: var(--info);
+      animation: pulse 1.2s ease-in-out infinite;
+    }
+
+    .check-label {
+      font-weight: 850;
+    }
+
+    .check-detail {
+      margin-top: 2px;
+      color: var(--muted);
+      font-size: .88rem;
+      overflow-wrap: anywhere;
+    }
+
+    .state-pill {
+      min-width: 74px;
+      padding: 5px 9px;
+      border-radius: 999px;
+      background: #eef2ef;
+      color: var(--muted);
+      text-align: center;
+      font-size: .78rem;
+      font-weight: 900;
+    }
+
+    .check-row[data-state="ok"] .state-pill {
+      background: var(--ok-soft);
+      color: var(--ok);
+    }
+
+    .check-row[data-state="warning"] .state-pill {
+      background: var(--warn-soft);
+      color: var(--warn);
+    }
+
+    .check-row[data-state="error"] .state-pill {
+      background: var(--error-soft);
+      color: var(--error);
+    }
+
+    .check-row[data-state="loading"] .state-pill {
+      background: var(--info-soft);
+      color: var(--info);
+    }
+
+    .stat-card {
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: 15px;
+      background: #fff;
+    }
+
+    .stat-label {
+      color: var(--muted);
+      font-size: .86rem;
+      font-weight: 800;
+    }
+
+    .stat-value {
+      margin-top: 5px;
+      font-size: clamp(1.5rem, 3vw, 2rem);
+      line-height: 1.2;
+      font-weight: 950;
+      color: var(--brand);
+    }
+
+    .stat-sub {
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: .82rem;
+    }
+
+    .reservation-list,
+    .customer-panel,
+    .url-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .empty {
+      padding: 26px 16px;
+      border: 1px dashed #bdcbc4;
+      border-radius: 14px;
+      background: #fbfcfb;
+      color: var(--muted);
+      text-align: center;
+      font-weight: 700;
+    }
+
+    .reservation {
+      display: grid;
+      grid-template-columns: 100px minmax(0, 1fr) auto;
+      gap: 14px;
+      align-items: center;
+      padding: 14px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: #fff;
+    }
+
+    .reservation__time {
+      color: var(--brand);
+      font-size: 1.25rem;
+      font-weight: 950;
+    }
+
+    .reservation__name {
+      font-weight: 900;
+      font-size: 1.03rem;
+    }
+
+    .reservation__meta {
+      margin-top: 3px;
+      color: var(--muted);
+      font-size: .9rem;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 30px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: var(--brand-soft);
+      color: var(--brand);
+      font-size: .78rem;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    .customer-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      flex-wrap: wrap;
+      padding: 16px;
+      border-radius: 15px;
+      background: linear-gradient(135deg, var(--brand-soft), #fff);
+      border: 1px solid #c9ded5;
+    }
+
+    .customer-name {
+      font-size: 1.25rem;
+      font-weight: 950;
+    }
+
+    .customer-meta {
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: .92rem;
+    }
+
+    .detail-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .detail {
+      padding: 13px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: #fff;
+    }
+
+    .detail dt {
+      margin: 0;
+      color: var(--muted);
+      font-size: .78rem;
+      font-weight: 850;
+    }
+
+    .detail dd {
+      margin: 5px 0 0;
+      font-weight: 800;
+      overflow-wrap: anywhere;
+    }
+
+    .url-item {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 12px;
+      align-items: center;
+      padding: 14px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: #fff;
+    }
+
+    .url-title {
+      font-weight: 900;
+    }
+
+    .url-address {
+      margin-top: 2px;
+      color: var(--muted);
+      font-size: .82rem;
+      overflow-wrap: anywhere;
+    }
+
+    .url-actions {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .mini-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 37px;
+      padding: 7px 11px;
+      border: 1px solid #c8d6cf;
+      border-radius: 9px;
+      background: #fff;
+      color: var(--brand);
+      cursor: pointer;
+      text-decoration: none;
+      font-size: .82rem;
+      font-weight: 900;
+    }
+
+    .version-box {
+      padding: 14px;
+      border-radius: 13px;
+      background: #101b17;
+      color: #dcebe4;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: .82rem;
+      line-height: 1.65;
+      overflow-wrap: anywhere;
+    }
+
+    .hint {
+      margin-top: 10px;
+      padding: 12px 13px;
+      border-radius: 11px;
+      background: var(--gold-soft);
+      color: #684719;
+      font-size: .9rem;
+      font-weight: 700;
+    }
+
+    .footer {
+      margin-top: 28px;
+      color: var(--muted);
+      text-align: center;
+      font-size: .84rem;
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0,0,0,0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: .55; }
+      50% { opacity: 1; }
+    }
+
+    @media (max-width: 980px) {
+      .grid--two,
+      .grid--stats {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .action-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 680px) {
+      html { font-size: 16px; }
+
+      .shell {
+        width: min(calc(100% - 20px), var(--max));
+        padding-top: 10px;
+      }
+
+      .hero {
+        padding: 22px 18px;
+        border-radius: 18px;
+      }
+
+      .hero__stamp {
+        width: 100%;
+      }
+
+      .card {
+        padding: 17px;
+        border-radius: 15px;
+      }
+
+      .grid--two,
+      .grid--stats,
+      .action-grid,
+      .detail-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .status-banner {
+        grid-template-columns: auto minmax(0, 1fr);
+      }
+
+      .status-time {
+        grid-column: 2;
+        white-space: normal;
+      }
+
+      .check-row {
+        grid-template-columns: 32px minmax(0, 1fr);
+      }
+
+      .state-pill {
+        grid-column: 2;
+        justify-self: start;
+      }
+
+      .reservation {
+        grid-template-columns: 74px minmax(0, 1fr);
+      }
+
+      .reservation .badge {
+        grid-column: 2;
+        justify-self: start;
+      }
+
+      .url-item {
+        grid-template-columns: 1fr;
+      }
+
+      .url-actions {
+        width: 100%;
+      }
+
+      .url-actions > * {
+        flex: 1;
+      }
+
+      .control-row .btn {
+        flex: 1 1 140px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <header class="hero">
+      <div class="hero__top">
+        <div>
+          <div class="eyebrow">STEP BEAUTY-5</div>
+          <h1>DPRO 美容室 LINE<br>営業前システムチェック</h1>
+          <p class="hero__lead">
+            API・データベース・本日の予約・美容カルテ・写真・フォロー対象を、
+            営業前にこの画面でまとめて確認します。
+          </p>
+        </div>
+        <div class="hero__stamp">
+          <div class="hero__stamp-label">店舗</div>
+          <div class="hero__stamp-value" id="heroShopName">DPRO美容室</div>
+          <div class="hero__stamp-label" style="margin-top:10px;">本日</div>
+          <div class="hero__stamp-value" id="heroToday">確認中...</div>
+        </div>
+      </div>
+      <div class="hero__meta">
+        <span class="meta-chip" id="configVersionChip">config.js 確認中</span>
+        <span class="meta-chip" id="workerVersionChip">Worker 確認前</span>
+        <span class="meta-chip">管理コード：1234</span>
+        <span class="meta-chip">写真Storage：hair-carte-photos</span>
+      </div>
+    </header>
+
+    <section class="section grid grid--two">
+      <article class="card">
+        <div class="section-title">
+          <div>
+            <h2>管理コード</h2>
+            <div class="section-note">このブラウザにのみ保存します。</div>
+          </div>
+          <span class="badge" id="adminSavedBadge">未保存</span>
+        </div>
+        <div class="control-row">
+          <div class="field">
+            <label for="adminCodeInput">管理コード</label>
+            <input
+              id="adminCodeInput"
+              type="password"
+              inputmode="numeric"
+              autocomplete="current-password"
+              placeholder="1234"
+              aria-describedby="adminHelp"
+            >
+          </div>
+          <button class="btn btn--primary" id="saveAdminButton" type="button">保存する</button>
+          <button class="btn btn--danger" id="clearAdminButton" type="button">削除する</button>
+        </div>
+        <div class="hint" id="adminHelp">
+          営業デモでは管理コード「1234」を保存してから、営業前デモ準備を実行します。
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="section-title">
+          <div>
+            <h2>営業前の操作</h2>
+            <div class="section-note">上から順に操作すれば準備できます。</div>
+          </div>
+        </div>
+        <div class="action-grid">
+          <button class="btn btn--primary" id="runChecksButton" type="button">全体チェック</button>
+          <button class="btn btn--accent" id="demoPrepareButton" type="button">営業前デモ準備</button>
+          <button class="btn btn--soft" id="reloadButton" type="button">再読み込み</button>
+          <button class="btn btn--soft" id="copyUrlsButton" type="button">URL一覧コピー</button>
+        </div>
+      </article>
+    </section>
+
+    <section class="section card">
+      <div class="section-title">
+        <div>
+          <h2>総合判定</h2>
+          <div class="section-note">主要項目に問題がなければ、営業デモを開始できます。</div>
+        </div>
+      </div>
+      <div class="status-banner" id="overallBanner" data-state="idle">
+        <div class="status-icon" id="overallIcon">—</div>
+        <div>
+          <div class="status-title" id="overallTitle">チェック待ち</div>
+          <div class="status-detail" id="overallDetail">
+            管理コードを保存し、「全体チェック」を押してください。
+          </div>
+        </div>
+        <div class="status-time" id="overallTime">未実行</div>
+      </div>
+    </section>
+
+    <section class="section grid grid--two">
+      <article class="card">
+        <div class="section-title">
+          <h2>基本接続チェック</h2>
+        </div>
+        <div class="check-list">
+          <div class="check-row" id="checkConfig" data-state="idle">
+            <div class="check-dot">1</div>
+            <div>
+              <div class="check-label">config.js</div>
+              <div class="check-detail">共通設定ファイルの読み込み状態</div>
+            </div>
+            <div class="state-pill">未確認</div>
+          </div>
+          <div class="check-row" id="checkApi" data-state="idle">
+            <div class="check-dot">2</div>
+            <div>
+              <div class="check-label">Worker API</div>
+              <div class="check-detail">Cloudflare Workerへの接続</div>
+            </div>
+            <div class="state-pill">未確認</div>
+          </div>
+          <div class="check-row" id="checkDatabase" data-state="idle">
+            <div class="check-dot">3</div>
+            <div>
+              <div class="check-label">データベース</div>
+              <div class="check-detail">店舗・スタッフ・メニューの確認</div>
+            </div>
+            <div class="state-pill">未確認</div>
+          </div>
+          <div class="check-row" id="checkAdmin" data-state="idle">
+            <div class="check-dot">4</div>
+            <div>
+              <div class="check-label">管理API認証</div>
+              <div class="check-detail">保存した管理コードで管理画面APIへ接続</div>
+            </div>
+            <div class="state-pill">未確認</div>
+          </div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="section-title">
+          <h2>営業データチェック</h2>
+        </div>
+        <div class="check-list">
+          <div class="check-row" id="checkReservations" data-state="idle">
+            <div class="check-dot">5</div>
+            <div>
+              <div class="check-label">本日の予約</div>
+              <div class="check-detail">営業デモ用予約が表示できる状態</div>
+            </div>
+            <div class="state-pill">未確認</div>
+          </div>
+          <div class="check-row" id="checkCustomer" data-state="idle">
+            <div class="check-dot">6</div>
+            <div>
+              <div class="check-label">デモ顧客</div>
+              <div class="check-detail">佐藤 美咲様の顧客情報</div>
+            </div>
+            <div class="state-pill">未確認</div>
+          </div>
+          <div class="check-row" id="checkCarte" data-state="idle">
+            <div class="check-dot">7</div>
+            <div>
+              <div class="check-label">美容カルテ・カラー履歴</div>
+              <div class="check-detail">施術履歴とカラー配合情報</div>
+            </div>
+            <div class="state-pill">未確認</div>
+          </div>
+          <div class="check-row" id="checkPhotosFollow" data-state="idle">
+            <div class="check-dot">8</div>
+            <div>
+              <div class="check-label">写真・フォロー対象</div>
+              <div class="check-detail">Before／After写真と次回来店提案</div>
+            </div>
+            <div class="state-pill">未確認</div>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <section class="section card">
+      <div class="section-title">
+        <div>
+          <h2>デモデータ概要</h2>
+          <div class="section-note">営業前デモ準備後の状態を表示します。</div>
+        </div>
+      </div>
+      <div class="grid grid--stats">
+        <div class="stat-card">
+          <div class="stat-label">本日の予約</div>
+          <div class="stat-value" id="statReservations">—</div>
+          <div class="stat-sub">予約一覧</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">登録顧客</div>
+          <div class="stat-value" id="statCustomers">—</div>
+          <div class="stat-sub">店舗全体</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">未対応フォロー</div>
+          <div class="stat-value" id="statFollow">—</div>
+          <div class="stat-sub">本日までの対象</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">写真カルテ</div>
+          <div class="stat-value" id="statPhotos">—</div>
+          <div class="stat-sub">佐藤 美咲様</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section grid grid--two">
+      <article class="card">
+        <div class="section-title">
+          <div>
+            <h2>本日の予約</h2>
+            <div class="section-note" id="reservationDateLabel">確認前</div>
+          </div>
+        </div>
+        <div class="reservation-list" id="reservationList">
+          <div class="empty">「全体チェック」を押すと、本日の予約を表示します。</div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="section-title">
+          <div>
+            <h2>デモ顧客カルテ</h2>
+            <div class="section-note">営業時に最初に開く顧客です。</div>
+          </div>
+        </div>
+        <div class="customer-panel" id="customerPanel">
+          <div class="empty">カルテ情報はまだ読み込まれていません。</div>
+        </div>
+      </article>
+    </section>
+
+    <section class="section card">
+      <div class="section-title">
+        <div>
+          <h2>画面URL</h2>
+          <div class="section-note">
+            後続STEPで作る画面も、正式URLを先に固定しています。
+          </div>
+        </div>
+      </div>
+      <div class="url-list" id="urlList"></div>
+      <div class="hint">
+        現時点で未作成の画面が404になる場合は異常ではありません。各画面はSTEP BEAUTY-6以降で順番に追加します。
+      </div>
+    </section>
+
+    <section class="section grid grid--two">
+      <article class="card">
+        <div class="section-title">
+          <h2>現在のバージョン</h2>
+        </div>
+        <div class="version-box" id="versionBox">
+system-check: BEAUTY-5-SYSTEM-CHECK-20260713
+config: 確認中
+worker: 確認前
+shop_code: dpro_hair_demo
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="section-title">
+          <h2>営業前の確認順</h2>
+        </div>
+        <ol style="margin:0;padding-left:1.35rem;font-weight:750;">
+          <li>管理コード「1234」を保存</li>
+          <li>「営業前デモ準備」を実行</li>
+          <li>総合判定が「営業デモOK」になることを確認</li>
+          <li>本日の予約と佐藤 美咲様のカルテを確認</li>
+          <li>必要な画面を開いて商談を開始</li>
+        </ol>
+      </article>
+    </section>
+
+    <footer class="footer">
+      DPRO 美容室 LINE｜STEP BEAUTY-5｜営業担当者用内部確認画面
+    </footer>
+  </main>
+
+  <script src="./config.js?v=beauty-4"></script>
+  <script>
+    (() => {
+      "use strict";
+
+      const PAGE_VERSION = "BEAUTY-5-SYSTEM-CHECK-20260713";
+      const DEMO_CUSTOMER_NO = "HAIR-DEMO-001";
+
+      const state = {
+        config: null,
+        health: null,
+        dashboard: null,
+        customerDetail: null,
+        checksRunning: false,
+      };
+
+      const $ = (selector) => document.querySelector(selector);
+      const el = {
+        heroShopName: $("#heroShopName"),
+        heroToday: $("#heroToday"),
+        configVersionChip: $("#configVersionChip"),
+        workerVersionChip: $("#workerVersionChip"),
+        adminCodeInput: $("#adminCodeInput"),
+        adminSavedBadge: $("#adminSavedBadge"),
+        saveAdminButton: $("#saveAdminButton"),
+        clearAdminButton: $("#clearAdminButton"),
+        runChecksButton: $("#runChecksButton"),
+        demoPrepareButton: $("#demoPrepareButton"),
+        reloadButton: $("#reloadButton"),
+        copyUrlsButton: $("#copyUrlsButton"),
+        overallBanner: $("#overallBanner"),
+        overallIcon: $("#overallIcon"),
+        overallTitle: $("#overallTitle"),
+        overallDetail: $("#overallDetail"),
+        overallTime: $("#overallTime"),
+        statReservations: $("#statReservations"),
+        statCustomers: $("#statCustomers"),
+        statFollow: $("#statFollow"),
+        statPhotos: $("#statPhotos"),
+        reservationDateLabel: $("#reservationDateLabel"),
+        reservationList: $("#reservationList"),
+        customerPanel: $("#customerPanel"),
+        urlList: $("#urlList"),
+        versionBox: $("#versionBox"),
+      };
+
+      const pageDefinitions = [
+        { key: "SYSTEM_CHECK", label: "営業前システムチェック", description: "内部確認・デモ準備" },
+        { key: "RESERVATION", label: "お客様向け予約", description: "STEP BEAUTY-6で作成" },
+        { key: "MEMBER", label: "会員証・マイページ", description: "STEP BEAUTY-7で作成" },
+        { key: "OWNER", label: "PC管理画面", description: "STEP BEAUTY-8で作成" },
+        { key: "STAFF", label: "スタイリスト画面", description: "STEP BEAUTY-9で作成" },
+        { key: "OWNER_IPAD", label: "店内iPad画面", description: "STEP BEAUTY-10で作成" },
+      ];
+
+      function configReady() {
+        return Boolean(window.DPROHairConfig);
+      }
+
+      function getConfig() {
+        if (!configReady()) {
+          throw new Error("config.jsを読み込めませんでした。GitHubへの配置を確認してください。");
+        }
+        return window.DPROHairConfig;
+      }
+
+      function formatCount(value) {
+        const number = Number(value);
+        return Number.isFinite(number) ? number.toLocaleString("ja-JP") : "—";
+      }
+
+      function escapeHtml(value) {
+        return getConfig().utils.escapeHtml(value);
+      }
+
+      function setCheck(id, status, detail) {
+        const row = document.getElementById(id);
+        if (!row) return;
+        const pill = row.querySelector(".state-pill");
+        const detailNode = row.querySelector(".check-detail");
+        const dot = row.querySelector(".check-dot");
+        const labels = {
+          idle: "未確認",
+          loading: "確認中",
+          ok: "OK",
+          warning: "要確認",
+          error: "エラー",
+        };
+        const icons = {
+          idle: "—",
+          loading: "…",
+          ok: "✓",
+          warning: "!",
+          error: "×",
+        };
+        row.dataset.state = status;
+        pill.textContent = labels[status] || labels.idle;
+        dot.textContent = icons[status] || icons.idle;
+        if (detail) detailNode.textContent = detail;
+      }
+
+      function setOverall(status, title, detail) {
+        const icon = {
+          idle: "—",
+          loading: "…",
+          ok: "✓",
+          warning: "!",
+          error: "×",
+        }[status] || "—";
+        el.overallBanner.dataset.state = status;
+        el.overallIcon.textContent = icon;
+        el.overallTitle.textContent = title;
+        el.overallDetail.textContent = detail;
+        el.overallTime.textContent =
+          status === "idle"
+            ? "未実行"
+            : getConfig().utils.nowTokyoLabel();
+      }
+
+      function syncAdminDisplay() {
+        if (!configReady()) return;
+        const saved = getConfig().admin.hasCode();
+        el.adminSavedBadge.textContent = saved ? "保存済み" : "未保存";
+        el.adminSavedBadge.style.background = saved ? "var(--ok-soft)" : "var(--warn-soft)";
+        el.adminSavedBadge.style.color = saved ? "var(--ok)" : "var(--warn)";
+        if (saved && !el.adminCodeInput.value) {
+          el.adminCodeInput.value = getConfig().admin.getCode();
+        }
+      }
+
+      function renderUrls() {
+        const config = getConfig();
+        el.urlList.innerHTML = pageDefinitions.map((page) => {
+          const url = config.utils.buildPageUrl(page.key, { v: page.key === "SYSTEM_CHECK" ? "beauty-5" : "beauty" });
+          return `
+            <div class="url-item">
+              <div>
+                <div class="url-title">${escapeHtml(page.label)}</div>
+                <div class="url-address">${escapeHtml(url)}</div>
+                <div class="section-note">${escapeHtml(page.description)}</div>
+              </div>
+              <div class="url-actions">
+                <button class="mini-btn" type="button" data-copy-url="${escapeHtml(url)}">コピー</button>
+                <a class="mini-btn" href="${escapeHtml(url)}" target="_blank" rel="noopener">開く</a>
+              </div>
+            </div>
+          `;
+        }).join("");
+      }
+
+      function updateVersions() {
+        const config = getConfig();
+        const workerVersion = state.health?.version || "確認前";
+        const shopCode = config.shop.getCode();
+
+        el.configVersionChip.textContent = `config: ${config.VERSION}`;
+        el.workerVersionChip.textContent = `Worker: ${workerVersion}`;
+        el.versionBox.textContent = [
+          `system-check: ${PAGE_VERSION}`,
+          `config: ${config.VERSION}`,
+          `worker: ${workerVersion}`,
+          `shop_code: ${shopCode}`,
+          `api: ${config.API_BASE_URL}`,
+        ].join("\n");
+      }
+
+      function reservationTime(row) {
+        const value = row?.start_at || row?.start_time || "";
+        return getConfig().utils.formatTime(value, { fallback: "—" });
+      }
+
+      function renderReservations(rows, date) {
+        const config = getConfig();
+        const reservations = Array.isArray(rows) ? rows : [];
+        el.reservationDateLabel.textContent = date
+          ? config.utils.formatDate(date)
+          : "日付不明";
+
+        if (!reservations.length) {
+          el.reservationList.innerHTML =
+            '<div class="empty">本日の予約がありません。営業前デモ準備を実行してください。</div>';
+          return;
+        }
+
+        el.reservationList.innerHTML = reservations.map((row) => {
+          const customerName =
+            row?.customer?.full_name ||
+            row?.customer_name ||
+            "お客様";
+          const menuName =
+            row?.menu?.menu_name ||
+            row?.menu_name ||
+            "メニュー未設定";
+          const staffName =
+            row?.assigned_staff?.display_name ||
+            row?.requested_staff?.display_name ||
+            row?.staff_name ||
+            "おまかせ";
+          return `
+            <div class="reservation">
+              <div class="reservation__time">${escapeHtml(reservationTime(row))}</div>
+              <div>
+                <div class="reservation__name">${escapeHtml(customerName)}</div>
+                <div class="reservation__meta">
+                  ${escapeHtml(menuName)} ／ ${escapeHtml(staffName)}
+                </div>
+              </div>
+              <span class="badge">${escapeHtml(config.utils.statusLabel(row?.status))}</span>
+            </div>
+          `;
+        }).join("");
+      }
+
+      function firstRecord(list) {
+        return Array.isArray(list) && list.length ? list[0] : null;
+      }
+
+      function renderCustomer(detail) {
+        const config = getConfig();
+        const customer = detail?.customer;
+        if (!customer) {
+          el.customerPanel.innerHTML =
+            '<div class="empty">デモ顧客のカルテを取得できませんでした。</div>';
+          return;
+        }
+
+        const record = firstRecord(detail.hair_records);
+        const color = firstRecord(detail.color_records);
+        const photos = Array.isArray(detail.photos) ? detail.photos : [];
+        const follows = Array.isArray(detail.follow_tasks) ? detail.follow_tasks : [];
+        const beforeCount = photos.filter((item) => item.photo_type === "before").length;
+        const afterCount = photos.filter((item) => item.photo_type === "after").length;
+
+        el.customerPanel.innerHTML = `
+          <div class="customer-head">
+            <div>
+              <div class="customer-name">${escapeHtml(customer.full_name || "佐藤 美咲")}</div>
+              <div class="customer-meta">
+                ${escapeHtml(customer.customer_no || DEMO_CUSTOMER_NO)}
+                ／ ${escapeHtml(config.utils.formatPhone(customer.phone))}
+              </div>
+            </div>
+            <span class="badge">デモ顧客</span>
+          </div>
+          <dl class="detail-grid" style="margin:0;">
+            <div class="detail">
+              <dt>前回施術</dt>
+              <dd>${escapeHtml(record?.service_summary || "カット＋カラー")}</dd>
+            </div>
+            <div class="detail">
+              <dt>カラー履歴</dt>
+              <dd>${escapeHtml(
+                color
+                  ? `${color.target_level || ""} ${color.tone || ""}`.trim()
+                  : "未登録"
+              )}</dd>
+            </div>
+            <div class="detail">
+              <dt>注意事項</dt>
+              <dd>${escapeHtml(
+                record?.allergy_attention ||
+                customer?.allergy_attention ||
+                "登録なし"
+              )}</dd>
+            </div>
+            <div class="detail">
+              <dt>次回来店提案</dt>
+              <dd>${escapeHtml(
+                record?.next_visit_weeks
+                  ? `${record.next_visit_weeks}週間後を目安`
+                  : record?.next_visit_date
+                    ? config.utils.formatDate(record.next_visit_date)
+                    : "未設定"
+              )}</dd>
+            </div>
+            <div class="detail">
+              <dt>Before／After写真</dt>
+              <dd>Before ${beforeCount}枚 ／ After ${afterCount}枚</dd>
+            </div>
+            <div class="detail">
+              <dt>フォロー対象</dt>
+              <dd>${follows.length}件</dd>
+            </div>
+          </dl>
+        `;
+      }
+
+      async function runChecks(options = {}) {
+        if (state.checksRunning) return;
+        state.checksRunning = true;
+
+        const config = getConfig();
+        const button = el.runChecksButton;
+        const original = button.textContent;
+        button.disabled = true;
+        button.textContent = "確認中...";
+        setOverall("loading", "全体チェック中", "API・予約・顧客カルテを確認しています。");
+
+        [
+          "checkConfig", "checkApi", "checkDatabase", "checkAdmin",
+          "checkReservations", "checkCustomer", "checkCarte", "checkPhotosFollow",
+        ].forEach((id) => setCheck(id, "loading"));
+
+        try {
+          setCheck("checkConfig", "ok", `${config.VERSION} を読み込みました。`);
+
+          state.health = await config.api.healthCheck();
+          setCheck("checkApi", state.health?.ok ? "ok" : "error",
+            state.health?.ok
+              ? `${state.health.service} に接続しました。`
+              : "Worker APIから正常応答を取得できませんでした。"
+          );
+
+          const database = state.health?.database || {};
+          const dbOk =
+            database.ok &&
+            database.shop_found &&
+            Number(database.staff_count) >= 1 &&
+            Number(database.menu_count) >= 1;
+          setCheck(
+            "checkDatabase",
+            dbOk ? "ok" : "error",
+            dbOk
+              ? `${database.shop_name}／スタッフ${database.staff_count}名／メニュー${database.menu_count}件`
+              : "店舗・スタッフ・メニューの登録状態を確認してください。"
+          );
+
+          el.heroShopName.textContent = database.shop_name || "DPRO美容室";
+
+          if (!config.admin.hasCode()) {
+            throw new config.DPROApiError("管理コードを保存してください。", {
+              status: 401,
+              code: "ADMIN_CODE_REQUIRED",
+            });
+          }
+
+          state.dashboard = await config.api.adminGet(
+            config.ENDPOINTS.ADMIN_DASHBOARD,
+            { date: config.utils.todayISO() }
+          );
+          setCheck("checkAdmin", "ok", "管理コードで管理APIへ接続できました。");
+
+          const summary = state.dashboard?.summary || {};
+          const reservations = state.dashboard?.reservations || [];
+          const reservationsOk = reservations.length > 0;
+          setCheck(
+            "checkReservations",
+            reservationsOk ? "ok" : "warning",
+            reservationsOk
+              ? `本日の予約を${reservations.length}件確認しました。`
+              : "本日の予約がありません。営業前デモ準備を実行してください。"
+          );
+
+          const demoCustomer =
+            state.dashboard?.demo_customer ||
+            { customer_no: DEMO_CUSTOMER_NO };
+
+          state.customerDetail = await config.api.adminGet(
+            config.ENDPOINTS.ADMIN_CUSTOMER_DETAIL,
+            demoCustomer.id
+              ? { customer_id: demoCustomer.id }
+              : { customer_no: DEMO_CUSTOMER_NO }
+          );
+
+          const customerOk =
+            state.customerDetail?.customer?.customer_no === DEMO_CUSTOMER_NO;
+          setCheck(
+            "checkCustomer",
+            customerOk ? "ok" : "error",
+            customerOk
+              ? `${state.customerDetail.customer.full_name}様を確認しました。`
+              : "デモ顧客 HAIR-DEMO-001 を確認できませんでした。"
+          );
+
+          const hairRecords = state.customerDetail?.hair_records || [];
+          const colors = state.customerDetail?.color_records || [];
+          const carteOk = hairRecords.length > 0 && colors.length > 0;
+          setCheck(
+            "checkCarte",
+            carteOk ? "ok" : "warning",
+            carteOk
+              ? `美容カルテ${hairRecords.length}件／カラー履歴${colors.length}件`
+              : "美容カルテまたはカラー履歴が不足しています。"
+          );
+
+          const photos = state.customerDetail?.photos || [];
+          const followTasks = state.customerDetail?.follow_tasks || [];
+          const photoFollowOk = photos.length >= 2 && followTasks.length >= 1;
+          setCheck(
+            "checkPhotosFollow",
+            photoFollowOk ? "ok" : "warning",
+            `写真${photos.length}件／フォロー対象${followTasks.length}件`
+          );
+
+          el.statReservations.textContent = formatCount(summary.reservations_total ?? reservations.length);
+          el.statCustomers.textContent = formatCount(summary.customer_count);
+          el.statFollow.textContent = formatCount(summary.pending_follow_tasks);
+          el.statPhotos.textContent = formatCount(photos.length);
+
+          renderReservations(reservations, state.dashboard?.date || config.utils.todayISO());
+          renderCustomer(state.customerDetail);
+          updateVersions();
+
+          const essentialOk = state.health?.ok && dbOk && customerOk && carteOk;
+          const demoOk = reservationsOk && photoFollowOk;
+
+          if (essentialOk && demoOk) {
+            setOverall(
+              "ok",
+              "営業デモOK",
+              "API・DB・本日の予約・美容カルテ・写真・フォロー対象を確認しました。"
+            );
+            if (!options.silent) {
+              config.utils.showToast("全体チェックが完了しました。営業デモOKです。", "success");
+            }
+          } else if (essentialOk) {
+            setOverall(
+              "warning",
+              "営業データの準備が必要です",
+              "基本接続は正常です。「営業前デモ準備」を実行してください。"
+            );
+          } else {
+            setOverall(
+              "error",
+              "確認が必要です",
+              "エラーになった項目を確認してください。"
+            );
+          }
+        } catch (error) {
+          const message = config.utils.errorMessage(error);
+          if (error?.code === "ADMIN_CODE_REQUIRED") {
+            setCheck("checkAdmin", "warning", "管理コードを保存してください。");
+          } else if (Number(error?.status) === 401 || Number(error?.status) === 403) {
+            setCheck("checkAdmin", "error", "管理コードが正しくありません。");
+          }
+          setOverall("error", "全体チェックに失敗しました", message);
+          if (!options.silent) config.utils.showError(error);
+        } finally {
+          state.checksRunning = false;
+          button.disabled = false;
+          button.textContent = original;
+          updateVersions();
+        }
+      }
+
+      async function prepareDemo() {
+        const config = getConfig();
+        if (!config.admin.hasCode()) {
+          config.utils.showToast("先に管理コード「1234」を保存してください。", "warning");
+          el.adminCodeInput.focus();
+          return;
+        }
+
+        const confirmed = window.confirm(
+          "営業前デモ準備を実行します。\n\n" +
+          "DPRO美容室のデモ店舗に、本日の予約・顧客カルテ・カラー履歴・" +
+          "Before／After写真・フォロー対象を準備します。\n\n実行しますか？"
+        );
+        if (!confirmed) return;
+
+        const button = el.demoPrepareButton;
+        const original = button.textContent;
+        button.disabled = true;
+        button.textContent = "デモ準備中...";
+        setOverall("loading", "営業前デモ準備中", "デモデータを安全に準備しています。");
+
+        try {
+          const result = await config.api.demoPrepare();
+          const demo = result?.demo || {};
+          config.utils.showToast(
+            [
+              result?.message || "営業前デモ準備が完了しました。",
+              `顧客 ${demo.customer_count ?? "—"}件`,
+              `本日の予約 ${demo.reservation_count_today ?? "—"}件`,
+              `写真 ${demo.photo_count ?? "—"}件`,
+            ].join("\n"),
+            "success",
+            { duration: 6000 }
+          );
+          await runChecks({ silent: true });
+        } catch (error) {
+          setOverall("error", "営業前デモ準備に失敗しました", config.utils.errorMessage(error));
+          config.utils.showError(error);
+        } finally {
+          button.disabled = false;
+          button.textContent = original;
+        }
+      }
+
+      async function copyUrlList() {
+        const config = getConfig();
+        const lines = [
+          "DPRO 美容室 LINE 営業用URL一覧",
+          "",
+          ...pageDefinitions.flatMap((page) => [
+            `【${page.label}】`,
+            config.utils.buildPageUrl(page.key, { v: page.key === "SYSTEM_CHECK" ? "beauty-5" : "beauty" }),
+            "",
+          ]),
+          "【Worker API確認】",
+          `${config.API_BASE_URL}/api/health`,
+          "",
+          "管理コード：1234",
+        ];
+        await config.utils.copyText(lines.join("\n"), {
+          message: "営業用URL一覧をコピーしました。",
+        });
+      }
+
+      function bindEvents() {
+        const config = getConfig();
+
+        el.saveAdminButton.addEventListener("click", () => {
+          try {
+            config.admin.saveCode(el.adminCodeInput.value);
+            syncAdminDisplay();
+            config.utils.showToast("管理コードを保存しました。", "success");
+          } catch (error) {
+            config.utils.showError(error);
+          }
+        });
+
+        el.clearAdminButton.addEventListener("click", () => {
+          config.admin.clearCode();
+          el.adminCodeInput.value = "";
+          syncAdminDisplay();
+          setCheck("checkAdmin", "idle", "管理コードが削除されました。");
+          config.utils.showToast("管理コードを削除しました。", "info");
+        });
+
+        el.runChecksButton.addEventListener("click", () => runChecks());
+        el.demoPrepareButton.addEventListener("click", prepareDemo);
+        el.reloadButton.addEventListener("click", () => window.location.reload());
+        el.copyUrlsButton.addEventListener("click", copyUrlList);
+
+        el.adminCodeInput.addEventListener("keydown", (event) => {
+          if (event.key === "Enter") el.saveAdminButton.click();
+        });
+
+        el.urlList.addEventListener("click", async (event) => {
+          const button = event.target.closest("[data-copy-url]");
+          if (!button) return;
+          try {
+            await config.utils.copyText(button.dataset.copyUrl, {
+              message: "URLをコピーしました。",
+            });
+          } catch (error) {
+            config.utils.showError(error);
+          }
+        });
+      }
+
+      function initialize() {
+        if (!configReady()) {
+          setOverall(
+            "error",
+            "config.jsを読み込めません",
+            "config.jsをsystem-check.htmlと同じ階層へアップロードしてください。"
+          );
+          setCheck("checkConfig", "error", "config.jsが見つかりません。");
+          return;
+        }
+
+        state.config = getConfig();
+        el.heroToday.textContent = state.config.utils.formatDate(state.config.utils.todayISO());
+        setCheck("checkConfig", "ok", `${state.config.VERSION} を読み込みました。`);
+        syncAdminDisplay();
+        renderUrls();
+        updateVersions();
+        bindEvents();
+
+        state.config.api.healthCheck()
+          .then((health) => {
+            state.health = health;
+            el.workerVersionChip.textContent = `Worker: ${health.version || "確認済み"}`;
+            if (health?.database?.shop_name) {
+              el.heroShopName.textContent = health.database.shop_name;
+            }
+            setCheck("checkApi", health?.ok ? "ok" : "warning",
+              health?.ok
+                ? `${health.service} に接続しました。`
+                : "APIから応答はありますが、DBを確認してください。"
+            );
+            updateVersions();
+          })
+          .catch((error) => {
+            setCheck("checkApi", "error", state.config.utils.errorMessage(error));
+          });
+
+        if (state.config.admin.hasCode()) {
+          runChecks({ silent: true });
+        }
+      }
+
+      if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", initialize, { once: true });
+      } else {
+        initialize();
+      }
+    })();
+  </script>
+</body>
+</html>
