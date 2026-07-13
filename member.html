@@ -1314,7 +1314,7 @@
 
     <footer class="footer">
       DPRO 美容室 LINE｜STEP BEAUTY-7
-      <span id="pageVersion" hidden>BEAUTY-7-MEMBER-MYPAGE-20260713</span>
+      <span id="pageVersion" hidden>BEAUTY-7-R1-CANCEL-PENDING-DISPLAY-20260713</span>
     </footer>
   </main>
 
@@ -1389,7 +1389,7 @@
     (() => {
       "use strict";
 
-      const PAGE_VERSION = "BEAUTY-7-MEMBER-MYPAGE-20260713";
+      const PAGE_VERSION = "BEAUTY-7-R1-CANCEL-PENDING-DISPLAY-20260713";
 
       const state = {
         profile: null,
@@ -1645,7 +1645,7 @@
             !["cancel_requested", "cancelled", "completed", "no_show"].includes(row.status);
           const canChange =
             state.profile?.settings?.change_request_enabled &&
-            !["cancelled", "completed", "no_show"].includes(row.status);
+            !["cancel_requested", "cancelled", "completed", "no_show"].includes(row.status);
 
           return `
             <article class="reservation">
@@ -1663,18 +1663,24 @@
                   ${escapeHtml(config().utils.statusLabel(row.status))}
                 </span>
               </div>
-              <div class="reservation__actions">
-                ${canChange ? `
-                  <button class="btn btn--soft" type="button" data-change-reservation="${escapeHtml(row.id)}">
-                    変更を相談
-                  </button>
-                ` : ""}
-                ${canCancel ? `
-                  <button class="btn btn--danger" type="button" data-cancel-reservation="${escapeHtml(row.id)}">
-                    キャンセル希望
-                  </button>
-                ` : ""}
-              </div>
+              ${row.status === "cancel_requested" ? `
+                <div class="dialog-note" style="margin-top:13px;">
+                  キャンセル希望を受け付けています。店舗が確認するまでは予約枠を確保したままです。
+                </div>
+              ` : `
+                <div class="reservation__actions">
+                  ${canChange ? `
+                    <button class="btn btn--soft" type="button" data-change-reservation="${escapeHtml(row.id)}">
+                      変更を相談
+                    </button>
+                  ` : ""}
+                  ${canCancel ? `
+                    <button class="btn btn--danger" type="button" data-cancel-reservation="${escapeHtml(row.id)}">
+                      キャンセル希望
+                    </button>
+                  ` : ""}
+                </div>
+              `}
             </article>
           `;
         }).join("");
