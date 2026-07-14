@@ -714,23 +714,26 @@
     }
 
     .visit-fact {
+      min-width: 0;
       padding: 10px 11px;
-      border: 1px solid rgba(255,255,255,.13);
+      border: 1px solid rgba(23,63,52,.14);
       border-radius: 11px;
-      background: rgba(255,255,255,.08);
+      background: rgba(255,255,255,.82);
+      box-shadow: 0 5px 16px rgba(23,63,52,.06);
     }
 
     .visit-fact__label {
-      color: rgba(255,255,255,.62);
+      color: #6c766f;
       font-size: .67rem;
-      font-weight: 850;
+      font-weight: 900;
     }
 
     .visit-fact__value {
-      margin-top: 2px;
-      color: #fff;
+      margin-top: 3px;
+      color: var(--brand);
       font-size: .82rem;
       font-weight: 950;
+      line-height: 1.45;
       overflow-wrap: anywhere;
     }
 
@@ -800,10 +803,12 @@
     .album-list {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
+      align-items: start;
       gap: 14px;
     }
 
     .album-card {
+      align-self: start;
       overflow: hidden;
       border: 1px solid var(--line);
       border-radius: 17px;
@@ -813,14 +818,24 @@
 
     .album-card__photos {
       display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+      height: 250px;
       gap: 2px;
+      overflow: hidden;
       background: #e6ece8;
+    }
+
+    .album-card__photos--1 {
+      grid-template-columns: 1fr;
+    }
+
+    .album-card__photos--2 {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
     .album-photo {
       position: relative;
-      min-height: 180px;
+      min-width: 0;
+      height: 250px;
       overflow: hidden;
       background: #e8eeea;
     }
@@ -829,8 +844,9 @@
       display: block;
       width: 100%;
       height: 100%;
-      min-height: 180px;
+      min-height: 0;
       object-fit: cover;
+      object-position: center;
     }
 
     .album-photo__label {
@@ -1226,6 +1242,11 @@
         grid-template-columns: 1fr;
       }
 
+      .album-card__photos,
+      .album-photo {
+        height: 280px;
+      }
+
       .member-card,
       .next-visit {
         min-height: auto;
@@ -1286,12 +1307,23 @@
       }
 
       .album-card__photos {
+        height: 230px;
+      }
+
+      .album-card__photos--1 {
         grid-template-columns: 1fr;
       }
 
-      .album-photo,
+      .album-card__photos--2 {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .album-photo {
+        height: 230px;
+      }
+
       .album-photo img {
-        min-height: 220px;
+        min-height: 0;
       }
 
       .history {
@@ -1554,8 +1586,8 @@
     </div>
 
     <footer class="footer">
-      DPRO 美容室 LINE｜STEP BEAUTY-11-R5
-      <span id="pageVersion" hidden>BEAUTY-11-R5-MEMBER-CUSTOMER-EXPERIENCE-20260714</span>
+      DPRO 美容室 LINE｜STEP BEAUTY-11-R5-R1
+      <span id="pageVersion" hidden>BEAUTY-11-R5-R1-MEMBER-VISIBILITY-PHOTO-LAYOUT-20260714</span>
     </footer>
   </main>
 
@@ -1630,7 +1662,7 @@
     (() => {
       "use strict";
 
-      const PAGE_VERSION = "BEAUTY-11-R5-MEMBER-CUSTOMER-EXPERIENCE-20260714";
+      const PAGE_VERSION = "BEAUTY-11-R5-R1-MEMBER-VISIBILITY-PHOTO-LAYOUT-20260714";
 
       const state = {
         profile: null,
@@ -1987,10 +2019,14 @@
             entry.customer_visible_summary ||
             (Array.isArray(entry.service_types) ? entry.service_types.join("・") : "") ||
             "ヘアスタイル履歴";
+          const photos = (entry.photos || []).slice(0, 2);
+          const photoLayoutClass = photos.length >= 2
+            ? "album-card__photos--2"
+            : "album-card__photos--1";
           return `
             <article class="album-card">
-              <div class="album-card__photos">
-                ${(entry.photos || []).map((photo) => `
+              <div class="album-card__photos ${photoLayoutClass}">
+                ${photos.map((photo) => `
                   <div class="album-photo">
                     <img
                       src="${escapeHtml(photo.signed_url || "")}"
