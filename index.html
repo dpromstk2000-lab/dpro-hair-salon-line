@@ -725,6 +725,63 @@
 
     .field--full { grid-column: 1 / -1; }
 
+    .member-prefill {
+      display: grid;
+      grid-template-columns: minmax(0,1fr) auto;
+      gap: 14px;
+      align-items: center;
+      margin-bottom: 15px;
+      padding: 15px 16px;
+      border: 2px solid #8bbcab;
+      border-radius: 16px;
+      background: linear-gradient(135deg, #edf8f3, #fff);
+      box-shadow: 0 10px 28px rgba(26,86,67,.08);
+    }
+
+    .member-prefill__eyebrow {
+      color: var(--brand-2);
+      font-size: .73rem;
+      font-weight: 950;
+      letter-spacing: .06em;
+    }
+
+    .member-prefill__name {
+      margin-top: 3px;
+      color: var(--brand);
+      font-size: 1.08rem;
+      font-weight: 950;
+    }
+
+    .member-prefill__meta {
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: .79rem;
+      font-weight: 750;
+      line-height: 1.55;
+    }
+
+    .member-prefill__note {
+      margin-top: 6px;
+      color: var(--ok);
+      font-size: .77rem;
+      font-weight: 900;
+    }
+
+    .member-loading {
+      margin-bottom: 15px;
+      padding: 12px 14px;
+      border: 1px solid var(--line);
+      border-radius: 13px;
+      background: var(--surface-soft);
+      color: var(--muted);
+      font-size: .82rem;
+      font-weight: 800;
+    }
+
+    .member-basic-hidden {
+      display: none !important;
+    }
+
     .label {
       display: flex;
       align-items: center;
@@ -1353,6 +1410,15 @@
         grid-template-columns: 1fr;
       }
 
+      .member-prefill {
+        grid-template-columns: 1fr;
+        align-items: stretch;
+      }
+
+      .member-prefill .btn {
+        width: 100%;
+      }
+
       .field--full { grid-column: auto; }
 
       .choice-card {
@@ -1626,7 +1692,7 @@
               <div class="card__num">4</div>
               <div>
                 <h2>お客様情報</h2>
-                <div class="card__help">予約確認に必要な情報を入力してください。</div>
+                <div class="card__help" id="customerHelpText">予約確認に必要な情報を入力してください。</div>
               </div>
             </div>
             <span class="required">必須</span>
@@ -1636,8 +1702,22 @@
             日付と空き時間を選択すると、お客様情報を入力できるようになります。
           </div>
 
+          <div class="member-loading" id="memberIdentityLoading" hidden>
+            LINEの登録情報を確認しています...
+          </div>
+
+          <div class="member-prefill" id="memberPrefill" hidden>
+            <div>
+              <div class="member-prefill__eyebrow">LINE会員情報を自動取得しました</div>
+              <div class="member-prefill__name" id="memberPrefillName">—</div>
+              <div class="member-prefill__meta" id="memberPrefillMeta">—</div>
+              <div class="member-prefill__note">お名前・電話番号の入力は不要です。このまま予約できます。</div>
+            </div>
+            <button class="btn btn--soft" id="memberEditButton" type="button">登録情報を変更</button>
+          </div>
+
           <div class="form-grid">
-            <div class="field">
+            <div class="field" id="memberNameField">
               <label class="label" for="fullName">
                 <span>お名前</span><span class="required">必須</span>
               </label>
@@ -1645,7 +1725,7 @@
               <div class="field-error" id="fullNameError"></div>
             </div>
 
-            <div class="field">
+            <div class="field" id="memberKanaField">
               <label class="label" for="fullNameKana">
                 <span>ふりがな</span><span class="optional">任意</span>
               </label>
@@ -1653,7 +1733,7 @@
               <div class="field-error" id="fullNameKanaError"></div>
             </div>
 
-            <div class="field field--full">
+            <div class="field field--full" id="memberPhoneField">
               <label class="label" for="phone">
                 <span>電話番号</span><span class="required">必須</span>
               </label>
@@ -1753,8 +1833,8 @@
     </div>
 
     <footer class="footer">
-      DPRO 美容室 LINE｜STEP BEAUTY-6
-      <span id="pageVersion" hidden>BEAUTY-6-R1-DATE-SELECTION-UX-FIX-20260713</span>
+      DPRO 美容室 LINE｜STEP BEAUTY-11-R4
+      <span id="pageVersion" hidden>BEAUTY-11-R4-LINE-MEMBER-AUTO-PREFILL-20260714</span>
     </footer>
   </main>
 
@@ -1815,7 +1895,7 @@
     (() => {
       "use strict";
 
-      const PAGE_VERSION = "BEAUTY-6-R1-DATE-SELECTION-UX-FIX-20260713";
+      const PAGE_VERSION = "BEAUTY-11-R4-LINE-MEMBER-AUTO-PREFILL-20260714";
       const QUICK_DATE_COUNT = 14;
 
       const state = {
@@ -1830,6 +1910,10 @@
         selectedSlot: null,
         submitting: false,
         reservationResult: null,
+        memberIdentity: null,
+        memberIdentityLoading: false,
+        memberIdentityEditing: false,
+        resolvedLineUserId: "",
       };
 
       const $ = (selector) => document.querySelector(selector);
@@ -1865,6 +1949,15 @@
         fullName: $("#fullName"),
         fullNameKana: $("#fullNameKana"),
         phone: $("#phone"),
+        memberNameField: $("#memberNameField"),
+        memberKanaField: $("#memberKanaField"),
+        memberPhoneField: $("#memberPhoneField"),
+        memberIdentityLoading: $("#memberIdentityLoading"),
+        memberPrefill: $("#memberPrefill"),
+        memberPrefillName: $("#memberPrefillName"),
+        memberPrefillMeta: $("#memberPrefillMeta"),
+        memberEditButton: $("#memberEditButton"),
+        customerHelpText: $("#customerHelpText"),
         hairConcern: $("#hairConcern"),
         customerRequest: $("#customerRequest"),
         allergyNotice: $("#allergyNotice"),
@@ -2568,9 +2661,8 @@
 
       function reservationPayload() {
         const lineUserId =
-          config().utils.getQueryParam("line_user_id") ||
-          localStorage.getItem(config().STORAGE_KEYS.MEMBER_LINE_USER_ID) ||
-          "";
+          state.resolvedLineUserId ||
+          resolveLineUserId();
 
         const payload = {
           menu_id: state.selectedMenu.id,
@@ -2623,8 +2715,9 @@
           if (result?.reservation?.id) {
             localStorage.setItem(config().STORAGE_KEYS.LAST_RESERVATION_ID, result.reservation.id);
           }
-          const lineUserId = config().utils.getQueryParam("line_user_id");
+          const lineUserId = state.resolvedLineUserId || resolveLineUserId();
           if (lineUserId) {
+            state.resolvedLineUserId = lineUserId;
             localStorage.setItem(config().STORAGE_KEYS.MEMBER_LINE_USER_ID, lineUserId);
           }
 
@@ -2691,8 +2784,14 @@
 
         el.dateInput.value = "";
         el.selectedDateLabel.textContent = "未選択";
-        el.fullName.value = "";
-        el.fullNameKana.value = "";
+        if (state.memberIdentity) {
+          state.memberIdentityEditing = false;
+          applyMemberIdentityValues();
+          renderMemberIdentity();
+        } else {
+          el.fullName.value = "";
+          el.fullNameKana.value = "";
+        }
         el.hairConcern.value = "";
         el.customerRequest.value = "";
         el.allergyNotice.value = "";
@@ -2715,6 +2814,116 @@
         document.getElementById("menuSection").scrollIntoView({ behavior: "smooth", block: "start" });
       }
 
+      function resolveLineUserId() {
+        return (
+          config().utils.getQueryParam("line_user_id") ||
+          localStorage.getItem(config().STORAGE_KEYS.MEMBER_LINE_USER_ID) ||
+          ""
+        ).trim();
+      }
+
+      function setMemberBasicFieldsVisible(visible) {
+        [el.memberNameField, el.memberKanaField, el.memberPhoneField].forEach((field) => {
+          field.classList.toggle("member-basic-hidden", !visible);
+        });
+      }
+
+      function applyMemberIdentityValues() {
+        const member = state.memberIdentity;
+        if (!member) return;
+        el.fullName.value = member.full_name || "";
+        el.fullNameKana.value = member.full_name_kana || "";
+        el.phone.value = config().utils.formatPhone(member.phone || "");
+        el.sameStaffPhone.value = config().utils.formatPhone(member.phone || "");
+        if (typeof member.consent_contact === "boolean") {
+          el.consentContact.checked = member.consent_contact;
+        }
+        if (typeof member.consent_photo === "boolean") {
+          el.consentPhoto.checked = member.consent_photo;
+        }
+      }
+
+      function renderMemberIdentity() {
+        const member = state.memberIdentity;
+        if (!member) {
+          el.memberPrefill.hidden = true;
+          el.memberIdentityLoading.hidden = true;
+          setMemberBasicFieldsVisible(true);
+          el.customerHelpText.textContent = "予約確認に必要な情報を入力してください。";
+          return;
+        }
+
+        applyMemberIdentityValues();
+        const lastVisit = member.last_visit_date
+          ? `前回来店：${config().utils.formatDate(member.last_visit_date)}`
+          : "前回来店：まだありません";
+        el.memberPrefillName.textContent = `${member.full_name || "お客様"}様`;
+        el.memberPrefillMeta.textContent = [
+          member.customer_no || "",
+          config().utils.formatPhone(member.phone || ""),
+          lastVisit,
+        ].filter(Boolean).join(" ／ ");
+        el.memberPrefill.hidden = false;
+        el.memberIdentityLoading.hidden = true;
+        el.memberEditButton.textContent = state.memberIdentityEditing
+          ? "登録情報の入力を省略"
+          : "登録情報を変更";
+        setMemberBasicFieldsVisible(state.memberIdentityEditing);
+        el.customerHelpText.textContent = state.memberIdentityEditing
+          ? "登録情報を修正できます。変更内容は予約確定時に顧客情報へ反映されます。"
+          : "LINE会員情報を読み込みました。お名前・電話番号は入力不要です。";
+        updateSectionStates();
+      }
+
+      async function loadMemberIdentity() {
+        const lineUserId = resolveLineUserId();
+        state.resolvedLineUserId = lineUserId;
+        if (!lineUserId) {
+          renderMemberIdentity();
+          return;
+        }
+
+        localStorage.setItem(config().STORAGE_KEYS.MEMBER_LINE_USER_ID, lineUserId);
+        state.memberIdentityLoading = true;
+        el.memberIdentityLoading.hidden = false;
+        el.memberPrefill.hidden = true;
+
+        try {
+          const profile = await config().api.memberProfile({ line_user_id: lineUserId });
+          state.memberIdentity = profile?.member || null;
+          state.memberIdentityEditing = false;
+          renderMemberIdentity();
+          if (state.memberIdentity) {
+            setNotice(
+              `${state.memberIdentity.full_name || "お客様"}様の登録情報を読み込みました。基本情報の入力は不要です。`,
+              "success"
+            );
+          }
+        } catch (error) {
+          state.memberIdentity = null;
+          state.memberIdentityEditing = false;
+          renderMemberIdentity();
+          if (error?.code !== "MEMBER_NOT_FOUND" && Number(error?.status || error?.statusCode) !== 404) {
+            console.warn("LINE会員情報の取得に失敗しました。", error);
+          }
+        } finally {
+          state.memberIdentityLoading = false;
+          el.memberIdentityLoading.hidden = true;
+        }
+      }
+
+      function toggleMemberIdentityEditing() {
+        if (!state.memberIdentity) return;
+        state.memberIdentityEditing = !state.memberIdentityEditing;
+        if (!state.memberIdentityEditing) {
+          applyMemberIdentityValues();
+        }
+        renderMemberIdentity();
+        if (state.memberIdentityEditing) {
+          el.fullName.focus();
+        }
+      }
+
       function prefillKnownValues() {
         const queryPhone = config().utils.getQueryParam("phone");
         const savedPhone = localStorage.getItem(config().STORAGE_KEYS.MEMBER_PHONE) || "";
@@ -2724,7 +2933,8 @@
           el.sameStaffPhone.value = config().utils.formatPhone(phoneValue);
         }
 
-        const lineUserId = config().utils.getQueryParam("line_user_id");
+        const lineUserId = resolveLineUserId();
+        state.resolvedLineUserId = lineUserId;
         if (lineUserId) {
           localStorage.setItem(config().STORAGE_KEYS.MEMBER_LINE_USER_ID, lineUserId);
         }
@@ -2817,6 +3027,7 @@
         });
 
         el.consentContact.addEventListener("change", updateSectionStates);
+        el.memberEditButton.addEventListener("click", toggleMemberIdentityEditing);
 
         el.confirmButton.addEventListener("click", openConfirmDialog);
         el.mobileConfirmButton.addEventListener("click", openConfirmDialog);
@@ -2898,6 +3109,7 @@
         prefillKnownValues();
         bindEvents();
         await loadPublicConfig();
+        await loadMemberIdentity();
       }
 
       if (document.readyState === "loading") {
