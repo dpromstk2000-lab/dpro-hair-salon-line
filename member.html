@@ -705,7 +705,181 @@
       grid-template-columns: repeat(2, minmax(0,1fr));
     }
 
-    .reservation-list,
+    
+    .visit-facts {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 8px;
+      margin-top: 15px;
+    }
+
+    .visit-fact {
+      padding: 10px 11px;
+      border: 1px solid rgba(255,255,255,.13);
+      border-radius: 11px;
+      background: rgba(255,255,255,.08);
+    }
+
+    .visit-fact__label {
+      color: rgba(255,255,255,.62);
+      font-size: .67rem;
+      font-weight: 850;
+    }
+
+    .visit-fact__value {
+      margin-top: 2px;
+      color: #fff;
+      font-size: .82rem;
+      font-weight: 950;
+      overflow-wrap: anywhere;
+    }
+
+    .next-visit__actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 15px;
+    }
+
+    .aftercare {
+      display: grid;
+      grid-template-columns: auto minmax(0,1fr);
+      gap: 14px;
+      align-items: start;
+      padding: 18px;
+      border: 1px solid #c6dcd2;
+      border-radius: 17px;
+      background: linear-gradient(135deg, #edf8f3, #fff);
+    }
+
+    .aftercare__avatar {
+      display: grid;
+      place-items: center;
+      width: 52px;
+      height: 52px;
+      border-radius: 17px;
+      background: var(--brand);
+      color: #fff;
+      font-size: 1.15rem;
+      font-weight: 950;
+      box-shadow: 0 9px 22px rgba(23,63,52,.18);
+    }
+
+    .aftercare__staff {
+      color: var(--brand);
+      font-size: .98rem;
+      font-weight: 950;
+    }
+
+    .aftercare__meta {
+      margin-top: 2px;
+      color: var(--muted);
+      font-size: .73rem;
+      font-weight: 750;
+    }
+
+    .aftercare__message {
+      margin-top: 10px;
+      color: var(--ink);
+      font-size: .93rem;
+      font-weight: 720;
+      white-space: pre-wrap;
+    }
+
+    .aftercare__recommend {
+      margin-top: 10px;
+      padding: 10px 12px;
+      border-left: 4px solid var(--gold);
+      border-radius: 9px;
+      background: var(--gold-soft);
+      color: #654815;
+      font-size: .8rem;
+      white-space: pre-wrap;
+    }
+
+    .album-list {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .album-card {
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 17px;
+      background: #fff;
+      box-shadow: 0 9px 28px rgba(22,50,40,.06);
+    }
+
+    .album-card__photos {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 2px;
+      background: #e6ece8;
+    }
+
+    .album-photo {
+      position: relative;
+      min-height: 180px;
+      overflow: hidden;
+      background: #e8eeea;
+    }
+
+    .album-photo img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      min-height: 180px;
+      object-fit: cover;
+    }
+
+    .album-photo__label {
+      position: absolute;
+      left: 9px;
+      bottom: 9px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      background: rgba(18,35,29,.78);
+      color: #fff;
+      font-size: .67rem;
+      font-weight: 950;
+      backdrop-filter: blur(4px);
+    }
+
+    .album-card__body {
+      padding: 13px 14px 15px;
+    }
+
+    .album-card__date {
+      color: var(--gold);
+      font-size: .73rem;
+      font-weight: 950;
+    }
+
+    .album-card__title {
+      margin-top: 3px;
+      font-size: .98rem;
+      font-weight: 950;
+    }
+
+    .album-card__meta {
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: .75rem;
+      font-weight: 750;
+    }
+
+    .album-lock {
+      padding: 18px;
+      border: 1px dashed #c9d6cf;
+      border-radius: 15px;
+      background: var(--surface-soft);
+      color: var(--muted);
+      text-align: center;
+      font-size: .84rem;
+      font-weight: 750;
+    }
+.reservation-list,
     .history-list {
       display: grid;
       gap: 11px;
@@ -1044,6 +1218,14 @@
         grid-template-columns: 1fr;
       }
 
+      .visit-facts {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .album-list {
+        grid-template-columns: 1fr;
+      }
+
       .member-card,
       .next-visit {
         min-height: auto;
@@ -1095,6 +1277,23 @@
         grid-template-columns: 1fr;
       }
 
+      .visit-facts {
+        grid-template-columns: 1fr;
+      }
+
+      .aftercare {
+        grid-template-columns: 1fr;
+      }
+
+      .album-card__photos {
+        grid-template-columns: 1fr;
+      }
+
+      .album-photo,
+      .album-photo img {
+        min-height: 220px;
+      }
+
       .history {
         grid-template-columns: 1fr;
         gap: 4px;
@@ -1143,7 +1342,7 @@
           </div>
           <h1>会員証・マイページ</h1>
           <p class="hero__lead">
-            次回予約、前回の施術内容、ホームケア、次回来店の目安を確認できます。
+            次回来店ナビ、担当者からのアフターケア、自分だけのヘア履歴を確認できます。
           </p>
         </div>
         <div class="hero__status">
@@ -1153,7 +1352,7 @@
         </div>
       </div>
       <div class="hero__actions">
-        <a class="btn btn--white" id="reserveButton" href="./index.html?v=beauty-6-r1">新しい予約</a>
+        <a class="btn btn--white" id="reserveButton" href="./index.html?v=beauty-11-r5">新しい予約</a>
         <button class="btn btn--soft" id="refreshButton" type="button">最新情報に更新</button>
       </div>
     </header>
@@ -1208,24 +1407,40 @@
 
         <article class="next-visit">
           <div>
-            <div class="next-visit__eyebrow">NEXT VISIT SUPPORT</div>
+            <div class="next-visit__eyebrow">NEXT VISIT NAVI</div>
             <div class="next-visit__title" id="nextVisitTitle">
-              次回来店の目安を確認できます
+              前回の内容を確認して、次の予約へ進めます
             </div>
-            <div class="next-visit__notes">
-              <div class="note-box">
-                <div class="note-box__label">ホームケアメモ</div>
-                <div class="note-box__value" id="homecareNote">まだ登録されていません。</div>
+            <div class="visit-facts">
+              <div class="visit-fact">
+                <div class="visit-fact__label">前回来店</div>
+                <div class="visit-fact__value" id="lastVisitDate">—</div>
               </div>
-              <div class="note-box" id="retailNoteBox">
-                <div class="note-box__label">おすすめ商品・ケア</div>
-                <div class="note-box__value" id="retailNote">まだ登録されていません。</div>
+              <div class="visit-fact">
+                <div class="visit-fact__label">前回メニュー</div>
+                <div class="visit-fact__value" id="lastVisitMenu">—</div>
               </div>
+              <div class="visit-fact">
+                <div class="visit-fact__label">前回担当</div>
+                <div class="visit-fact__value" id="lastVisitStaff">—</div>
+              </div>
+              <div class="visit-fact">
+                <div class="visit-fact__label">前回から</div>
+                <div class="visit-fact__value" id="sinceLastVisit">—</div>
+              </div>
+            </div>
+            <div class="next-visit__actions">
+              <a class="btn btn--white" id="rebookSameButton" href="./index.html?v=beauty-11-r5">
+                前回と同じ内容で予約
+              </a>
+              <a class="btn btn--soft" id="chooseDateButton" href="./index.html?v=beauty-11-r5">
+                新しい内容で予約
+              </a>
             </div>
           </div>
           <div class="next-visit__date">
             <div>
-              <div class="next-visit__date-small">次回来店目安</div>
+              <div class="next-visit__date-small">おすすめ来店期間</div>
               <div class="next-visit__date-main" id="nextVisitDate">未設定</div>
             </div>
           </div>
@@ -1242,6 +1457,32 @@
         </div>
         <div class="reservation-list" id="upcomingList">
           <div class="loading">予約情報を読み込んでいます。</div>
+        </div>
+      </section>
+
+      <section class="card" id="aftercareSection">
+        <div class="card__head">
+          <div>
+            <h2>担当者からのアフターケア</h2>
+            <div class="card__help">施術後のお手入れ方法を、担当者から確認できます。</div>
+          </div>
+          <span class="badge" id="aftercareBadge">CARE</span>
+        </div>
+        <div id="aftercareContent">
+          <div class="loading">アフターケアを読み込んでいます。</div>
+        </div>
+      </section>
+
+      <section class="card" id="albumSection">
+        <div class="card__head">
+          <div>
+            <h2>わたしのヘア履歴</h2>
+            <div class="card__help">写真同意のあるBefore・Afterだけを安全に表示します。</div>
+          </div>
+          <span class="badge" id="albumCountBadge">0回</span>
+        </div>
+        <div class="album-list" id="albumList">
+          <div class="loading">ヘア履歴を読み込んでいます。</div>
         </div>
       </section>
 
@@ -1313,8 +1554,8 @@
     </div>
 
     <footer class="footer">
-      DPRO 美容室 LINE｜STEP BEAUTY-7
-      <span id="pageVersion" hidden>BEAUTY-7-R1-CANCEL-PENDING-DISPLAY-20260713</span>
+      DPRO 美容室 LINE｜STEP BEAUTY-11-R5
+      <span id="pageVersion" hidden>BEAUTY-11-R5-MEMBER-CUSTOMER-EXPERIENCE-20260714</span>
     </footer>
   </main>
 
@@ -1389,7 +1630,7 @@
     (() => {
       "use strict";
 
-      const PAGE_VERSION = "BEAUTY-7-R1-CANCEL-PENDING-DISPLAY-20260713";
+      const PAGE_VERSION = "BEAUTY-11-R5-MEMBER-CUSTOMER-EXPERIENCE-20260714";
 
       const state = {
         profile: null,
@@ -1398,6 +1639,7 @@
         contactType: "",
         contactCopyText: "",
         selectedCancelReservation: null,
+        albumImageFailures: 0,
       };
 
       const $ = (selector) => document.querySelector(selector);
@@ -1422,11 +1664,20 @@
         memberPhone: $("#memberPhone"),
         nextVisitTitle: $("#nextVisitTitle"),
         nextVisitDate: $("#nextVisitDate"),
-        homecareNote: $("#homecareNote"),
-        retailNoteBox: $("#retailNoteBox"),
-        retailNote: $("#retailNote"),
+        lastVisitDate: $("#lastVisitDate"),
+        lastVisitMenu: $("#lastVisitMenu"),
+        lastVisitStaff: $("#lastVisitStaff"),
+        sinceLastVisit: $("#sinceLastVisit"),
+        rebookSameButton: $("#rebookSameButton"),
+        chooseDateButton: $("#chooseDateButton"),
         upcomingCountBadge: $("#upcomingCountBadge"),
         upcomingList: $("#upcomingList"),
+        aftercareSection: $("#aftercareSection"),
+        aftercareBadge: $("#aftercareBadge"),
+        aftercareContent: $("#aftercareContent"),
+        albumSection: $("#albumSection"),
+        albumCountBadge: $("#albumCountBadge"),
+        albumList: $("#albumList"),
         latestTreatment: $("#latestTreatment"),
         historyCountBadge: $("#historyCountBadge"),
         historyList: $("#historyList"),
@@ -1583,43 +1834,185 @@
         el.heroStatusMeta.textContent = `${safeText(member.full_name, "お客様")}様のマイページ`;
       }
 
+      function reservationIdentityParams(extra = {}) {
+        const params = { v: "beauty-11-r5", ...extra };
+        const identity = state.identity || {};
+        const lineUserId =
+          identity.line_user_id ||
+          localStorage.getItem(config().STORAGE_KEYS.MEMBER_LINE_USER_ID) ||
+          "";
+        if (lineUserId) {
+          params.line_user_id = lineUserId;
+        } else if (state.profile?.member?.phone) {
+          params.phone = state.profile.member.phone;
+        }
+        return params;
+      }
+
+      function elapsedFrom(dateString) {
+        if (!dateString) return "—";
+        const start = new Date(`${dateString}T12:00:00+09:00`);
+        const now = new Date();
+        const days = Math.max(0, Math.floor((now.getTime() - start.getTime()) / 86400000));
+        if (days < 14) return `${days}日`;
+        return `${Math.floor(days / 7)}週間`;
+      }
+
       function renderNextVisit() {
         const next = state.profile?.next_visit;
+        const rebook = state.profile?.rebook;
+        const latest = state.profile?.latest_treatment;
         const settings = state.profile?.settings || {};
 
-        if (!settings.next_visit_enabled || !next) {
-          el.nextVisitTitle.textContent = "次回来店の提案はまだ登録されていません";
-          el.nextVisitDate.textContent = "未設定";
-          el.homecareNote.textContent = "まだ登録されていません。";
-          el.retailNoteBox.hidden = true;
+        const serviceDate = next?.service_date || latest?.service_date || null;
+        const menuName =
+          rebook?.menu?.menu_name ||
+          latest?.menu?.menu_name ||
+          (Array.isArray(latest?.service_types) ? latest.service_types.join("・") : "") ||
+          "施術内容未設定";
+        const staffName =
+          rebook?.staff?.display_name ||
+          next?.staff?.display_name ||
+          latest?.staff?.display_name ||
+          "担当スタッフ";
+
+        el.lastVisitDate.textContent = serviceDate
+          ? config().utils.formatDate(serviceDate)
+          : "来店履歴なし";
+        el.lastVisitMenu.textContent = menuName;
+        el.lastVisitStaff.textContent = staffName;
+        el.sinceLastVisit.textContent = elapsedFrom(serviceDate);
+
+        if (!settings.next_visit_enabled || !next?.recommended_target) {
+          el.nextVisitTitle.textContent = "前回の内容を確認して、次の予約へ進めます";
+          el.nextVisitDate.textContent = "スタッフへご相談ください";
+        } else {
+          const from = next.recommended_from
+            ? config().utils.formatDate(next.recommended_from, { weekday: false })
+            : "";
+          const to = next.recommended_to
+            ? config().utils.formatDate(next.recommended_to, { weekday: false })
+            : "";
+          el.nextVisitTitle.textContent = next.is_due
+            ? "おすすめの来店時期を迎えています"
+            : "髪の状態を保つおすすめ時期です";
+          el.nextVisitDate.textContent = from && to
+            ? `${from}〜${to}`
+            : config().utils.formatDate(next.recommended_target);
+        }
+
+        const baseUrl = config().utils.buildPageUrl(
+          "RESERVATION",
+          reservationIdentityParams({ source: "member" })
+        );
+        el.chooseDateButton.href = baseUrl;
+        el.reserveButton.href = baseUrl;
+
+        const sameParams = reservationIdentityParams({
+          source: "member",
+          rebook: "1",
+        });
+        if (rebook?.menu?.id) sameParams.menu_id = rebook.menu.id;
+        if (rebook?.staff?.id) sameParams.staff_id = rebook.staff.id;
+        el.rebookSameButton.href = config().utils.buildPageUrl("RESERVATION", sameParams);
+        el.rebookSameButton.hidden = !rebook?.menu?.id;
+      }
+
+      function renderAftercare() {
+        const care = state.profile?.aftercare;
+        if (!care || (!care.message && !care.recommendation)) {
+          el.aftercareBadge.textContent = "未登録";
+          el.aftercareContent.innerHTML =
+            '<div class="empty">担当者からのアフターケアはまだ登録されていません。</div>';
           return;
         }
 
-        let title = "次回来店の目安をご確認ください";
-        let dateLabel = "未設定";
+        const staffName = care.staff?.display_name || "担当スタッフ";
+        const initial = String(staffName).slice(0, 1);
+        el.aftercareBadge.textContent = care.service_date
+          ? config().utils.formatDate(care.service_date, { weekday: false })
+          : "CARE";
+        el.aftercareContent.innerHTML = `
+          <article class="aftercare">
+            <div class="aftercare__avatar">${escapeHtml(initial)}</div>
+            <div>
+              <div class="aftercare__staff">${escapeHtml(staffName)}から</div>
+              <div class="aftercare__meta">
+                ${escapeHtml(care.treatment_summary || "前回施術のアフターケア")}
+              </div>
+              ${care.message ? `
+                <div class="aftercare__message">${escapeHtml(care.message)}</div>
+              ` : ""}
+              ${care.recommendation ? `
+                <div class="aftercare__recommend">
+                  <strong>おすすめケア・商品</strong><br>${escapeHtml(care.recommendation)}
+                </div>
+              ` : ""}
+            </div>
+          </article>
+        `;
+      }
 
-        if (next.next_visit_date) {
-          dateLabel = config().utils.formatDate(next.next_visit_date);
-          title = `${dateLabel}頃のご来店がおすすめです`;
-        } else if (next.next_visit_weeks) {
-          dateLabel = `${next.next_visit_weeks}週間後`;
-          title = `${next.next_visit_weeks}週間後を目安にご来店ください`;
+      function renderAlbum() {
+        const memberData = state.profile?.member || {};
+        const rows = state.profile?.album_history || [];
+        const locked = Boolean(state.profile?.photo_album_locked);
+        el.albumCountBadge.textContent = `${rows.length}回`;
+
+        if (!memberData.consent_photo) {
+          el.albumSection.hidden = true;
+          return;
         }
 
-        el.nextVisitTitle.textContent = title;
-        el.nextVisitDate.textContent = dateLabel;
-        el.homecareNote.textContent = safeText(
-          next.homecare_note,
-          "まだ登録されていません。"
-        );
+        el.albumSection.hidden = false;
 
-        const retailEnabled =
-          Boolean(settings.retail_recommend_enabled) &&
-          Boolean(String(next.retail_recommendation || "").trim());
-        el.retailNoteBox.hidden = !retailEnabled;
-        el.retailNote.textContent = retailEnabled
-          ? next.retail_recommendation
-          : "まだ登録されていません。";
+        if (locked) {
+          el.albumList.innerHTML = `
+            <div class="album-lock" style="grid-column:1/-1;">
+              写真履歴は、本人確認済みのLINEマイページから開いた場合に表示されます。
+            </div>
+          `;
+          return;
+        }
+
+        if (!rows.length) {
+          el.albumList.innerHTML =
+            '<div class="empty" style="grid-column:1/-1;">Before・After写真はまだ登録されていません。</div>';
+          return;
+        }
+
+        el.albumList.innerHTML = rows.map((entry) => {
+          const title =
+            entry.menu?.menu_name ||
+            entry.customer_visible_summary ||
+            (Array.isArray(entry.service_types) ? entry.service_types.join("・") : "") ||
+            "ヘアスタイル履歴";
+          return `
+            <article class="album-card">
+              <div class="album-card__photos">
+                ${(entry.photos || []).map((photo) => `
+                  <div class="album-photo">
+                    <img
+                      src="${escapeHtml(photo.signed_url || "")}"
+                      alt="${escapeHtml(photo.photo_type === "before" ? "施術前の写真" : "施術後の写真")}"
+                      loading="lazy"
+                    >
+                    <span class="album-photo__label">
+                      ${photo.photo_type === "before" ? "Before" : "After"}
+                    </span>
+                  </div>
+                `).join("")}
+              </div>
+              <div class="album-card__body">
+                <div class="album-card__date">${escapeHtml(config().utils.formatDate(entry.service_date))}</div>
+                <div class="album-card__title">${escapeHtml(title)}</div>
+                <div class="album-card__meta">
+                  担当：${escapeHtml(entry.staff?.display_name || "担当スタッフ")}
+                </div>
+              </div>
+            </article>
+          `;
+        }).join("");
       }
 
       function renderUpcoming() {
@@ -1630,7 +2023,7 @@
           el.upcomingList.innerHTML = `
             <div class="empty">
               現在、次回予約はありません。<br>
-              <a href="${escapeHtml(config().utils.buildPageUrl("RESERVATION", { v: "beauty-6-r1" }))}"
+              <a href="${escapeHtml(config().utils.buildPageUrl("RESERVATION", { v: "beauty-11-r5" }))}"
                  style="display:inline-block;margin-top:10px;color:var(--brand);font-weight:900;">
                 新しい予約をする
               </a>
@@ -1718,11 +2111,6 @@
               <div class="history__staff">
                 担当：${escapeHtml(latest.staff?.display_name || "担当スタッフ")}
               </div>
-              ${latest.homecare_note ? `
-                <div class="history__summary">
-                  <strong>ホームケア：</strong>${escapeHtml(latest.homecare_note)}
-                </div>
-              ` : ""}
             </div>
           </div>
         `;
@@ -1800,6 +2188,8 @@
         renderMemberCard();
         renderNextVisit();
         renderUpcoming();
+        renderAftercare();
+        renderAlbum();
         renderLatestTreatment();
         renderHistory();
         renderRecentReservations();
@@ -2173,7 +2563,7 @@
         }
 
         el.reserveButton.href = config().utils.buildPageUrl("RESERVATION", {
-          v: "beauty-6-r1",
+          v: "beauty-11-r5",
         });
 
         bindEvents();
