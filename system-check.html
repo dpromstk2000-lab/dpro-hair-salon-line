@@ -801,7 +801,7 @@
     <header class="hero">
       <div class="hero__top">
         <div>
-          <div class="eyebrow">STEP BEAUTY-11-R1</div>
+          <div class="eyebrow">STEP BEAUTY-11-R2</div>
           <h1>DPRO 美容室 LINE<br>営業前システムチェック・完成判定</h1>
           <p class="hero__lead">
             API・データベース・本日の予約・美容カルテ・写真・フォロー対象に加え、
@@ -981,7 +981,7 @@
       <div class="grid grid--two">
         <div class="check-list">
           <div class="check-row" id="checkSystemPage" data-state="idle">
-            <div class="check-dot">9</div><div><div class="check-label">営業前システムチェック</div><div class="check-detail">STEP BEAUTY-11-R1の公開状態</div></div><div class="state-pill">未確認</div>
+            <div class="check-dot">9</div><div><div class="check-label">営業前システムチェック</div><div class="check-detail">STEP BEAUTY-11-R2の公開状態</div></div><div class="state-pill">未確認</div>
           </div>
           <div class="check-row" id="checkReservationPage" data-state="idle">
             <div class="check-dot">10</div><div><div class="check-label">お客様向け予約</div><div class="check-detail">STEP BEAUTY-6-R1の公開状態</div></div><div class="state-pill">未確認</div>
@@ -992,7 +992,7 @@
         </div>
         <div class="check-list">
           <div class="check-row" id="checkOwnerPage" data-state="idle">
-            <div class="check-dot">12</div><div><div class="check-label">PC管理画面</div><div class="check-detail">STEP BEAUTY-11-R1の公開状態</div></div><div class="state-pill">未確認</div>
+            <div class="check-dot">12</div><div><div class="check-label">PC管理画面</div><div class="check-detail">STEP BEAUTY-11-R2の公開状態</div></div><div class="state-pill">未確認</div>
           </div>
           <div class="check-row" id="checkStaffPage" data-state="idle">
             <div class="check-dot">13</div><div><div class="check-label">スタッフ施術画面</div><div class="check-detail">STEP BEAUTY-9-R2の公開状態</div></div><div class="state-pill">未確認</div>
@@ -1087,7 +1087,7 @@
           <h2>現在のバージョン</h2>
         </div>
         <div class="version-box" id="versionBox">
-system-check: BEAUTY-11-R1-SYSTEM-CHECK-OWNER-BUSINESS-DAY-20260714
+system-check: BEAUTY-11-R2-SYSTEM-CHECK-MANUAL-CUSTOMER-SEARCH-20260714
 config: 確認中
 worker: 確認前
 shop_code: dpro_hair_demo
@@ -1109,7 +1109,7 @@ shop_code: dpro_hair_demo
     </section>
 
     <footer class="footer">
-      DPRO 美容室 LINE｜STEP BEAUTY-11-R1｜営業担当者用最終統合確認画面
+      DPRO 美容室 LINE｜STEP BEAUTY-11-R2｜営業担当者用最終統合確認画面
     </footer>
   </main>
 
@@ -1118,7 +1118,7 @@ shop_code: dpro_hair_demo
     (() => {
       "use strict";
 
-      const PAGE_VERSION = "BEAUTY-11-R1-SYSTEM-CHECK-OWNER-BUSINESS-DAY-20260714";
+      const PAGE_VERSION = "BEAUTY-11-R2-SYSTEM-CHECK-MANUAL-CUSTOMER-SEARCH-20260714";
       const DEMO_CUSTOMER_NO = "HAIR-DEMO-001";
 
       const state = {
@@ -1163,10 +1163,10 @@ shop_code: dpro_hair_demo
       };
 
       const pageDefinitions = [
-        { key: "SYSTEM_CHECK", label: "営業前システムチェック", description: "STEP BEAUTY-11-R1｜デモ準備・完成判定", checkId: "checkSystemPage", expectedVersion: PAGE_VERSION, params: { v: "beauty-11" } },
+        { key: "SYSTEM_CHECK", label: "営業前システムチェック", description: "STEP BEAUTY-11-R2｜デモ準備・完成判定", checkId: "checkSystemPage", expectedVersion: PAGE_VERSION, params: { v: "beauty-11-r2" } },
         { key: "RESERVATION", label: "お客様向け予約", description: "STEP BEAUTY-6-R1｜予約・空き時間・相談入力", checkId: "checkReservationPage", expectedVersion: "BEAUTY-6-R1-DATE-SELECTION-UX-FIX-20260713", params: { v: "beauty-6-r1" } },
         { key: "MEMBER", label: "会員証・マイページ", description: "STEP BEAUTY-7-R1｜予約・施術履歴・相談・キャンセル希望", checkId: "checkMemberPage", expectedVersion: "BEAUTY-7-R1-CANCEL-PENDING-DISPLAY-20260713", params: { customer_no: DEMO_CUSTOMER_NO, v: "beauty-7-r1" } },
-        { key: "OWNER", label: "PC管理画面", description: "STEP BEAUTY-11-R1｜前営業日・今日・次営業日切替", checkId: "checkOwnerPage", expectedVersion: "BEAUTY-11-R1-OWNER-BUSINESS-DAY-NAV-20260714", params: { v: "beauty-11-r1" } },
+        { key: "OWNER", label: "PC管理画面", description: "STEP BEAUTY-11-R2｜電話・店頭予約内の既存顧客検索", checkId: "checkOwnerPage", expectedVersion: "BEAUTY-11-R2-MANUAL-CUSTOMER-PHONE-SEARCH-20260714", params: { v: "beauty-11-r2" } },
         { key: "STAFF", label: "スタッフ施術画面", description: "STEP BEAUTY-9-R2｜施術進行・カルテ・写真・文面", checkId: "checkStaffPage", expectedVersion: "BEAUTY-9-R2-MESSAGE-VARIABLE-FIX-20260714", params: { v: "beauty-9-r2" } },
         { key: "OWNER_IPAD", label: "店内iPad受付", description: "STEP BEAUTY-10｜受付・施術進行・電話予約・顧客検索", checkId: "checkOwnerIpadPage", expectedVersion: "BEAUTY-10-OWNER-IPAD-20260714", params: { v: "beauty-10" } },
       ];
