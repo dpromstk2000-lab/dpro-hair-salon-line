@@ -4,8 +4,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#14211d">
-  <title>DPRO 美容室 LINE｜営業前システムチェック</title>
-  <meta name="description" content="DPRO 美容室 LINEの営業前デモ準備・API・DB・予約・カルテ確認画面">
+  <title>DPRO 美容室 LINE｜営業前システムチェック・完成判定</title>
+  <meta name="description" content="DPRO 美容室 LINEの営業前デモ準備・API・DB・全画面公開・予約・カルテ・写真を確認する最終統合画面">
   <style>
     :root {
       --bg: #f2f5f3;
@@ -191,7 +191,7 @@
     }
 
     .grid--stats {
-      grid-template-columns: repeat(4, minmax(0, 1fr));
+      grid-template-columns: repeat(5, minmax(0, 1fr));
     }
 
     .section {
@@ -801,11 +801,11 @@
     <header class="hero">
       <div class="hero__top">
         <div>
-          <div class="eyebrow">STEP BEAUTY-5</div>
-          <h1>DPRO 美容室 LINE<br>営業前システムチェック</h1>
+          <div class="eyebrow">STEP BEAUTY-11</div>
+          <h1>DPRO 美容室 LINE<br>営業前システムチェック・完成判定</h1>
           <p class="hero__lead">
-            API・データベース・本日の予約・美容カルテ・写真・フォロー対象を、
-            営業前にこの画面でまとめて確認します。
+            API・データベース・本日の予約・美容カルテ・写真・フォロー対象に加え、
+            完成した全画面の公開状態まで営業前にまとめて確認します。
           </p>
         </div>
         <div class="hero__stamp">
@@ -820,6 +820,7 @@
         <span class="meta-chip" id="workerVersionChip">Worker 確認前</span>
         <span class="meta-chip">管理コード：1234</span>
         <span class="meta-chip">写真Storage：hair-carte-photos</span>
+        <span class="meta-chip">完成画面：6画面</span>
       </div>
     </header>
 
@@ -845,7 +846,7 @@
             >
           </div>
           <button class="btn btn--primary" id="saveAdminButton" type="button">保存する</button>
-          <button class="btn btn--danger" id="clearAdminButton" type="button">削除する</button>
+          <button class="btn btn--danger" id="clearAdminButton" type="button">消去する</button>
         </div>
         <div class="hint" id="adminHelp">
           営業デモでは管理コード「1234」を保存してから、営業前デモ準備を実行します。
@@ -872,7 +873,7 @@
       <div class="section-title">
         <div>
           <h2>総合判定</h2>
-          <div class="section-note">主要項目に問題がなければ、営業デモを開始できます。</div>
+          <div class="section-note">接続・デモデータ・全画面公開に問題がなければ、営業デモを開始できます。</div>
         </div>
       </div>
       <div class="status-banner" id="overallBanner" data-state="idle">
@@ -880,7 +881,7 @@
         <div>
           <div class="status-title" id="overallTitle">チェック待ち</div>
           <div class="status-detail" id="overallDetail">
-            管理コードを保存し、「全体チェック」を押してください。
+            管理コードを保存し、「営業前デモ準備」または「全体チェック」を押してください。
           </div>
         </div>
         <div class="status-time" id="overallTime">未実行</div>
@@ -972,8 +973,42 @@
     <section class="section card">
       <div class="section-title">
         <div>
+          <h2>全画面公開チェック</h2>
+          <div class="section-note">GitHub Pages上の完成画面と採用バージョンを確認します。</div>
+        </div>
+        <span class="badge" id="pageCheckBadge">0 / 6</span>
+      </div>
+      <div class="grid grid--two">
+        <div class="check-list">
+          <div class="check-row" id="checkSystemPage" data-state="idle">
+            <div class="check-dot">9</div><div><div class="check-label">営業前システムチェック</div><div class="check-detail">STEP BEAUTY-11の公開状態</div></div><div class="state-pill">未確認</div>
+          </div>
+          <div class="check-row" id="checkReservationPage" data-state="idle">
+            <div class="check-dot">10</div><div><div class="check-label">お客様向け予約</div><div class="check-detail">STEP BEAUTY-6-R1の公開状態</div></div><div class="state-pill">未確認</div>
+          </div>
+          <div class="check-row" id="checkMemberPage" data-state="idle">
+            <div class="check-dot">11</div><div><div class="check-label">会員証・マイページ</div><div class="check-detail">STEP BEAUTY-7-R1の公開状態</div></div><div class="state-pill">未確認</div>
+          </div>
+        </div>
+        <div class="check-list">
+          <div class="check-row" id="checkOwnerPage" data-state="idle">
+            <div class="check-dot">12</div><div><div class="check-label">PC管理画面</div><div class="check-detail">STEP BEAUTY-8-R1の公開状態</div></div><div class="state-pill">未確認</div>
+          </div>
+          <div class="check-row" id="checkStaffPage" data-state="idle">
+            <div class="check-dot">13</div><div><div class="check-label">スタッフ施術画面</div><div class="check-detail">STEP BEAUTY-9-R2の公開状態</div></div><div class="state-pill">未確認</div>
+          </div>
+          <div class="check-row" id="checkOwnerIpadPage" data-state="idle">
+            <div class="check-dot">14</div><div><div class="check-label">店内iPad受付</div><div class="check-detail">STEP BEAUTY-10の公開状態</div></div><div class="state-pill">未確認</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section card">
+      <div class="section-title">
+        <div>
           <h2>デモデータ概要</h2>
-          <div class="section-note">営業前デモ準備後の状態を表示します。</div>
+          <div class="section-note">営業前デモ準備後の状態と公開画面数を表示します。</div>
         </div>
       </div>
       <div class="grid grid--stats">
@@ -996,6 +1031,11 @@
           <div class="stat-label">写真カルテ</div>
           <div class="stat-value" id="statPhotos">—</div>
           <div class="stat-sub">佐藤 美咲様</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">公開画面</div>
+          <div class="stat-value" id="statPages">—</div>
+          <div class="stat-sub">6画面中</div>
         </div>
       </div>
     </section>
@@ -1029,15 +1069,15 @@
     <section class="section card">
       <div class="section-title">
         <div>
-          <h2>画面URL</h2>
+          <h2>完成画面URL</h2>
           <div class="section-note">
-            後続STEPで作る画面も、正式URLを先に固定しています。
+            商談で使用する完成済み6画面です。デモ顧客を開くURLも含みます。
           </div>
         </div>
       </div>
       <div class="url-list" id="urlList"></div>
       <div class="hint">
-        現時点で未作成の画面が404になる場合は異常ではありません。各画面はSTEP BEAUTY-6以降で順番に追加します。
+        すべて完成済みです。404・旧バージョン判定が出た場合は、GitHub Pagesの反映状況と配置ファイル名を確認してください。
       </div>
     </section>
 
@@ -1047,7 +1087,7 @@
           <h2>現在のバージョン</h2>
         </div>
         <div class="version-box" id="versionBox">
-system-check: BEAUTY-5-SYSTEM-CHECK-20260713
+system-check: BEAUTY-11-SYSTEM-CHECK-FINAL-20260714
 config: 確認中
 worker: 確認前
 shop_code: dpro_hair_demo
@@ -1060,16 +1100,16 @@ shop_code: dpro_hair_demo
         </div>
         <ol style="margin:0;padding-left:1.35rem;font-weight:750;">
           <li>管理コード「1234」を保存</li>
-          <li>「営業前デモ準備」を実行</li>
-          <li>総合判定が「営業デモOK」になることを確認</li>
-          <li>本日の予約と佐藤 美咲様のカルテを確認</li>
-          <li>必要な画面を開いて商談を開始</li>
+          <li>「営業前デモ準備」を実行してデモ状態を初期化</li>
+          <li>総合判定が「営業デモOK・完成確認済み」になることを確認</li>
+          <li>全6画面が「OK」になっていることを確認</li>
+          <li>予約画面→会員ページ→PC管理→スタッフ→iPadの順で商談</li>
         </ol>
       </article>
     </section>
 
     <footer class="footer">
-      DPRO 美容室 LINE｜STEP BEAUTY-5｜営業担当者用内部確認画面
+      DPRO 美容室 LINE｜STEP BEAUTY-11｜営業担当者用最終統合確認画面
     </footer>
   </main>
 
@@ -1078,7 +1118,7 @@ shop_code: dpro_hair_demo
     (() => {
       "use strict";
 
-      const PAGE_VERSION = "BEAUTY-5-SYSTEM-CHECK-20260713";
+      const PAGE_VERSION = "BEAUTY-11-SYSTEM-CHECK-FINAL-20260714";
       const DEMO_CUSTOMER_NO = "HAIR-DEMO-001";
 
       const state = {
@@ -1086,6 +1126,7 @@ shop_code: dpro_hair_demo
         health: null,
         dashboard: null,
         customerDetail: null,
+        pageResults: {},
         checksRunning: false,
       };
 
@@ -1112,6 +1153,8 @@ shop_code: dpro_hair_demo
         statCustomers: $("#statCustomers"),
         statFollow: $("#statFollow"),
         statPhotos: $("#statPhotos"),
+        statPages: $("#statPages"),
+        pageCheckBadge: $("#pageCheckBadge"),
         reservationDateLabel: $("#reservationDateLabel"),
         reservationList: $("#reservationList"),
         customerPanel: $("#customerPanel"),
@@ -1120,12 +1163,12 @@ shop_code: dpro_hair_demo
       };
 
       const pageDefinitions = [
-        { key: "SYSTEM_CHECK", label: "営業前システムチェック", description: "内部確認・デモ準備" },
-        { key: "RESERVATION", label: "お客様向け予約", description: "STEP BEAUTY-6で作成" },
-        { key: "MEMBER", label: "会員証・マイページ", description: "STEP BEAUTY-7で作成" },
-        { key: "OWNER", label: "PC管理画面", description: "STEP BEAUTY-8で作成" },
-        { key: "STAFF", label: "スタイリスト画面", description: "STEP BEAUTY-9で作成" },
-        { key: "OWNER_IPAD", label: "店内iPad画面", description: "STEP BEAUTY-10で作成" },
+        { key: "SYSTEM_CHECK", label: "営業前システムチェック", description: "STEP BEAUTY-11｜デモ準備・完成判定", checkId: "checkSystemPage", expectedVersion: PAGE_VERSION, params: { v: "beauty-11" } },
+        { key: "RESERVATION", label: "お客様向け予約", description: "STEP BEAUTY-6-R1｜予約・空き時間・相談入力", checkId: "checkReservationPage", expectedVersion: "BEAUTY-6-R1-DATE-SELECTION-UX-FIX-20260713", params: { v: "beauty-6-r1" } },
+        { key: "MEMBER", label: "会員証・マイページ", description: "STEP BEAUTY-7-R1｜予約・施術履歴・相談・キャンセル希望", checkId: "checkMemberPage", expectedVersion: "BEAUTY-7-R1-CANCEL-PENDING-DISPLAY-20260713", params: { customer_no: DEMO_CUSTOMER_NO, v: "beauty-7-r1" } },
+        { key: "OWNER", label: "PC管理画面", description: "STEP BEAUTY-8-R1｜予約・顧客カルテ・設定・フォロー", checkId: "checkOwnerPage", expectedVersion: "BEAUTY-8-R1-ADMIN-CODE-CLEAR-BUTTON-20260713", params: { v: "beauty-8-r1" } },
+        { key: "STAFF", label: "スタッフ施術画面", description: "STEP BEAUTY-9-R2｜施術進行・カルテ・写真・文面", checkId: "checkStaffPage", expectedVersion: "BEAUTY-9-R2-MESSAGE-VARIABLE-FIX-20260714", params: { v: "beauty-9-r2" } },
+        { key: "OWNER_IPAD", label: "店内iPad受付", description: "STEP BEAUTY-10｜受付・施術進行・電話予約・顧客検索", checkId: "checkOwnerIpadPage", expectedVersion: "BEAUTY-10-OWNER-IPAD-20260714", params: { v: "beauty-10" } },
       ];
 
       function configReady() {
@@ -1203,10 +1246,13 @@ shop_code: dpro_hair_demo
         }
       }
 
+      function pageUrl(page) {
+        return getConfig().utils.buildPageUrl(page.key, page.params || {});
+      }
+
       function renderUrls() {
-        const config = getConfig();
         el.urlList.innerHTML = pageDefinitions.map((page) => {
-          const url = config.utils.buildPageUrl(page.key, { v: page.key === "SYSTEM_CHECK" ? "beauty-5" : "beauty" });
+          const url = pageUrl(page);
           return `
             <div class="url-item">
               <div>
@@ -1236,6 +1282,11 @@ shop_code: dpro_hair_demo
           `worker: ${workerVersion}`,
           `shop_code: ${shopCode}`,
           `api: ${config.API_BASE_URL}`,
+          `reservation: BEAUTY-6-R1`,
+          `member: BEAUTY-7-R1`,
+          `owner: BEAUTY-8-R1`,
+          `staff: BEAUTY-9-R2`,
+          `owner-ipad: BEAUTY-10`,
         ].join("\n");
       }
 
@@ -1360,6 +1411,72 @@ shop_code: dpro_hair_demo
         `;
       }
 
+      async function inspectPage(page) {
+        if (page.key === "SYSTEM_CHECK") {
+          return { ok: true, versionOk: true, status: 200, version: PAGE_VERSION };
+        }
+        const url = new URL(pageUrl(page));
+        url.searchParams.set("system_check", String(Date.now()));
+        const response = await fetch(url.toString(), {
+          method: "GET",
+          cache: "no-store",
+          credentials: "omit",
+        });
+        if (!response.ok) {
+          throw new Error(`HTTP ${response.status}`);
+        }
+        const text = await response.text();
+        return {
+          ok: true,
+          status: response.status,
+          versionOk: text.includes(page.expectedVersion),
+          version: page.expectedVersion,
+        };
+      }
+
+      async function checkPublishedPages() {
+        for (const page of pageDefinitions) {
+          setCheck(page.checkId, "loading", `${page.label}を確認しています。`);
+        }
+
+        const settled = await Promise.allSettled(
+          pageDefinitions.map(async (page) => [page, await inspectPage(page)])
+        );
+        let okCount = 0;
+        let currentCount = 0;
+        state.pageResults = {};
+
+        for (const item of settled) {
+          if (item.status === "fulfilled") {
+            const [page, result] = item.value;
+            state.pageResults[page.key] = result;
+            if (result.ok) okCount += 1;
+            if (result.versionOk) {
+              currentCount += 1;
+              setCheck(page.checkId, "ok", `${page.description}／HTTP ${result.status}`);
+            } else {
+              setCheck(page.checkId, "warning", `画面は公開済みですが、採用バージョン文字列を確認できません。`);
+            }
+          } else {
+            const index = settled.indexOf(item);
+            const page = pageDefinitions[index];
+            state.pageResults[page.key] = { ok: false, error: item.reason?.message || "取得失敗" };
+            setCheck(page.checkId, "error", `${page.label}を取得できません。（${item.reason?.message || "通信エラー"}）`);
+          }
+        }
+
+        el.pageCheckBadge.textContent = `${currentCount} / ${pageDefinitions.length}`;
+        el.pageCheckBadge.style.background = currentCount === pageDefinitions.length ? "var(--ok-soft)" : "var(--warn-soft)";
+        el.pageCheckBadge.style.color = currentCount === pageDefinitions.length ? "var(--ok)" : "var(--warn)";
+        el.statPages.textContent = `${currentCount}/${pageDefinitions.length}`;
+        return {
+          publishedOk: okCount === pageDefinitions.length,
+          versionsOk: currentCount === pageDefinitions.length,
+          okCount,
+          currentCount,
+        };
+      }
+
       async function runChecks(options = {}) {
         if (state.checksRunning) return;
         state.checksRunning = true;
@@ -1374,6 +1491,8 @@ shop_code: dpro_hair_demo
         [
           "checkConfig", "checkApi", "checkDatabase", "checkAdmin",
           "checkReservations", "checkCustomer", "checkCarte", "checkPhotosFollow",
+          "checkSystemPage", "checkReservationPage", "checkMemberPage",
+          "checkOwnerPage", "checkStaffPage", "checkOwnerIpadPage",
         ].forEach((id) => setCheck(id, "loading"));
 
         try {
@@ -1476,18 +1595,26 @@ shop_code: dpro_hair_demo
           renderCustomer(state.customerDetail);
           updateVersions();
 
+          const pageCheck = await checkPublishedPages();
           const essentialOk = state.health?.ok && dbOk && customerOk && carteOk;
           const demoOk = reservationsOk && photoFollowOk;
+          const pagesOk = pageCheck.publishedOk && pageCheck.versionsOk;
 
-          if (essentialOk && demoOk) {
+          if (essentialOk && demoOk && pagesOk) {
             setOverall(
               "ok",
-              "営業デモOK",
-              "API・DB・本日の予約・美容カルテ・写真・フォロー対象を確認しました。"
+              "営業デモOK・完成確認済み",
+              "API・DB・デモデータ・美容カルテ・写真・フォロー対象・完成6画面を確認しました。"
             );
             if (!options.silent) {
               config.utils.showToast("全体チェックが完了しました。営業デモOKです。", "success");
             }
+          } else if (essentialOk && demoOk && !pagesOk) {
+            setOverall(
+              "warning",
+              "画面公開の確認が必要です",
+              "基本接続とデモデータは正常です。エラーまたは旧バージョンの画面を確認してください。"
+            );
           } else if (essentialOk) {
             setOverall(
               "warning",
@@ -1569,7 +1696,8 @@ shop_code: dpro_hair_demo
           "",
           ...pageDefinitions.flatMap((page) => [
             `【${page.label}】`,
-            config.utils.buildPageUrl(page.key, { v: page.key === "SYSTEM_CHECK" ? "beauty-5" : "beauty" }),
+            pageUrl(page),
+            `採用版：${page.description}`,
             "",
           ]),
           "【Worker API確認】",
@@ -1600,7 +1728,7 @@ shop_code: dpro_hair_demo
           el.adminCodeInput.value = "";
           syncAdminDisplay();
           setCheck("checkAdmin", "idle", "管理コードが削除されました。");
-          config.utils.showToast("管理コードを削除しました。", "info");
+          config.utils.showToast("管理コードを消去しました。", "info");
         });
 
         el.runChecksButton.addEventListener("click", () => runChecks());
