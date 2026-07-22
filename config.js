@@ -2,7 +2,7 @@
  * DPRO 美容室 LINE
  * STEP HAIR-NEXT-4 共通設定・公開基盤 完全互換版
  * File: config.js
- * Version: HAIR-NEXT-4-COMMON-CONFIG-20260722
+ * Version: HAIR-NEXT-4-R3-DATE-FORMAT-FIX-20260722
  *
  * GitHub Pages:
  * https://dpromstk2000-lab.github.io/dpro-hair-salon-line/
@@ -18,7 +18,7 @@
 (function initializeDPROHairSalonConfig(global) {
   "use strict";
 
-  const VERSION = "HAIR-NEXT-4-COMMON-CONFIG-20260722";
+  const VERSION = "HAIR-NEXT-4-R3-DATE-FORMAT-FIX-20260722";
   const EXPECTED_WORKER_VERSION = "HAIR-NEXT-3-WORKER-API-20260722";
   const SERVICE_NAME = "DPRO 美容室 LINE";
   const API_BASE_URL = "https://dpro-hair-salon-line-api.dpromstk2000.workers.dev";
@@ -439,12 +439,20 @@
   function formatDate(value, options = {}) {
     const date = parseDateInput(value);
     if (!date) return options.fallback ?? "";
+
+    const weekdayOption =
+      options.weekday === false
+        ? undefined
+        : options.weekday === true || options.weekday === undefined || options.weekday === null
+          ? "short"
+          : options.weekday;
+
     return new Intl.DateTimeFormat("ja-JP", {
       timeZone: options.timeZone || TIME_ZONE,
       year: options.year || "numeric",
       month: options.month || "numeric",
       day: options.day || "numeric",
-      weekday: options.weekday === false ? undefined : options.weekday || "short",
+      weekday: weekdayOption,
     }).format(date);
   }
 
