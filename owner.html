@@ -35,7 +35,7 @@
 .menu-grid,.staff-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px}.menu-card,.staff-card{overflow:hidden;border:1px solid var(--line);border-radius:15px;background:#fff}.menu-card__image{aspect-ratio:16/8;background:linear-gradient(135deg,var(--brandSoft),#fff);display:grid;place-items:center;color:var(--brand);font-weight:950}.menu-card__image img{width:100%;height:100%;object-fit:cover}.menu-card__body,.staff-card{padding:15px}.menu-card h4,.staff-card h4{margin:0;font-size:1rem}.menu-card p,.staff-card p{margin:5px 0 0;color:var(--muted);font-size:.75rem}.menu-card__meta{display:flex;justify-content:space-between;gap:8px;margin-top:10px;color:var(--brand);font-size:.79rem;font-weight:900}.feature-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.feature{display:flex;align-items:flex-start;gap:9px;padding:10px;border:1px solid var(--line);border-radius:11px;background:#fff}.feature input{width:19px;height:19px;margin:2px 0 0;accent-color:var(--brand)}.feature b{display:block;font-size:.8rem}.feature small{display:block;color:var(--muted);font-size:.66rem}
 .version-box{padding:13px;border:1px solid var(--line);border-radius:13px;background:var(--surface2);font-size:.72rem;line-height:1.75;overflow-wrap:anywhere}.version-box b{color:var(--brand)}
 .modal{position:fixed;inset:0;z-index:100;display:none;place-items:center;padding:20px;background:rgba(12,28,23,.56);backdrop-filter:blur(5px)}.modal.open{display:grid}.modal__panel{width:min(760px,100%);max-height:min(90vh,900px);overflow:auto;border:1px solid rgba(255,255,255,.4);border-radius:20px;background:#fff;box-shadow:0 26px 80px rgba(10,30,23,.28)}.modal__head{position:sticky;top:0;z-index:2;display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:17px 19px;border-bottom:1px solid var(--line);background:rgba(255,255,255,.96);backdrop-filter:blur(10px)}.modal__head h3{margin:0;font-size:1.2rem}.modal__head p{margin:3px 0 0;color:var(--muted);font-size:.75rem}.modal__close{width:39px;height:39px;border:1px solid var(--line);border-radius:10px;background:#fff;cursor:pointer;font-weight:950}.modal__body{padding:19px}.modal__foot{display:flex;justify-content:flex-end;gap:8px;padding:15px 19px;border-top:1px solid var(--line);background:var(--surface2)}
-.top-admin-code{display:flex;align-items:center;gap:7px;padding:5px;border:1px solid #d4c39f;border-radius:11px;background:#fffaf0}.top-admin-code__input{width:132px;min-height:38px;padding:7px 9px;border:1px solid #cbb98f;border-radius:8px;background:#fff;color:var(--ink);outline:none}.top-admin-code__input:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(169,122,48,.12)}.top-admin-code__save{min-height:38px;padding:6px 11px}@media(max-width:980px){.top-admin-code__input{width:110px}.date-chip{display:none}}@media(max-width:640px){.top-admin-code{position:fixed;left:9px;right:9px;top:70px;z-index:70;box-shadow:0 12px 30px rgba(15,45,35,.18)}.top-admin-code__input{width:auto;flex:1}.content{padding-top:78px}}.auth-panel{width:min(470px,100%)}.auth-logo{display:grid;place-items:center;width:58px;height:58px;margin:0 auto 13px;border-radius:17px;background:var(--brand);color:#fff;font-weight:950}.auth-copy{text-align:center}.auth-copy h3{margin:0;font-size:1.3rem}.auth-copy p{margin:7px 0 0;color:var(--muted);font-size:.81rem}.admin-code-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;margin-top:17px}.admin-code-row .btn{min-width:96px}.demo-hint{margin-top:10px;padding:10px;border-radius:10px;background:var(--goldSoft);color:#72551d;font-size:.72rem;font-weight:780}
+.top-admin-wrap{display:grid;gap:3px;min-width:360px}.top-admin-code{display:flex;align-items:center;justify-content:flex-end;gap:7px;padding:5px;border:1px solid #d4c39f;border-radius:11px;background:#fffaf0}.top-admin-code__input{width:128px;min-height:38px;padding:7px 9px;border:1px solid #cbb98f;border-radius:8px;background:#fff;color:var(--ink);outline:none}.top-admin-code__input:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(169,122,48,.12)}.top-admin-code__save,.top-admin-code__clear{min-height:38px;padding:6px 11px;white-space:nowrap}.top-admin-connection{display:flex;align-items:center;justify-content:flex-end;gap:6px;min-height:20px;padding:0 5px;color:var(--muted);font-size:.69rem;font-weight:900}.top-admin-connection:before{content:"";width:8px;height:8px;border-radius:50%;background:#9aa6a0}.top-admin-connection[data-state="checking"]{color:var(--warn)}.top-admin-connection[data-state="checking"]:before{background:var(--warn);box-shadow:0 0 0 4px rgba(152,89,0,.10)}.top-admin-connection[data-state="success"]{color:var(--ok)}.top-admin-connection[data-state="success"]:before{background:var(--ok);box-shadow:0 0 0 4px rgba(23,107,67,.10)}.top-admin-connection[data-state="error"]{color:var(--err)}.top-admin-connection[data-state="error"]:before{background:var(--err);box-shadow:0 0 0 4px rgba(180,35,24,.10)}@media(max-width:1100px){.top-admin-wrap{min-width:310px}.top-admin-code__input{width:105px}.date-chip{display:none}}@media(max-width:760px){.top-admin-wrap{position:fixed;left:9px;right:9px;top:70px;z-index:70;min-width:0;padding:7px;border:1px solid #d4c39f;border-radius:13px;background:#fffaf0;box-shadow:0 12px 30px rgba(15,45,35,.18)}.top-admin-code{padding:0;border:0;background:transparent}.top-admin-code__input{width:auto;min-width:0;flex:1}.top-admin-connection{justify-content:flex-start;padding:1px 3px 0}.content{padding-top:92px}}.auth-panel{width:min(470px,100%)}.auth-logo{display:grid;place-items:center;width:58px;height:58px;margin:0 auto 13px;border-radius:17px;background:var(--brand);color:#fff;font-weight:950}.auth-copy{text-align:center}.auth-copy h3{margin:0;font-size:1.3rem}.auth-copy p{margin:7px 0 0;color:var(--muted);font-size:.81rem}.admin-code-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;margin-top:17px}.admin-code-row .btn{min-width:96px}.demo-hint{margin-top:10px;padding:10px;border-radius:10px;background:var(--goldSoft);color:#72551d;font-size:.72rem;font-weight:780}
 .mobile-overlay{display:none;position:fixed;inset:0;z-index:55;background:rgba(12,28,23,.45)}
 @keyframes fade{from{opacity:.25;transform:translateY(3px)}to{opacity:1;transform:none}}@keyframes shimmer{0%{background-position:100% 0}100%{background-position:-100% 0}}
 @media(max-width:1380px){.stats{grid-template-columns:repeat(4,minmax(0,1fr))}.menu-grid,.staff-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
@@ -80,9 +80,13 @@
     </div>
     <div class="topbar__right">
       <span class="date-chip" id="headerDate">—</span>
-      <div class="top-admin-code" id="topAdminCodeArea">
-        <input class="top-admin-code__input" id="topAdminCodeInput" type="password" inputmode="numeric" autocomplete="current-password" placeholder="管理コード" aria-label="管理コード">
-        <button type="button" class="btn gold top-admin-code__save" id="topAdminCodeSave">接続</button>
+      <div class="top-admin-wrap" id="topAdminCodeArea">
+        <div class="top-admin-code">
+          <input class="top-admin-code__input" id="topAdminCodeInput" type="password" inputmode="numeric" autocomplete="current-password" placeholder="管理コード" aria-label="管理コード">
+          <button type="button" class="btn gold top-admin-code__save" id="topAdminCodeSave">接続</button>
+          <button type="button" class="btn danger top-admin-code__clear" id="topAdminCodeClear" hidden>コード削除</button>
+        </div>
+        <div class="top-admin-connection" id="topAdminConnectionStatus" data-state="idle" role="status" aria-live="polite">未接続です。管理コードを入力してください。</div>
       </div>
       <button type="button" class="code-chip" id="adminCodeChip" data-state="ok" hidden><span>●</span><span>管理コード保存済み</span></button>
       <button type="button" class="btn outline" id="reloadButton">↻ <span class="desktop-only">再読込</span></button>
@@ -177,11 +181,11 @@
 
 <div class="modal" id="manualModal" aria-hidden="true"><div class="modal__panel"><div class="modal__head"><div><h3>電話・店頭予約を登録</h3><p>既存顧客は顧客管理で選択してから開くと自動入力されます。</p></div><button class="modal__close" type="button" data-close-modal="manualModal">×</button></div><div class="modal__body"><div class="form-grid"><div class="field"><label class="label" for="manualName">お客様名</label><input class="input" id="manualName"></div><div class="field"><label class="label" for="manualPhone">電話番号</label><input class="input" id="manualPhone" inputmode="tel"></div><div class="field"><label class="label" for="manualDate">予約日</label><input class="input" type="date" id="manualDate"></div><div class="field"><label class="label" for="manualTime">予約時間</label><input class="input" type="time" step="1800" id="manualTime"></div><div class="field"><label class="label" for="manualMenu">メニュー</label><select class="select" id="manualMenu"></select></div><div class="field"><label class="label" for="manualStaff">担当</label><select class="select" id="manualStaff"><option value="">おまかせ</option></select></div><div class="field full"><label class="label" for="manualRequest">ご要望・メモ</label><textarea class="textarea" id="manualRequest"></textarea></div></div><input type="hidden" id="manualCustomerId"></div><div class="modal__foot"><button class="btn outline" type="button" data-close-modal="manualModal">取消</button><button class="btn primary" type="button" id="manualSaveButton">予約を登録</button></div></div></div>
 
-<script src="./config.js?v=hair-next-4-r1"></script>
+<script src="./config.js?v=hair-next-4-r2"></script>
 <script>
 (() => {
   "use strict";
-  const PAGE_VERSION = "HAIR-NEXT-5-R1-ADMIN-CODE-FIX-20260722";
+  const PAGE_VERSION = "HAIR-NEXT-5-R2-ADMIN-CONNECTION-UX-20260722";
   const VIEW_META = {
     today:["TODAY'S SALON","今日の美容室"], reservations:["RESERVATIONS","予約管理"], customers:["CUSTOMERS","顧客管理"],
     carte:["360° BEAUTY CARTE","美容室360°カルテ"], follow:["REPEAT & FOLLOW","再来店フォロー"], menus:["MENU CATALOG","メニュー・公開カタログ"],
@@ -239,30 +243,105 @@
     $("#catalogOpenLink").href=DPRO_HAIR.urls.catalog;
     updateCodeChip();
   }
-  function updateCodeChip(){
+  function setAdminConnectionStatus(message,stateName="idle"){
+    const status=$("#topAdminConnectionStatus");
+    if(!status)return;
+    status.textContent=String(message||"");
+    status.dataset.state=stateName;
+  }
+  function updateCodeChip(options={}){
     const saved=DPRO_HAIR.admin.hasCode();
     const chip=$("#adminCodeChip");
-    const area=$("#topAdminCodeArea");
     const topInput=$("#topAdminCodeInput");
+    const saveButton=$("#topAdminCodeSave");
+    const clearButton=$("#topAdminCodeClear");
     if(chip){
-      chip.hidden=!saved;
+      chip.hidden=true;
       chip.dataset.state=saved?"ok":"error";
       chip.innerHTML=`<span>${saved?"●":"○"}</span><span>${saved?"管理コード保存済み":"管理コード未設定"}</span>`;
     }
-    if(area) area.hidden=saved;
-    if(topInput && !saved && !topInput.value) topInput.value=DPRO_HAIR.config.demo.adminCode||"";
+    if(topInput){
+      if(saved) topInput.value=DPRO_HAIR.admin.getCode();
+      else if(!topInput.value) topInput.value=DPRO_HAIR.config.demo.adminCode||"";
+    }
+    if(saveButton) saveButton.textContent=saved?"再接続":"接続";
+    if(clearButton) clearButton.hidden=!saved;
     $("#settingsAdminCode").value=saved?DPRO_HAIR.admin.getCode():"";
+    if(options.message){
+      setAdminConnectionStatus(options.message,options.state||"idle");
+    }else if(saved){
+      setAdminConnectionStatus("管理コードは保存済みです。接続確認を行います。","checking");
+    }else{
+      setAdminConnectionStatus("未接続です。管理コードを入力してください。","idle");
+    }
   }
-  async function connectAdminCode(inputElement){
+  function applyDashboardData(data){
+    state.dashboard=data;
+    state.followTasks=data?.follow_tasks||[];
+    state.proposals=data?.next_proposals||[];
+    renderStats();
+    renderReservations();
+    renderAttention();
+    renderFollow();
+    renderAnalytics();
+    syncDateLabels();
+    updateVersionBox(data);
+  }
+  async function connectAdminCode(inputElement,options={}){
     const code=String(inputElement?.value||"").trim();
-    if(!code) throw new Error("管理コードを入力してください。");
+    const button=$("#topAdminCodeSave");
+    const originalLabel=button?.textContent||"接続";
+    if(!code){
+      setAdminConnectionStatus("管理コードを入力してください。","error");
+      throw new Error("管理コードを入力してください。");
+    }
+    if(button){
+      button.disabled=true;
+      button.textContent="確認中...";
+      button.setAttribute("aria-busy","true");
+    }
+    setAdminConnectionStatus("管理コードを確認しています。少しお待ちください。","checking");
     DPRO_HAIR.admin.saveCode(code);
-    updateCodeChip();
-    const verified=await api().verifyWorker();
-    if(!verified?.ok) throw new Error("Workerへ接続できませんでした。");
-    closeModal("authModal");
-    setNotice("管理コードを保存し、データへ接続しました。","success");
-    await loadDashboard(true);
+    $("#settingsAdminCode").value=code;
+    try{
+      const data=await api().adminGet(endpoint("ADMIN_TODAY"),{date:state.selectedDate});
+      applyDashboardData(data);
+      updateCodeChip({message:"接続しました。予約・顧客データを表示しています。",state:"success"});
+      closeModal("authModal");
+      setNotice("管理コードを確認し、データへ接続しました。","success");
+      DPRO_HAIR.utils.showToast?.("管理画面へ接続しました。","success");
+      return data;
+    }catch(error){
+      DPRO_HAIR.admin.clearCode();
+      $("#settingsAdminCode").value="";
+      updateCodeChip({message:"接続できませんでした。管理コードを確認してください。",state:"error"});
+      throw error;
+    }finally{
+      if(button){
+        button.disabled=false;
+        button.removeAttribute("aria-busy");
+        button.textContent=DPRO_HAIR.admin.hasCode()?"再接続":originalLabel;
+      }
+    }
+  }
+  function clearSavedAdminCode(){
+    if(!DPRO_HAIR.admin.hasCode()){
+      updateCodeChip({message:"削除する管理コードはありません。",state:"idle"});
+      return;
+    }
+    DPRO_HAIR.admin.clearCode();
+    $("#topAdminCodeInput").value="";
+    $("#settingsAdminCode").value="";
+    state.dashboard=null;
+    state.followTasks=[];
+    state.proposals=[];
+    $("#todayStats").innerHTML="";
+    $("#todayReservationList").innerHTML='<div class="empty">管理コードを入力して接続してください。</div>';
+    $("#attentionList").innerHTML='<div class="empty">管理コードを入力して接続してください。</div>';
+    updateCodeChip({message:"保存済み管理コードを削除しました。",state:"idle"});
+    setNotice("保存済み管理コードを削除しました。","warning");
+    DPRO_HAIR.utils.showToast?.("管理コードを削除しました。","warning");
+    $("#topAdminCodeInput").focus();
   }
 
   function renderStats(){
@@ -296,7 +375,7 @@
   function renderFollow(){const d=state.dashboard||{};const todayTasks=(d.follow_tasks||[]).slice(0,5);$("#todayFollowList").innerHTML=todayTasks.length?todayTasks.map(t=>followItem(t,true)).join(""):`<div class="empty">本日対応のフォローはありません。</div>`;$("#followTaskList").innerHTML=state.followTasks.length?state.followTasks.map(t=>followItem(t,false)).join(""):`<div class="empty">対象はありません。</div>`;$("#proposalList").innerHTML=state.proposals.length?state.proposals.map(proposalItem).join(""):`<div class="empty">次回来店提案はありません。</div>`;}
   function renderAnalytics(){const c=state.dashboard?.counts||{};const max=Math.max(1,...STATUS_FLOW.map(([k])=>Number(c[k]||0)));$("#analyticsStatus").innerHTML=STATUS_FLOW.map(([k,l])=>`<div style="display:grid;grid-template-columns:90px 1fr 36px;gap:9px;align-items:center;margin:10px 0"><b style="font-size:.75rem">${safe(l)}</b><div style="height:11px;border-radius:99px;background:#edf2ef;overflow:hidden"><div style="width:${Math.round((Number(c[k]||0)/max)*100)}%;height:100%;background:var(--brand2);border-radius:99px"></div></div><strong style="text-align:right">${Number(c[k]||0)}</strong></div>`).join("");}
 
-  async function loadDashboard(force=false){if(state.busy&&!force)return;setBusy(true);try{const data=await api().adminGet(endpoint("ADMIN_TODAY"),{date:state.selectedDate});state.dashboard=data;state.followTasks=data.follow_tasks||[];state.proposals=data.next_proposals||[];renderStats();renderReservations();renderAttention();renderFollow();renderAnalytics();syncDateLabels();updateVersionBox();}finally{setBusy(false)}}
+  async function loadDashboard(force=false){if(state.busy&&!force)return;setBusy(true);try{const data=await api().adminGet(endpoint("ADMIN_TODAY"),{date:state.selectedDate});applyDashboardData(data);return data;}finally{setBusy(false)}}
   async function updateReservationStatus(id,status){try{await api().adminPost(endpoint("ADMIN_RESERVATION_STATUS"),{reservation_id:id,status,operated_by:"owner.html"});setNotice(`予約を「${statusLabel(status)}」へ更新しました。`);await loadDashboard(true);}catch(e){handleError(e,"予約状態を更新できませんでした。")}}
   async function showReservationDetail(id){openModal("reservationModal");$("#reservationModalBody").innerHTML='<div class="skeleton"></div>';try{const data=await api().adminGet(endpoint("ADMIN_RESERVATION_DETAIL"),{reservation_id:id});const r=data.reservation;$("#reservationModalTitle").textContent=`${customerName(r)}様の予約`;$("#reservationModalSub").textContent=`${fmtDateTime(r.start_at)}／${menuName(r)}`;$("#reservationModalBody").innerHTML=`<div class="detail-grid"><div class="detail-box"><small>予約番号</small><b>${safe(r.reservation_no)}</b></div><div class="detail-box"><small>状態</small><b>${safe(statusLabel(r.status))}</b></div><div class="detail-box"><small>担当</small><b>${safe(staffName(r))}</b></div><div class="detail-box"><small>料金</small><b>${safe(yen(r.menu_set?.price_yen||r.menu?.price_yen))}</b></div></div><div class="card soft" style="margin-top:13px"><b>お客様の希望</b><p class="help">${safe(r.customer_request||"なし")}</p><b>髪のお悩み</b><p class="help">${safe(r.hair_concern||"なし")}</p><b>アレルギー・注意</b><p class="help" style="color:${r.allergy_notice?'var(--err)':'var(--muted)'}">${safe(r.allergy_notice||"なし")}</p></div><div class="row-actions" style="margin-top:13px">${statusButtons(r)}</div>`;}catch(e){$("#reservationModalBody").innerHTML=`<div class="empty">${safe(DPRO_HAIR.utils.errorMessage(e))}</div>`}}
 
@@ -349,11 +428,12 @@
     });
     $("#menuToggle").addEventListener("click",()=>{$("#sidebar").classList.add("open");$("#mobileOverlay").classList.add("open")});$("#mobileOverlay").addEventListener("click",()=>{$("#sidebar").classList.remove("open");$("#mobileOverlay").classList.remove("open")});
     $("#reloadButton").addEventListener("click",()=>loadDashboard(true).catch(handleError));$("#noticeClose").addEventListener("click",()=>$("#globalNotice").hidden=true);$("#adminCodeChip").addEventListener("click",()=>openModal("authModal"));
-    $("#authSaveButton").addEventListener("click",async()=>{try{await connectAdminCode($("#authCodeInput"));}catch(e){handleError(e,"管理コードを確認できませんでした。")}});
+    $("#authSaveButton").addEventListener("click",async()=>{try{$("#topAdminCodeInput").value=$("#authCodeInput").value;await connectAdminCode($("#topAdminCodeInput"));}catch(e){handleError(e,"管理コードを確認できませんでした。")}});
     $("#topAdminCodeSave").addEventListener("click",async()=>{try{await connectAdminCode($("#topAdminCodeInput"));}catch(e){handleError(e,"管理コードを確認できませんでした。")}});
+    $("#topAdminCodeClear").addEventListener("click",clearSavedAdminCode);
     $("#topAdminCodeInput").addEventListener("keydown",e=>{if(e.key==="Enter")$("#topAdminCodeSave").click();});
     $("#reservationStatusFilter").addEventListener("change",e=>{state.reservationFilter=e.target.value;renderReservations()});$("#reservationKeyword").addEventListener("input",DPRO_HAIR.utils.debounce(e=>{state.reservationKeyword=e.target.value;renderReservations()},180));$("#reservationFilterClear").addEventListener("click",()=>{state.reservationFilter="all";state.reservationKeyword="";$("#reservationStatusFilter").value="all";$("#reservationKeyword").value="";renderReservations()});
-    $("#customerSearchInput").addEventListener("input",DPRO_HAIR.utils.debounce(e=>searchCustomers(e.target.value),350));$("#followStatusFilter").addEventListener("change",loadFollow);$("#followReload").addEventListener("click",loadFollow);$("#csvPreviewButton").addEventListener("click",previewCsv);$("#settingsSaveButton").addEventListener("click",saveSettings);$("#settingsAdminSave").addEventListener("click",()=>{try{DPRO_HAIR.admin.saveCode($("#settingsAdminCode").value);updateCodeChip();setNotice("管理コードを保存しました。")}catch(e){handleError(e)}});$("#settingsAdminClear").addEventListener("click",()=>{DPRO_HAIR.admin.clearCode();$("#topAdminCodeInput").value=DPRO_HAIR.config.demo.adminCode||"";updateCodeChip();setNotice("保存した管理コードを削除しました。右上から再接続してください。","warning")});$("#manualSaveButton").addEventListener("click",saveManual);
+    $("#customerSearchInput").addEventListener("input",DPRO_HAIR.utils.debounce(e=>searchCustomers(e.target.value),350));$("#followStatusFilter").addEventListener("change",loadFollow);$("#followReload").addEventListener("click",loadFollow);$("#csvPreviewButton").addEventListener("click",previewCsv);$("#settingsSaveButton").addEventListener("click",saveSettings);$("#settingsAdminSave").addEventListener("click",async()=>{try{$("#topAdminCodeInput").value=$("#settingsAdminCode").value;await connectAdminCode($("#topAdminCodeInput"));}catch(e){handleError(e,"管理コードを確認できませんでした。")}});$("#settingsAdminClear").addEventListener("click",clearSavedAdminCode);$("#manualSaveButton").addEventListener("click",saveManual);
     $$('.modal').forEach(m=>m.addEventListener('click',e=>{if(e.target===m&&m.id!=="authModal")closeModal(m.id)}));document.addEventListener('keydown',e=>{if(e.key==='Escape')$$('.modal.open').forEach(m=>{if(m.id!=="authModal")closeModal(m.id)})});
   }
 
@@ -367,9 +447,14 @@
       updateCodeChip();
       if(!DPRO_HAIR.admin.hasCode()){
         setNotice("右上の管理コード欄に「1234」を入力し、接続を押してください。","warning");
+        setAdminConnectionStatus("未接続です。管理コードを入力してください。","idle");
         return;
       }
-      await loadDashboard(true);
+      try{
+        await connectAdminCode($("#topAdminCodeInput"),{initial:true});
+      }catch(error){
+        handleError(error,"保存済み管理コードで接続できませんでした。");
+      }
     }catch(e){
       handleError(e,"管理画面を開始できませんでした。");
       const area=$("#topAdminCodeArea");
