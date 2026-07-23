@@ -95,6 +95,18 @@
 @media(max-width:880px){.settings-shell{grid-template-columns:1fr}.settings-nav{position:static;display:flex;gap:6px;overflow:auto;padding:7px}.settings-nav button{flex:0 0 auto;width:auto;grid-template-columns:30px auto}.settings-nav__icon{width:29px;height:29px}.hour-row,.special-row{grid-template-columns:repeat(2,minmax(0,1fr))}.hour-day{grid-column:1/-1}.special-row .field:nth-of-type(5){grid-column:1/-1}.settings-savebar{bottom:76px}}
 @media(max-width:620px){.settings-overview,.settings-jumps,.rule-grid,.master-checks,.menu-item-list{grid-template-columns:1fr}.hour-row,.special-row{grid-template-columns:1fr}.special-row .field:nth-of-type(5){grid-column:auto}.settings-savebar{align-items:stretch;flex-direction:column}.settings-savebar .btn{width:100%}}
 
+
+/* STEP HAIR-NEXT-9-R1: 管理コード操作を隠さない通知位置 */
+body #dpro-toast-container{
+  top:auto!important;
+  right:18px!important;
+  bottom:18px!important;
+  max-width:min(420px,calc(100vw - 36px))!important;
+}
+@media(max-width:880px){
+  body #dpro-toast-container{right:10px!important;bottom:82px!important;max-width:calc(100vw - 20px)!important}
+}
+
 </style>
 </head>
 <body>
@@ -299,17 +311,17 @@
 
 <div class="modal" id="staffModal" aria-hidden="true"><div class="modal__panel"><div class="modal__head"><div><h3 id="staffModalTitle">スタッフを追加</h3><p>指名可否、予約受付、担当可能メニューを設定します。</p></div><button class="modal__close" type="button" data-close-modal="staffModal">×</button></div><form id="staffForm"><div class="modal__body"><input type="hidden" id="staffEditId"><div class="master-form-section"><h4>基本情報</h4><div class="form-grid three"><div class="field"><label class="label" for="staffEditCode">スタッフコード</label><input class="input" id="staffEditCode" required></div><div class="field"><label class="label" for="staffEditName">表示名</label><input class="input" id="staffEditName" required></div><div class="field"><label class="label" for="staffEditRole">役割</label><select class="select" id="staffEditRole"><option value="owner">オーナー</option><option value="manager">店長</option><option value="stylist">スタイリスト</option><option value="assistant">アシスタント</option><option value="reception">受付</option></select></div><div class="field"><label class="label" for="staffEditColor">表示ラベル</label><input class="input" id="staffEditColor" placeholder="例：グリーン"></div><div class="field"><label class="label" for="staffEditOrder">表示順</label><input class="input" type="number" id="staffEditOrder"></div><div class="field full"><label class="label" for="staffEditDescription">紹介・得意分野</label><textarea class="textarea" id="staffEditDescription"></textarea></div></div></div><div class="master-form-section"><h4>予約受付</h4><div class="master-checks"><label class="master-check"><input type="checkbox" id="staffEditActive"><span>在籍・使用中</span></label><label class="master-check"><input type="checkbox" id="staffEditBookable"><span>予約を受け付ける</span></label><label class="master-check"><input type="checkbox" id="staffEditRequestable"><span>お客様から指名可能</span></label></div></div><div class="master-form-section"><h4>担当可能メニュー</h4><div class="menu-item-list" id="staffMenuList"></div></div></div><div class="modal__foot"><button class="btn outline" type="button" data-close-modal="staffModal">閉じる</button><button class="btn primary" id="staffSaveButton" type="submit">スタッフを保存</button></div></form></div></div>
 
-<div class="modal" id="authModal" aria-hidden="true"><div class="modal__panel auth-panel"><div class="modal__body"><div class="auth-logo">DP</div><div class="auth-copy"><h3>PCオーナー管理へ接続</h3><p>管理コードを保存すると、次回から入力せずに開けます。</p></div><form class="admin-code-row" id="authCodeForm" autocomplete="off"><input class="input" id="authCodeInput" name="modal_admin_code" type="password" inputmode="numeric" autocomplete="current-password" placeholder="管理コード"><button class="btn primary" id="authSaveButton" type="submit">接続</button></form><div class="demo-hint">デモ店舗の管理コードは「1234」です。デモ環境では自動設定される場合があります。</div></div></div></div>
+<div class="modal" id="authModal" aria-hidden="true"><div class="modal__panel auth-panel"><div class="modal__body"><div class="auth-logo">DP</div><div class="auth-copy"><h3>PCオーナー管理へ接続</h3><p>管理コードを保存すると、次回から入力せずに開けます。</p></div><form class="admin-code-row" id="authCodeForm" autocomplete="off"><input class="input" id="authCodeInput" name="modal_admin_code" type="password" inputmode="numeric" autocomplete="current-password" placeholder="管理コード"><button class="btn primary" id="authSaveButton" type="submit">接続</button></form><div class="demo-hint" id="demoAdminHint" hidden>デモ店舗の管理コードは「1234」です。デモ環境では初回のみ自動入力されます。</div></div></div></div>
 
 <div class="modal" id="reservationModal" aria-hidden="true"><div class="modal__panel"><div class="modal__head"><div><h3 id="reservationModalTitle">予約詳細</h3><p id="reservationModalSub">—</p></div><button class="modal__close" type="button" data-close-modal="reservationModal">×</button></div><div class="modal__body" id="reservationModalBody"></div><div class="modal__foot"><button class="btn outline" type="button" data-close-modal="reservationModal">閉じる</button></div></div></div>
 
 <div class="modal" id="manualModal" aria-hidden="true"><div class="modal__panel"><div class="modal__head"><div><h3>電話・店頭予約を登録</h3><p>既存顧客は顧客管理で選択してから開くと自動入力されます。</p></div><button class="modal__close" type="button" data-close-modal="manualModal">×</button></div><div class="modal__body"><div class="form-grid"><div class="field"><label class="label" for="manualName">お客様名</label><input class="input" id="manualName"></div><div class="field"><label class="label" for="manualPhone">電話番号</label><input class="input" id="manualPhone" inputmode="tel"></div><div class="field"><label class="label" for="manualDate">予約日</label><input class="input" type="date" id="manualDate"></div><div class="field"><label class="label" for="manualTime">予約時間</label><input class="input" type="time" step="1800" id="manualTime"></div><div class="field"><label class="label" for="manualMenu">メニュー</label><select class="select" id="manualMenu"></select></div><div class="field"><label class="label" for="manualStaff">担当</label><select class="select" id="manualStaff"><option value="">おまかせ</option></select></div><div class="field full"><label class="label" for="manualRequest">ご要望・メモ</label><textarea class="textarea" id="manualRequest"></textarea></div></div><input type="hidden" id="manualCustomerId"></div><div class="modal__foot"><button class="btn outline" type="button" data-close-modal="manualModal">取消</button><button class="btn primary" type="button" id="manualSaveButton">予約を登録</button></div></div></div>
 
-<script src="./config.js?v=hair-next-9"></script>
+<script src="./config.js?v=hair-next-9-r1"></script>
 <script>
 (() => {
   "use strict";
-  const PAGE_VERSION = "HAIR-NEXT-9-OWNER-SETTINGS-CENTER-20260723";
+  const PAGE_VERSION = "HAIR-NEXT-9-R1-ADMIN-CODE-UX-FIX-20260723";
   const PARAMS = new URLSearchParams(location.search);
   const DEMO_MODE = PARAMS.get("demo") === "1";
   const WEEKDAY_LABELS = ["日","月","火","水","木","金","土"];
@@ -338,7 +350,7 @@
     followTasks:[], proposals:[], followActionLogs:[], menus:null, staff:null, settings:null, csvImports:[],
     reservationFilter:"all", reservationKeyword:"", followKeyword:"", followType:"all", followDue:"all", busy:false,
     menuKeyword:"", menuVisibility:"all", staffKeyword:"", staffStatus:"all",
-    settingsPane:"overview", settingsDirty:false, specialDaysDraft:[], deletedSpecialDates:[]
+    settingsPane:"overview", settingsDirty:false, specialDaysDraft:[], deletedSpecialDates:[], demoCodeCleared:false
   };
   const $ = (s,r=document) => r.querySelector(s); const $$ = (s,r=document) => [...r.querySelectorAll(s)];
   const safe = v => window.DPRO_HAIR?.utils?.escapeHtml ? DPRO_HAIR.utils.escapeHtml(v ?? "") : String(v ?? "").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"}[m]));
@@ -375,6 +387,8 @@
     syncDateLabels();
     $("#sidebarVersion").textContent=PAGE_VERSION;
     $("#catalogOpenLink").href=DPRO_HAIR.urls.catalog;
+    const demoHint=$("#demoAdminHint");
+    if(demoHint)demoHint.hidden=!DEMO_MODE;
     updateCodeChip();
   }
   function setAdminConnectionStatus(message,stateName="idle"){
@@ -396,7 +410,7 @@
     }
     if(topInput){
       if(saved) topInput.value=DPRO_HAIR.admin.getCode();
-      else if(!topInput.value && DEMO_MODE) topInput.value=DPRO_HAIR.config.demo.adminCode||"";
+      else if(!topInput.value && DEMO_MODE && !state.demoCodeCleared && options.allowDemoPrefill!==false) topInput.value=DPRO_HAIR.config.demo.adminCode||"";
     }
     if(saveButton) saveButton.textContent=saved?"再接続":"接続";
     if(clearButton){
@@ -441,6 +455,7 @@
     }
     setAdminConnectionStatus("管理コードを確認しています。少しお待ちください。","checking");
     DPRO_HAIR.admin.saveCode(code);
+    state.demoCodeCleared=false;
     $("#settingsAdminCode").value=code;
     try{
       const data=await api().adminGet(endpoint("ADMIN_TODAY"),{date:state.selectedDate});
@@ -448,7 +463,6 @@
       updateCodeChip({message:"接続しました。予約・顧客データを表示しています。",state:"success"});
       closeModal("authModal");
       setNotice("管理コードを確認し、データへ接続しました。","success");
-      DPRO_HAIR.utils.showToast?.("管理画面へ接続しました。","success");
       return data;
     }catch(error){
       DPRO_HAIR.admin.clearCode();
@@ -463,12 +477,20 @@
       }
     }
   }
+  function clearAdminCodeInputs(){
+    ["#topAdminCodeInput","#authCodeInput","#settingsAdminCode"].forEach(selector=>{
+      const input=$(selector);
+      if(!input)return;
+      input.value="";
+      input.defaultValue="";
+      input.setAttribute("value","");
+    });
+  }
   function clearSavedAdminCode(){
     const hadSavedCode=DPRO_HAIR.admin.hasCode();
     DPRO_HAIR.admin.clearCode();
-    $("#topAdminCodeInput").value="";
-    $("#authCodeInput").value="";
-    $("#settingsAdminCode").value="";
+    state.demoCodeCleared=true;
+    clearAdminCodeInputs();
     state.dashboard=null;
     state.followTasks=[];
     state.proposals=[];
@@ -478,9 +500,11 @@
     const message=hadSavedCode
       ?"このブラウザに保存されていた管理コードを削除しました。"
       :"保存されている管理コードはありません。入力欄を空にしました。";
-    updateCodeChip({message,state:"idle"});
+    updateCodeChip({message,state:"idle",allowDemoPrefill:false});
+    clearAdminCodeInputs();
     setNotice(message,"warning");
-    DPRO_HAIR.utils.showToast?.(message,"warning");
+    window.setTimeout(clearAdminCodeInputs,0);
+    window.setTimeout(clearAdminCodeInputs,180);
     $("#topAdminCodeInput").focus();
   }
 
