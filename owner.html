@@ -48,6 +48,53 @@
 @media(max-width:1050px){:root{--sidebar:252px}.dashboard-grid,.settings-grid{grid-template-columns:1fr}.customer-grid{grid-template-columns:300px minmax(0,1fr)}.pipeline{grid-template-columns:repeat(3,minmax(0,1fr))}.detail-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:820px){.sidebar{transform:translateX(-102%);transition:transform .2s ease}.sidebar.open{transform:none}.mobile-overlay.open{display:block}.workspace{margin-left:0}.menu-toggle{display:grid;place-items:center}.topbar{padding:10px 14px}.date-chip{display:none}.content{padding:17px 14px 60px}.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.customer-grid{grid-template-columns:1fr}.customer-list{max-height:330px}.section-head{align-items:stretch;flex-direction:column}.actions{justify-content:flex-start}.photo-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:640px){html{font-size:16px}.topbar__right .btn .desktop-only{display:none}.businessbar{align-items:stretch;flex-direction:column}.pipeline{grid-template-columns:repeat(2,minmax(0,1fr))}.table-wrap{display:none}.reservation-cards{display:grid}.two,.form-grid,.form-grid.three,.menu-grid,.staff-grid,.feature-list,.quick-grid{grid-template-columns:1fr}.detail-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.modal{padding:9px}.modal__panel{border-radius:16px}.photo-grid{grid-template-columns:1fr 1fr}.list-item{grid-template-columns:1fr}.list-item__actions{justify-content:flex-start}}
+
+/* STEP HAIR-NEXT-9 settings center */
+.settings-shell{display:grid;grid-template-columns:245px minmax(0,1fr);gap:16px;align-items:start}
+.settings-nav{position:sticky;top:94px;padding:10px}
+.settings-nav button{display:grid;grid-template-columns:34px minmax(0,1fr);gap:9px;align-items:center;width:100%;min-height:48px;padding:7px 9px;border:1px solid transparent;border-radius:11px;background:transparent;color:var(--muted);cursor:pointer;text-align:left;font-size:.78rem;font-weight:900}
+.settings-nav button:hover,.settings-nav button[aria-current="page"]{border-color:#bdd3c8;background:var(--brandSoft);color:var(--brand)}
+.settings-nav__icon{display:grid;place-items:center;width:33px;height:33px;border-radius:9px;background:#edf4f0;color:var(--brand);font-size:.67rem;font-weight:950}
+.settings-pane{display:none}.settings-pane.active{display:block}
+.settings-pane>.card+.card{margin-top:14px}
+.settings-state{display:inline-flex;align-items:center;gap:6px;min-height:30px;padding:4px 10px;border-radius:999px;background:var(--okSoft);color:var(--ok);font-size:.7rem;font-weight:950}
+.settings-state.dirty{background:var(--warnSoft);color:var(--warn)}
+.settings-state:before{content:"";width:8px;height:8px;border-radius:50%;background:currentColor}
+.settings-overview{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.settings-overview__item{padding:13px;border:1px solid var(--line);border-radius:13px;background:#fff}
+.settings-overview__item small{display:block;color:var(--muted);font-size:.65rem;font-weight:850}
+.settings-overview__item b{display:block;margin-top:4px;color:var(--brand);font-size:.88rem}
+.settings-jumps{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin-top:12px}
+.settings-jump{display:flex;align-items:center;gap:10px;min-height:76px;padding:12px;border:1px solid var(--line);border-radius:13px;background:#fff;cursor:pointer;text-align:left}
+.settings-jump:hover{border-color:var(--brand);background:var(--brandSoft)}
+.settings-jump__icon{display:grid;place-items:center;flex:0 0 38px;width:38px;height:38px;border-radius:11px;background:var(--brandSoft);color:var(--brand);font-size:.69rem;font-weight:950}
+.settings-jump b{display:block;font-size:.82rem}.settings-jump small{display:block;margin-top:2px;color:var(--muted);font-size:.67rem}
+.rule-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.rule-card{padding:12px;border:1px solid var(--line);border-radius:12px;background:var(--surface2)}
+.rule-card .check{padding:0}
+.rule-card p{margin:5px 0 0;color:var(--muted);font-size:.68rem}
+.hours-list{display:grid;gap:8px}
+.hour-row{display:grid;grid-template-columns:72px 92px repeat(3,minmax(118px,1fr));gap:8px;align-items:end;padding:11px;border:1px solid var(--line);border-radius:12px;background:var(--surface2)}
+.hour-day{align-self:center;color:var(--brand);font-weight:950}
+.hour-closed{display:flex;align-items:center;gap:6px;min-height:43px;font-size:.73rem;font-weight:900}
+.hour-closed input{width:19px;height:19px;accent-color:var(--brand)}
+.special-list{display:grid;gap:8px}.special-row{display:grid;grid-template-columns:150px 105px repeat(2,minmax(120px,1fr)) minmax(160px,1.3fr) auto;gap:8px;align-items:end;padding:11px;border:1px solid var(--line);border-radius:12px;background:var(--surface2)}
+.special-closed{display:flex;align-items:center;gap:6px;min-height:43px;font-size:.73rem;font-weight:900}.special-closed input{width:19px;height:19px;accent-color:var(--brand)}
+.master-toolbar{display:flex;align-items:end;gap:9px;flex-wrap:wrap;margin-bottom:13px}.master-toolbar .field{flex:1 1 190px}
+.menu-card__actions,.staff-card__actions{display:flex;justify-content:flex-end;gap:7px;margin-top:12px;padding-top:11px;border-top:1px solid #edf1ef}
+.capacity-badge{display:inline-flex;align-items:center;min-height:25px;padding:3px 8px;border-radius:999px;background:var(--goldSoft);color:var(--gold);font-size:.65rem;font-weight:950}
+.master-form-section{padding:13px;border:1px solid var(--line);border-radius:13px;background:var(--surface2)}
+.master-form-section+.master-form-section{margin-top:13px}.master-form-section h4{margin:0 0 10px}
+.master-checks{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}.master-check{display:flex;align-items:flex-start;gap:7px;padding:8px;border:1px solid var(--line);border-radius:9px;background:#fff;font-size:.73rem;font-weight:850}
+.master-check input{width:18px;height:18px;margin:1px 0 0;accent-color:var(--brand)}
+.menu-item-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;max-height:330px;overflow:auto}
+.menu-item-option{display:flex;align-items:center;gap:8px;padding:9px;border:1px solid var(--line);border-radius:10px;background:#fff;font-size:.74rem;font-weight:850}
+.menu-item-option input{width:18px;height:18px;accent-color:var(--brand)}
+.settings-savebar{position:sticky;bottom:10px;z-index:15;display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:15px;padding:11px 13px;border:1px solid #c9dbd2;border-radius:14px;background:rgba(255,255,255,.96);backdrop-filter:blur(10px);box-shadow:0 12px 34px rgba(20,58,47,.13)}
+@media(max-width:1100px){.settings-overview{grid-template-columns:repeat(2,minmax(0,1fr))}.rule-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.hour-row{grid-template-columns:65px 88px repeat(3,minmax(105px,1fr))}.special-row{grid-template-columns:140px 100px repeat(2,minmax(110px,1fr));}.special-row .field:nth-of-type(5){grid-column:1/-2}}
+@media(max-width:880px){.settings-shell{grid-template-columns:1fr}.settings-nav{position:static;display:flex;gap:6px;overflow:auto;padding:7px}.settings-nav button{flex:0 0 auto;width:auto;grid-template-columns:30px auto}.settings-nav__icon{width:29px;height:29px}.hour-row,.special-row{grid-template-columns:repeat(2,minmax(0,1fr))}.hour-day{grid-column:1/-1}.special-row .field:nth-of-type(5){grid-column:1/-1}.settings-savebar{bottom:76px}}
+@media(max-width:620px){.settings-overview,.settings-jumps,.rule-grid,.master-checks,.menu-item-list{grid-template-columns:1fr}.hour-row,.special-row{grid-template-columns:1fr}.special-row .field:nth-of-type(5){grid-column:auto}.settings-savebar{align-items:stretch;flex-direction:column}.settings-savebar .btn{width:100%}}
+
 </style>
 </head>
 <body>
@@ -149,13 +196,15 @@
     </section>
 
     <section class="view" data-view-panel="menus">
-      <div class="section-head"><div><h2>メニュー・公開カタログ</h2><p>単独メニューと組み合わせメニューを確認します。公開状態も同じ画面で把握できます。</p></div><div class="actions"><a class="btn soft" id="catalogOpenLink" target="_blank" rel="noopener">公開カタログを見る</a></div></div>
+      <div class="section-head"><div><h2>メニュー・公開カタログ</h2><p>メニュー、料金、所要時間、同時予約上限、公開状態をオーナー画面から管理します。</p></div><div class="actions"><button class="btn primary" id="menuAddButton" type="button">＋ メニュー</button><button class="btn gold" id="menuSetAddButton" type="button">＋ 組み合わせ</button><a class="btn soft" id="catalogOpenLink" target="_blank" rel="noopener">公開カタログを見る</a></div></div>
+      <div class="master-toolbar"><div class="field"><label class="label" for="menuSearchInput">メニューを検索</label><input class="input" id="menuSearchInput" placeholder="メニュー名・コード・説明"></div><div class="field"><label class="label" for="menuPublicFilter">表示状態</label><select class="select" id="menuPublicFilter"><option value="all">すべて</option><option value="public">公開</option><option value="private">非公開</option><option value="stopped">停止中</option></select></div></div>
       <div class="card"><div class="card-head"><div><h3>単独メニュー</h3><p class="help" id="menuCountLabel">—</p></div></div><div class="menu-grid" id="menuGrid"></div></div>
       <div class="card" style="margin-top:16px"><div class="card-head"><div><h3>組み合わせメニュー</h3><p class="help" id="menuSetCountLabel">—</p></div></div><div class="menu-grid" id="menuSetGrid"></div></div>
     </section>
 
     <section class="view" data-view-panel="staff">
-      <div class="section-head"><div><h2>スタッフ</h2><p>担当可能メニュー、指名可否、予約受付状態を確認します。</p></div></div>
+      <div class="section-head"><div><h2>スタッフ</h2><p>担当可能メニュー、指名可否、予約受付状態を追加・編集します。</p></div><div class="actions"><button class="btn primary" id="staffAddButton" type="button">＋ スタッフ</button></div></div>
+      <div class="master-toolbar"><div class="field"><label class="label" for="staffSearchInput">スタッフを検索</label><input class="input" id="staffSearchInput" placeholder="氏名・コード・役割"></div><div class="field"><label class="label" for="staffStatusFilter">状態</label><select class="select" id="staffStatusFilter"><option value="all">すべて</option><option value="active">在籍</option><option value="stopped">停止</option><option value="bookable">予約受付中</option></select></div></div>
       <div class="staff-grid" id="staffGrid"></div>
     </section>
 
@@ -176,8 +225,63 @@
     </section>
 
     <section class="view" data-view-panel="settings">
-      <div class="section-head"><div><h2>店舗設定</h2><p>日常画面から分離し、必要な時だけ変更します。</p></div><div class="actions"><button class="btn primary" id="settingsSaveButton" type="button">設定を保存</button></div></div>
-      <div class="grid settings-grid"><div class="card"><div class="card-head"><div><h3>店舗情報・機能設定</h3><p class="help">使わない機能はOFFにできます。</p></div></div><div class="form-grid"><div class="field"><label class="label" for="settingShopName">店舗名</label><input class="input" id="settingShopName"></div><div class="field"><label class="label" for="settingPhone">電話番号</label><input class="input" id="settingPhone"></div><div class="field full"><label class="label" for="settingAddress">住所</label><input class="input" id="settingAddress"></div><div class="field"><label class="label" for="settingBookingDays">予約受付日数</label><input class="input" type="number" min="1" max="365" id="settingBookingDays"></div><div class="field"><label class="label" for="settingLostDays">失客判定日数</label><input class="input" type="number" min="30" max="730" id="settingLostDays"></div></div><div class="feature-list" id="featureSettings" style="margin-top:13px"></div></div><div class="grid"><div class="card"><div class="card-head"><div><h3>管理コード</h3><p class="help">保存または削除できます。</p></div></div><form class="admin-code-row" id="settingsAdminCodeForm" autocomplete="off"><input class="input" id="settingsAdminCode" name="settings_admin_code" type="password" inputmode="numeric" autocomplete="current-password" placeholder="管理コード"><button class="btn soft" id="settingsAdminSave" type="submit">接続確認して保存</button></form><button class="btn danger wide" id="settingsAdminClear" type="button" style="margin-top:9px">保存した管理コードを削除</button></div><div class="card"><div class="card-head"><div><h3>接続情報</h3><p class="help">公開URLとバージョン</p></div></div><div class="version-box" id="versionBox">読み込み中です。</div><div class="row-actions" style="margin-top:10px"><button class="btn outline small" type="button" data-action="run-system-check">Worker総合検査</button><a class="btn outline small" href="system-check.html">検査画面</a></div></div></div></div>
+      <div class="section-head"><div><h2>店舗設定センター</h2><p>日常画面から分離し、店舗・予約・営業時間・機能を必要な時だけ変更します。</p></div><div class="actions"><span class="settings-state" id="settingsState">保存済み</span><button class="btn primary" id="settingsSaveButton" type="button">設定を保存</button></div></div>
+      <div class="settings-shell">
+        <nav class="card settings-nav" aria-label="店舗設定メニュー">
+          <button type="button" data-settings-pane="overview" aria-current="page"><span class="settings-nav__icon">概要</span><span>設定状況</span></button>
+          <button type="button" data-settings-pane="shop"><span class="settings-nav__icon">店舗</span><span>店舗情報</span></button>
+          <button type="button" data-settings-pane="booking"><span class="settings-nav__icon">予約</span><span>予約ルール・上限</span></button>
+          <button type="button" data-settings-pane="hours"><span class="settings-nav__icon">時間</span><span>営業時間</span></button>
+          <button type="button" data-settings-pane="special"><span class="settings-nav__icon">臨時</span><span>臨時営業・休業</span></button>
+          <button type="button" data-settings-pane="features"><span class="settings-nav__icon">機能</span><span>機能ON／OFF</span></button>
+          <button type="button" data-settings-pane="messages"><span class="settings-nav__icon">文面</span><span>案内文面</span></button>
+          <button type="button" data-settings-pane="connection"><span class="settings-nav__icon">接続</span><span>管理コード・検査</span></button>
+        </nav>
+        <div>
+          <div class="settings-pane active" data-settings-pane-panel="overview">
+            <div class="card"><div class="card-head"><div><h3>現在の設定状況</h3><p class="help">営業開始前に確認したい内容をまとめています。</p></div></div><div class="settings-overview" id="settingsOverview"></div><div class="settings-jumps"><button class="settings-jump" type="button" data-view-jump="menus"><span class="settings-jump__icon">施術</span><span><b>メニューを編集</b><small>料金・時間・同時予約上限</small></span></button><button class="settings-jump" type="button" data-view-jump="staff"><span class="settings-jump__icon">担当</span><span><b>スタッフを編集</b><small>指名・予約受付・対応メニュー</small></span></button><button class="settings-jump" type="button" data-settings-pane-jump="hours"><span class="settings-jump__icon">時間</span><span><b>営業時間を確認</b><small>曜日ごとの営業・最終受付</small></span></button><button class="settings-jump" type="button" data-settings-pane-jump="booking"><span class="settings-jump__icon">上限</span><span><b>予約上限を確認</b><small>1日・同時・メニュー別</small></span></button></div></div>
+          </div>
+
+          <div class="settings-pane" data-settings-pane-panel="shop">
+            <div class="card"><div class="card-head"><div><h3>店舗情報</h3><p class="help">予約画面・会員ページ・公開カタログに表示されます。</p></div></div><div class="form-grid"><div class="field"><label class="label" for="settingShopName">店舗名</label><input class="input" id="settingShopName"></div><div class="field"><label class="label" for="settingPhone">電話番号</label><input class="input" id="settingPhone" inputmode="tel"></div><div class="field full"><label class="label" for="settingAddress">住所</label><input class="input" id="settingAddress"></div><div class="field"><label class="label" for="settingTimezone">タイムゾーン</label><input class="input" id="settingTimezone" value="Asia/Tokyo" readonly></div></div></div>
+          </div>
+
+          <div class="settings-pane" data-settings-pane-panel="booking">
+            <div class="card"><div class="card-head"><div><h3>予約受付範囲・店舗上限</h3><p class="help">0件は上限なしです。スタッフの重複防止は常に有効です。</p></div></div><div class="form-grid three"><div class="field"><label class="label" for="settingBookingDays">予約受付日数</label><input class="input" type="number" min="1" max="365" id="settingBookingDays"><div class="field-help">何日先まで予約できるか</div></div><div class="field"><label class="label" for="settingSameDayCutoff">当日予約の締切</label><input class="input" type="number" min="0" max="1440" step="30" id="settingSameDayCutoff"><div class="field-help">開始何分前まで。0は直前まで</div></div><div class="field"><label class="label" for="settingLostDays">失客判定日数</label><input class="input" type="number" min="30" max="730" id="settingLostDays"></div><div class="field"><label class="label" for="settingDailyLimit">1日の予約上限</label><input class="input" type="number" min="0" max="500" id="settingDailyLimit"><div class="field-help">0は上限なし</div></div><div class="field"><label class="label" for="settingConcurrentLimit">店舗全体の同時予約上限</label><input class="input" type="number" min="0" max="50" id="settingConcurrentLimit"><div class="field-help">席数・セット面数の目安。0は上限なし</div></div><div class="field"><label class="check"><input type="checkbox" id="settingMenuCapacityGuard"><span><b>メニュー別上限を使用</b><br><small>各メニューの同時予約上限を空き枠へ反映</small></span></label></div></div></div>
+            <div class="card"><div class="card-head"><div><h3>お客様が使える予約機能</h3></div></div><div class="rule-grid">
+              <div class="rule-card"><label class="check"><input type="checkbox" data-reservation-setting-key="same_day_booking_enabled"><span><b>当日予約</b></span></label><p>当日の空き枠を予約可能にします。</p></div>
+              <div class="rule-card"><label class="check"><input type="checkbox" data-reservation-setting-key="new_customer_booking_enabled"><span><b>新規顧客のLINE予約</b></span></label><p>初回来店のお客様を受け付けます。</p></div>
+              <div class="rule-card"><label class="check"><input type="checkbox" data-reservation-setting-key="staff_request_enabled"><span><b>スタッフ指名</b></span></label><p>お客様が担当者を選択できます。</p></div>
+              <div class="rule-card"><label class="check"><input type="checkbox" data-reservation-setting-key="same_as_last_enabled"><span><b>前回と同じ予約</b></span></label><p>前回メニュー・担当から再予約できます。</p></div>
+              <div class="rule-card"><label class="check"><input type="checkbox" data-reservation-setting-key="change_request_enabled"><span><b>変更相談</b></span></label><p>会員ページから予約変更を相談できます。</p></div>
+              <div class="rule-card"><label class="check"><input type="checkbox" data-reservation-setting-key="cancel_request_enabled"><span><b>キャンセル希望</b></span></label><p>店舗確認式のキャンセル希望を利用します。</p></div>
+            </div></div>
+          </div>
+
+          <div class="settings-pane" data-settings-pane-panel="hours">
+            <div class="card"><div class="card-head"><div><h3>曜日ごとの営業時間</h3><p class="help">予約枠は30分単位で固定します。</p></div><button class="btn outline small" id="copyMondayHours" type="button">月曜を平日にコピー</button></div><div class="hours-list" id="businessHoursEditor"></div></div>
+          </div>
+
+          <div class="settings-pane" data-settings-pane-panel="special">
+            <div class="card"><div class="card-head"><div><h3>臨時営業・臨時休業</h3><p class="help">通常営業時間より優先されます。</p></div><button class="btn primary small" id="specialDayAdd" type="button">＋ 日付を追加</button></div><div class="special-list" id="specialDayList"></div></div>
+          </div>
+
+          <div class="settings-pane" data-settings-pane-panel="features">
+            <div class="card"><div class="card-head"><div><h3>機能ON／OFF</h3><p class="help">使わない機能をOFFにしても、既存データは削除されません。</p></div></div><div class="feature-list" id="featureSettings"></div></div>
+            <div class="card"><div class="card-head"><div><h3>ファイル・写真上限</h3></div></div><div class="form-grid three"><div class="field"><label class="label" for="settingPhotoMaxBytes">写真1枚の上限（KB）</label><input class="input" type="number" min="100" max="5120" id="settingPhotoMaxBytes"></div><div class="field"><label class="label" for="settingPhotoMaxPerRecord">カルテ1件の写真枚数</label><input class="input" type="number" min="1" max="20" id="settingPhotoMaxPerRecord"></div><div class="field"><label class="label" for="settingCsvMaxRows">CSV一回の最大行数</label><input class="input" type="number" min="1" max="50000" id="settingCsvMaxRows"></div></div></div>
+          </div>
+
+          <div class="settings-pane" data-settings-pane-panel="messages">
+            <div class="card"><div class="card-head"><div><h3>お客様向け案内文面</h3><p class="help">予約画面・会員ページ・カタログの注意事項に使用します。</p></div></div><div class="form-grid"><div class="field full"><label class="label" for="settingBookingNotice">予約時の案内</label><textarea class="textarea" id="settingBookingNotice"></textarea></div><div class="field full"><label class="label" for="settingCancellationNotice">変更・キャンセル案内</label><textarea class="textarea" id="settingCancellationNotice"></textarea></div><div class="field full"><label class="label" for="settingMemberNotice">会員ページ案内</label><textarea class="textarea" id="settingMemberNotice"></textarea></div><div class="field full"><label class="label" for="settingCatalogNotice">カタログ案内</label><textarea class="textarea" id="settingCatalogNotice"></textarea></div></div></div>
+          </div>
+
+          <div class="settings-pane" data-settings-pane-panel="connection">
+            <div class="grid two"><div class="card"><div class="card-head"><div><h3>管理コード</h3><p class="help">保存または削除できます。</p></div></div><form class="admin-code-row" id="settingsAdminCodeForm" autocomplete="off"><input class="input" id="settingsAdminCode" name="settings_admin_code" type="password" inputmode="numeric" autocomplete="current-password" placeholder="管理コード"><button class="btn soft" id="settingsAdminSave" type="submit">接続確認して保存</button></form><button class="btn danger wide" id="settingsAdminClear" type="button" style="margin-top:9px">保存した管理コードを削除</button></div><div class="card"><div class="card-head"><div><h3>接続情報</h3><p class="help">公開URLとバージョン</p></div></div><div class="version-box" id="versionBox">読み込み中です。</div><div class="row-actions" style="margin-top:10px"><button class="btn outline small" type="button" data-action="run-system-check">Worker総合検査</button><a class="btn outline small" href="system-check.html">検査画面</a></div></div></div>
+          </div>
+
+          <div class="settings-savebar"><span class="help" id="settingsSaveHelp">変更すると「未保存」に切り替わります。</span><button class="btn primary" id="settingsSaveBottom" type="button">変更を保存</button></div>
+        </div>
+      </div>
     </section>
   </main>
 </div>
@@ -188,17 +292,27 @@
 <div class="modal" id="formulaModal" aria-hidden="true"><div class="modal__panel"><div class="modal__head"><div><h3>カラー・薬剤履歴を登録</h3><p>カラー、パーマ、縮毛矯正の配合と結果を記録します。</p></div><button class="modal__close" type="button" data-close-modal="formulaModal">×</button></div><form id="formulaForm"><div class="modal__body"><div class="selected-customer-banner" data-selected-customer-label>顧客を選択してください。</div><div class="form-grid three" style="margin-top:14px"><div class="field"><label class="label" for="formulaType">種類</label><select class="select" id="formulaType"><option value="color">カラー</option><option value="perm">パーマ</option><option value="straightening">縮毛矯正</option></select></div><div class="field"><label class="label" for="formulaDate">施術日</label><input class="input" type="date" id="formulaDate" required></div><div class="field"><label class="label" for="formulaStaff">担当</label><select class="select" id="formulaStaff"><option value="">未指定</option></select></div><div class="field"><label class="label" for="formulaTarget">明度・対象部位</label><input class="input" id="formulaTarget"></div><div class="field"><label class="label" for="formulaTone">色味・設定</label><input class="input" id="formulaTone"></div><div class="field"><label class="label" for="formulaMinutes">放置時間</label><input class="input" type="number" min="0" max="240" id="formulaMinutes"></div><div class="field full"><label class="label" for="formulaText">配合・薬剤・工程 <span class="required-mark">*</span></label><textarea class="textarea" id="formulaText" required></textarea></div><div class="field"><label class="label" for="formulaResult">仕上がり</label><textarea class="textarea" id="formulaResult"></textarea></div><div class="field"><label class="label" for="formulaNext">次回調整・注意</label><textarea class="textarea" id="formulaNext"></textarea></div></div></div><div class="modal__foot"><button class="btn outline" type="button" data-close-modal="formulaModal">閉じる</button><button class="btn primary" type="submit" id="formulaSaveButton">薬剤履歴を保存</button></div></form></div></div>
 <div class="modal" id="proposalModal" aria-hidden="true"><div class="modal__panel"><div class="modal__head"><div><h3>次回来店提案</h3><p>おすすめ時期、メニュー、ホームケア、店販提案を登録します。</p></div><button class="modal__close" type="button" data-close-modal="proposalModal">×</button></div><form id="proposalForm"><div class="modal__body"><div class="selected-customer-banner" data-selected-customer-label>顧客を選択してください。</div><input type="hidden" id="proposalId"><div class="form-grid three" style="margin-top:14px"><div class="field"><label class="label" for="proposalFrom">おすすめ開始日</label><input class="input" type="date" id="proposalFrom"></div><div class="field"><label class="label" for="proposalTo">おすすめ終了日</label><input class="input" type="date" id="proposalTo"></div><div class="field"><label class="label" for="proposalWeeks">目安週数</label><input class="input" type="number" min="1" max="104" id="proposalWeeks"></div><div class="field"><label class="label" for="proposalMenu">おすすめメニュー</label><select class="select" id="proposalMenu"><option value="">未指定</option></select></div><div class="field"><label class="label" for="proposalStaff">担当</label><select class="select" id="proposalStaff"><option value="">未指定</option></select></div><div class="field"><label class="label" for="proposalInformed">お客様へ案内</label><select class="select" id="proposalInformed"><option value="false">まだ案内していない</option><option value="true">案内済み</option></select></div><div class="field"><label class="label" for="proposalHomecare">ホームケア</label><textarea class="textarea" id="proposalHomecare"></textarea></div><div class="field"><label class="label" for="proposalProduct">おすすめ商品</label><input class="input" id="proposalProduct"></div><div class="field"><label class="label" for="proposalRetailReason">店販提案理由</label><textarea class="textarea" id="proposalRetailReason"></textarea></div><div class="field full"><label class="label" for="proposalSummary">お客様へ伝える内容</label><textarea class="textarea" id="proposalSummary"></textarea></div><div class="field"><label class="check"><input type="checkbox" id="proposalSameStaff" checked><span>次回も同じ担当をおすすめ</span></label></div><div class="field"><label class="check"><input type="checkbox" id="proposalCreateFollow" checked><span>フォロー対象も作成</span></label></div></div></div><div class="modal__foot"><button class="btn outline" type="button" data-close-modal="proposalModal">閉じる</button><button class="btn primary" type="submit" id="proposalSaveButton">次回提案を保存</button></div></form></div></div>
 <div class="modal" id="followActionModal" aria-hidden="true"><div class="modal__panel auth-panel"><div class="modal__head"><div><h3>フォロー対応を記録</h3><p id="followActionCustomer">—</p></div><button class="modal__close" type="button" data-close-modal="followActionModal">×</button></div><form id="followActionForm"><div class="modal__body"><input type="hidden" id="followActionTaskId"><div class="form-grid"><div class="field"><label class="label" for="followActionType">対応内容</label><select class="select" id="followActionType"><option value="contacted">連絡済み</option><option value="done">対応完了</option><option value="rescheduled">対応日を変更</option><option value="skipped">見送り</option><option value="note">メモのみ</option></select></div><div class="field"><label class="label" for="followActionDueDate">新しい対応日</label><input class="input" type="date" id="followActionDueDate"></div><div class="field full"><label class="label" for="followActionNote">対応メモ</label><textarea class="textarea" id="followActionNote"></textarea></div></div></div><div class="modal__foot"><button class="btn outline" type="button" data-close-modal="followActionModal">閉じる</button><button class="btn primary" type="submit" id="followActionSaveButton">履歴を保存</button></div></form></div></div>
+
+<div class="modal" id="menuModal" aria-hidden="true"><div class="modal__panel"><div class="modal__head"><div><h3 id="menuModalTitle">メニューを追加</h3><p>料金・所要時間・公開状態・同時予約上限を設定します。</p></div><button class="modal__close" type="button" data-close-modal="menuModal">×</button></div><form id="menuForm"><div class="modal__body"><input type="hidden" id="menuEditId"><div class="master-form-section"><h4>基本情報</h4><div class="form-grid three"><div class="field"><label class="label" for="menuEditCode">メニューコード</label><input class="input" id="menuEditCode" required></div><div class="field"><label class="label" for="menuEditName">メニュー名</label><input class="input" id="menuEditName" required></div><div class="field"><label class="label" for="menuEditCategory">カテゴリ</label><select class="select" id="menuEditCategory"><option value="">未分類</option></select></div><div class="field"><label class="label" for="menuEditPrice">料金（税込）</label><input class="input" type="number" min="0" max="10000000" id="menuEditPrice"></div><div class="field"><label class="label" for="menuEditDuration">所要時間</label><input class="input" type="number" min="30" max="720" step="30" id="menuEditDuration"></div><div class="field"><label class="label" for="menuEditCapacity">同時予約上限</label><input class="input" type="number" min="1" max="10" id="menuEditCapacity"><div class="field-help">設定画面で上限機能をONにした時だけ使用</div></div><div class="field"><label class="label" for="menuEditOrder">表示順</label><input class="input" type="number" id="menuEditOrder"></div><div class="field"><label class="label" for="menuEditAudience">対象顧客</label><select class="select" id="menuEditAudience"><option value="all">すべて</option><option value="new_only">新規のみ</option><option value="returning_only">再来のみ</option></select></div><div class="field"><label class="label" for="menuEditSlug">カタログURL名</label><input class="input" id="menuEditSlug"></div><div class="field full"><label class="label" for="menuEditDescription">説明</label><textarea class="textarea" id="menuEditDescription"></textarea></div><div class="field full"><label class="label" for="menuEditShortDescription">短い説明</label><input class="input" id="menuEditShortDescription"></div><div class="field full"><label class="label" for="menuEditConcerns">対象のお悩み</label><input class="input" id="menuEditConcerns" placeholder="乾燥, くせ毛, ダメージ"></div><div class="field full"><label class="label" for="menuEditPriceNote">公開料金の補足</label><input class="input" id="menuEditPriceNote"></div></div></div><div class="master-form-section"><h4>受付・公開状態</h4><div class="master-checks"><label class="master-check"><input type="checkbox" id="menuEditActive"><span>使用中</span></label><label class="master-check"><input type="checkbox" id="menuEditPublic"><span>公開カタログに表示</span></label><label class="master-check"><input type="checkbox" id="menuEditFeatured"><span>おすすめ表示</span></label><label class="master-check"><input type="checkbox" id="menuEditRequest"><span>LINE予約を受付</span></label><label class="master-check"><input type="checkbox" id="menuEditNewCustomer"><span>新規顧客も予約可</span></label></div></div></div><div class="modal__foot"><button class="btn outline" type="button" data-close-modal="menuModal">閉じる</button><button class="btn primary" id="menuSaveButton" type="submit">メニューを保存</button></div></form></div></div>
+
+<div class="modal" id="menuSetModal" aria-hidden="true"><div class="modal__panel"><div class="modal__head"><div><h3 id="menuSetModalTitle">組み合わせメニューを追加</h3><p>カット＋カラーなど、複数メニューを一つの予約商品にします。</p></div><button class="modal__close" type="button" data-close-modal="menuSetModal">×</button></div><form id="menuSetForm"><div class="modal__body"><input type="hidden" id="menuSetEditId"><div class="master-form-section"><h4>基本情報</h4><div class="form-grid three"><div class="field"><label class="label" for="menuSetEditCode">組み合わせコード</label><input class="input" id="menuSetEditCode" required></div><div class="field"><label class="label" for="menuSetEditName">表示名</label><input class="input" id="menuSetEditName" required></div><div class="field"><label class="label" for="menuSetEditAudience">対象顧客</label><select class="select" id="menuSetEditAudience"><option value="all">すべて</option><option value="new_only">新規のみ</option><option value="returning_only">再来のみ</option></select></div><div class="field"><label class="label" for="menuSetEditPrice">セット料金</label><input class="input" type="number" min="0" max="10000000" id="menuSetEditPrice"></div><div class="field"><label class="label" for="menuSetEditDuration">合計所要時間</label><input class="input" type="number" min="30" max="720" step="30" id="menuSetEditDuration"></div><div class="field"><label class="label" for="menuSetEditOrder">表示順</label><input class="input" type="number" id="menuSetEditOrder"></div><div class="field full"><label class="label" for="menuSetEditDescription">説明</label><textarea class="textarea" id="menuSetEditDescription"></textarea></div><div class="field full"><label class="label" for="menuSetEditShortDescription">短い説明</label><input class="input" id="menuSetEditShortDescription"></div><div class="field full"><label class="label" for="menuSetEditConcerns">対象のお悩み</label><input class="input" id="menuSetEditConcerns" placeholder="乾燥, くせ毛"></div></div></div><div class="master-form-section"><h4>含めるメニュー</h4><div class="menu-item-list" id="menuSetItemList"></div></div><div class="master-form-section"><h4>受付・公開状態</h4><div class="master-checks"><label class="master-check"><input type="checkbox" id="menuSetEditActive"><span>使用中</span></label><label class="master-check"><input type="checkbox" id="menuSetEditPublic"><span>公開カタログに表示</span></label><label class="master-check"><input type="checkbox" id="menuSetEditFeatured"><span>おすすめ表示</span></label><label class="master-check"><input type="checkbox" id="menuSetEditBooking"><span>LINE予約を受付</span></label></div></div></div><div class="modal__foot"><button class="btn outline" type="button" data-close-modal="menuSetModal">閉じる</button><button class="btn primary" id="menuSetSaveButton" type="submit">組み合わせを保存</button></div></form></div></div>
+
+<div class="modal" id="staffModal" aria-hidden="true"><div class="modal__panel"><div class="modal__head"><div><h3 id="staffModalTitle">スタッフを追加</h3><p>指名可否、予約受付、担当可能メニューを設定します。</p></div><button class="modal__close" type="button" data-close-modal="staffModal">×</button></div><form id="staffForm"><div class="modal__body"><input type="hidden" id="staffEditId"><div class="master-form-section"><h4>基本情報</h4><div class="form-grid three"><div class="field"><label class="label" for="staffEditCode">スタッフコード</label><input class="input" id="staffEditCode" required></div><div class="field"><label class="label" for="staffEditName">表示名</label><input class="input" id="staffEditName" required></div><div class="field"><label class="label" for="staffEditRole">役割</label><select class="select" id="staffEditRole"><option value="owner">オーナー</option><option value="manager">店長</option><option value="stylist">スタイリスト</option><option value="assistant">アシスタント</option><option value="reception">受付</option></select></div><div class="field"><label class="label" for="staffEditColor">表示ラベル</label><input class="input" id="staffEditColor" placeholder="例：グリーン"></div><div class="field"><label class="label" for="staffEditOrder">表示順</label><input class="input" type="number" id="staffEditOrder"></div><div class="field full"><label class="label" for="staffEditDescription">紹介・得意分野</label><textarea class="textarea" id="staffEditDescription"></textarea></div></div></div><div class="master-form-section"><h4>予約受付</h4><div class="master-checks"><label class="master-check"><input type="checkbox" id="staffEditActive"><span>在籍・使用中</span></label><label class="master-check"><input type="checkbox" id="staffEditBookable"><span>予約を受け付ける</span></label><label class="master-check"><input type="checkbox" id="staffEditRequestable"><span>お客様から指名可能</span></label></div></div><div class="master-form-section"><h4>担当可能メニュー</h4><div class="menu-item-list" id="staffMenuList"></div></div></div><div class="modal__foot"><button class="btn outline" type="button" data-close-modal="staffModal">閉じる</button><button class="btn primary" id="staffSaveButton" type="submit">スタッフを保存</button></div></form></div></div>
+
 <div class="modal" id="authModal" aria-hidden="true"><div class="modal__panel auth-panel"><div class="modal__body"><div class="auth-logo">DP</div><div class="auth-copy"><h3>PCオーナー管理へ接続</h3><p>管理コードを保存すると、次回から入力せずに開けます。</p></div><form class="admin-code-row" id="authCodeForm" autocomplete="off"><input class="input" id="authCodeInput" name="modal_admin_code" type="password" inputmode="numeric" autocomplete="current-password" placeholder="管理コード"><button class="btn primary" id="authSaveButton" type="submit">接続</button></form><div class="demo-hint">デモ店舗の管理コードは「1234」です。デモ環境では自動設定される場合があります。</div></div></div></div>
 
 <div class="modal" id="reservationModal" aria-hidden="true"><div class="modal__panel"><div class="modal__head"><div><h3 id="reservationModalTitle">予約詳細</h3><p id="reservationModalSub">—</p></div><button class="modal__close" type="button" data-close-modal="reservationModal">×</button></div><div class="modal__body" id="reservationModalBody"></div><div class="modal__foot"><button class="btn outline" type="button" data-close-modal="reservationModal">閉じる</button></div></div></div>
 
 <div class="modal" id="manualModal" aria-hidden="true"><div class="modal__panel"><div class="modal__head"><div><h3>電話・店頭予約を登録</h3><p>既存顧客は顧客管理で選択してから開くと自動入力されます。</p></div><button class="modal__close" type="button" data-close-modal="manualModal">×</button></div><div class="modal__body"><div class="form-grid"><div class="field"><label class="label" for="manualName">お客様名</label><input class="input" id="manualName"></div><div class="field"><label class="label" for="manualPhone">電話番号</label><input class="input" id="manualPhone" inputmode="tel"></div><div class="field"><label class="label" for="manualDate">予約日</label><input class="input" type="date" id="manualDate"></div><div class="field"><label class="label" for="manualTime">予約時間</label><input class="input" type="time" step="1800" id="manualTime"></div><div class="field"><label class="label" for="manualMenu">メニュー</label><select class="select" id="manualMenu"></select></div><div class="field"><label class="label" for="manualStaff">担当</label><select class="select" id="manualStaff"><option value="">おまかせ</option></select></div><div class="field full"><label class="label" for="manualRequest">ご要望・メモ</label><textarea class="textarea" id="manualRequest"></textarea></div></div><input type="hidden" id="manualCustomerId"></div><div class="modal__foot"><button class="btn outline" type="button" data-close-modal="manualModal">取消</button><button class="btn primary" type="button" id="manualSaveButton">予約を登録</button></div></div></div>
 
-<script src="./config.js?v=hair-next-4-r3-next6"></script>
+<script src="./config.js?v=hair-next-9"></script>
 <script>
 (() => {
   "use strict";
-  const PAGE_VERSION = "HAIR-NEXT-6-360-CARTE-FOLLOW-20260722";
+  const PAGE_VERSION = "HAIR-NEXT-9-OWNER-SETTINGS-CENTER-20260723";
+  const PARAMS = new URLSearchParams(location.search);
+  const DEMO_MODE = PARAMS.get("demo") === "1";
+  const WEEKDAY_LABELS = ["日","月","火","水","木","金","土"];
   const VIEW_META = {
     today:["TODAY'S SALON","今日の美容室"], reservations:["RESERVATIONS","予約管理"], customers:["CUSTOMERS","顧客管理"],
     carte:["360° BEAUTY CARTE","美容室360°カルテ"], follow:["REPEAT & FOLLOW","再来店フォロー"], menus:["MENU CATALOG","メニュー・公開カタログ"],
@@ -210,7 +324,8 @@
   const NEXT_STATUS = {reserved:"confirmed",confirmed:"arrived",arrived:"in_service",in_service:"finishing",finishing:"payment_waiting",payment_waiting:"completed"};
   const FEATURE_DEFS = [
     ["menu_catalog_enabled","メニューカタログ","公開メニュー表を表示"],["menu_set_enabled","組み合わせメニュー","カット＋カラー等を予約"],
-    ["same_as_last_enabled","前回と同じ予約","前回メニュー・担当で再予約"],["checkin_qr_enabled","来店QR受付","店頭QRから来店受付"],
+    ["checkin_qr_enabled","来店QR受付","店頭QRから来店受付"],["photo_enabled","カルテ写真","非公開写真カルテを使用"],
+    ["next_visit_enabled","次回来店目安","施術カルテへ次回目安を記録"],["retail_recommend_enabled","店販提案","ホームケア・商品提案を使用"],
     ["next_proposal_enabled","次回来店提案","次回時期・ホームケアを記録"],["before_after_album_enabled","Before／After写真","会員ページの写真履歴"],
     ["advanced_formula_enabled","薬剤詳細記録","カラー・パーマ配合を詳細管理"],["csv_import_enabled","顧客CSV取込","他システムから顧客を移行"],
     ["birthday_follow_enabled","誕生日フォロー","誕生日対象をフォロー"],["payment_waiting_enabled","会計待ちステータス","施術後に会計待ちを使用"]
@@ -221,7 +336,9 @@
   const state = {
     currentView:"today", selectedDate:"", dashboard:null, customerResults:[], selectedCustomerId:null, customerDetail:null,
     followTasks:[], proposals:[], followActionLogs:[], menus:null, staff:null, settings:null, csvImports:[],
-    reservationFilter:"all", reservationKeyword:"", followKeyword:"", followType:"all", followDue:"all", busy:false
+    reservationFilter:"all", reservationKeyword:"", followKeyword:"", followType:"all", followDue:"all", busy:false,
+    menuKeyword:"", menuVisibility:"all", staffKeyword:"", staffStatus:"all",
+    settingsPane:"overview", settingsDirty:false, specialDaysDraft:[], deletedSpecialDates:[]
   };
   const $ = (s,r=document) => r.querySelector(s); const $$ = (s,r=document) => [...r.querySelectorAll(s)];
   const safe = v => window.DPRO_HAIR?.utils?.escapeHtml ? DPRO_HAIR.utils.escapeHtml(v ?? "") : String(v ?? "").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"}[m]));
@@ -279,7 +396,7 @@
     }
     if(topInput){
       if(saved) topInput.value=DPRO_HAIR.admin.getCode();
-      else if(!topInput.value) topInput.value=DPRO_HAIR.config.demo.adminCode||"";
+      else if(!topInput.value && DEMO_MODE) topInput.value=DPRO_HAIR.config.demo.adminCode||"";
     }
     if(saveButton) saveButton.textContent=saved?"再接続":"接続";
     if(clearButton){
@@ -356,7 +473,7 @@
     state.followTasks=[];
     state.proposals=[];
     $("#todayStats").innerHTML="";
-    $("#todayReservationList").innerHTML='<div class="empty">管理コードを入力して接続してください。</div>';
+    $("#todayReservationTable").innerHTML='<div class="empty">管理コードを入力して接続してください。</div>';
     $("#attentionList").innerHTML='<div class="empty">管理コードを入力して接続してください。</div>';
     const message=hadSavedCode
       ?"このブラウザに保存されていた管理コードを削除しました。"
@@ -473,18 +590,557 @@
   async function updateFollow(id,status){let reason=null;if(status==='skipped')reason=prompt("見送り理由を入力してください。")||"オーナー判断で見送り";try{await api().adminPost(endpoint("ADMIN_FOLLOW_TASK_STATUS"),{follow_task_id:id,status,skip_reason:reason,operated_by:"owner.html"});setNotice("フォロー状態を更新しました。");await loadFollow();await loadDashboard(true);}catch(e){handleError(e,"フォロー状態を更新できませんでした。")}}
   async function updateProposal(id,status){try{await api().adminPost(endpoint("ADMIN_NEXT_PROPOSAL_STATUS"),{proposal_id:id,status});setNotice("次回来店提案を更新しました。");await loadFollow();}catch(e){handleError(e,"提案状態を更新できませんでした。")}}
 
-  async function loadMenus(){try{const data=await api().adminGet(endpoint("ADMIN_MENUS"),{});state.menus=data;renderMenus();}catch(e){handleError(e,"メニューを読み込めませんでした。")}}
-  function renderMenus(){const data=state.menus||{};const menus=data.menus||[];const sets=data.menu_sets||[];$("#menuCountLabel").textContent=`${menus.length}件`;$("#menuSetCountLabel").textContent=`${sets.length}件`;const card=(m,isSet=false)=>`<article class="menu-card"><div class="menu-card__image">${m.image_url?`<img src="${safe(m.image_url)}" alt="${safe(m.image_alt_text||m.menu_name||m.set_name)}" loading="lazy">`:'DPRO HAIR'}</div><div class="menu-card__body"><div class="row-actions" style="justify-content:space-between"><span class="badge ${m.is_public?'ok':'warn'}">${m.is_public?'公開':'非公開'}</span>${m.is_featured?'<span class="badge violet">おすすめ</span>':''}</div><h4>${safe(m.menu_name||m.set_name)}</h4><p>${safe(m.short_description||m.description||"説明未登録")}</p><div class="menu-card__meta"><span>${safe(yen(m.price_yen))}</span><span>${Number(m.duration_minutes||0)}分</span></div></div></article>`;$("#menuGrid").innerHTML=menus.length?menus.map(m=>card(m)).join(""):'<div class="empty">メニューはありません。</div>';$("#menuSetGrid").innerHTML=sets.length?sets.map(m=>card(m,true)).join(""):'<div class="empty">組み合わせメニューはありません。</div>';}
-  async function loadStaff(){try{const data=await api().adminGet(endpoint("ADMIN_STAFF"),{});state.staff=data.staff||[];$("#staffGrid").innerHTML=state.staff.length?state.staff.map(s=>`<article class="staff-card"><div class="row-actions" style="justify-content:space-between"><span class="badge ${s.is_active?'ok':'warn'}">${s.is_active?'在籍':'停止'}</span><span class="badge">${safe(DPRO_HAIR.utils.staffRoleLabel(s.role))}</span></div><h4>${safe(s.display_name)}</h4><p>${safe(s.description||"説明未登録")}</p><div class="detail-grid" style="grid-template-columns:repeat(2,1fr)"><div class="detail-box"><small>指名</small><b>${s.can_be_requested?'可能':'不可'}</b></div><div class="detail-box"><small>予約受付</small><b>${s.can_take_booking?'可能':'停止'}</b></div></div></article>`).join(""):'<div class="empty">スタッフはありません。</div>';}catch(e){handleError(e,"スタッフを読み込めませんでした。")}}
+  function commaList(value){
+    return String(value||"").split(/[,\n、]/).map(item=>item.trim()).filter(Boolean);
+  }
+  function menuSearchText(item){
+    return [item.menu_code,item.set_code,item.menu_name,item.set_name,item.description,item.short_description,(item.target_concerns||[]).join(" ")].join(" ").toLowerCase();
+  }
+  function filterMenuRows(rows){
+    const query=state.menuKeyword.trim().toLowerCase();
+    return (rows||[]).filter(item=>{
+      if(query&&!menuSearchText(item).includes(query))return false;
+      if(state.menuVisibility==="public"&&!item.is_public)return false;
+      if(state.menuVisibility==="private"&&item.is_public)return false;
+      if(state.menuVisibility==="stopped"&&item.is_active!==false)return false;
+      return true;
+    });
+  }
+  async function loadMenus(){
+    try{
+      const data=await api().adminGet(endpoint("ADMIN_MENUS"),{});
+      state.menus=data;
+      renderMenus();
+      return data;
+    }catch(e){
+      handleError(e,"メニューを読み込めませんでした。");
+    }
+  }
+  function renderMenus(){
+    const data=state.menus||{};
+    const allMenus=data.menus||[];
+    const allSets=data.menu_sets||[];
+    const menus=filterMenuRows(allMenus);
+    const sets=filterMenuRows(allSets);
+    $("#menuCountLabel").textContent=`${allMenus.length}件中 ${menus.length}件を表示`;
+    $("#menuSetCountLabel").textContent=`${allSets.length}件中 ${sets.length}件を表示`;
+    const card=(item,isSet=false)=>{
+      const title=item.menu_name||item.set_name||"名称未設定";
+      const code=item.menu_code||item.set_code||"コード未設定";
+      const capacity=isSet?"組み合わせ":`同時${Number(item.booking_capacity||1)}件`;
+      const bookingEnabled=isSet?item.booking_enabled!==false:item.request_enabled!==false;
+      const badges=[
+        `<span class="badge ${item.is_active!==false?"ok":"err"}">${item.is_active!==false?"使用中":"停止"}</span>`,
+        `<span class="badge ${item.is_public?"ok":"warn"}">${item.is_public?"公開":"非公開"}</span>`,
+        bookingEnabled?'<span class="badge info">予約受付</span>':'<span class="badge warn">予約停止</span>',
+        item.is_featured?'<span class="badge violet">おすすめ</span>':"",
+      ].join("");
+      return `<article class="menu-card"><div class="menu-card__image">${item.image_url?`<img src="${safe(item.image_url)}" alt="${safe(item.image_alt_text||title)}" loading="lazy">`:'DPRO HAIR'}</div><div class="menu-card__body"><div class="row-actions" style="justify-content:space-between">${badges}</div><h4>${safe(title)}</h4><p>${safe(item.short_description||item.description||"説明未登録")}</p><small>${safe(code)}${item.category?.category_name?`／${safe(item.category.category_name)}`:""}</small><div class="menu-card__meta"><span>${safe(yen(item.price_yen))}</span><span>${Number(item.duration_minutes||0)}分</span></div><div style="margin-top:8px"><span class="capacity-badge">${safe(capacity)}</span></div><div class="menu-card__actions"><button class="btn outline small" type="button" ${isSet?`data-menu-set-edit="${item.id}"`:`data-menu-edit="${item.id}"`}>編集</button></div></div></article>`;
+    };
+    $("#menuGrid").innerHTML=menus.length?menus.map(item=>card(item,false)).join(""):'<div class="empty">条件に一致する単独メニューはありません。</div>';
+    $("#menuSetGrid").innerHTML=sets.length?sets.map(item=>card(item,true)).join(""):'<div class="empty">条件に一致する組み合わせメニューはありません。</div>';
+  }
+  function populateMenuCategoryOptions(value=""){
+    const categories=state.menus?.categories||[];
+    $("#menuEditCategory").innerHTML='<option value="">未分類</option>'+categories.map(category=>`<option value="${category.id}">${safe(category.category_name)}</option>`).join("");
+    $("#menuEditCategory").value=value||"";
+  }
+  function openMenuModal(id=""){
+    const item=(state.menus?.menus||[]).find(row=>row.id===id)||null;
+    $("#menuForm").reset();
+    $("#menuEditId").value=item?.id||"";
+    $("#menuModalTitle").textContent=item?"メニューを編集":"メニューを追加";
+    $("#menuEditCode").value=item?.menu_code||"";
+    $("#menuEditName").value=item?.menu_name||"";
+    populateMenuCategoryOptions(item?.category_id||"");
+    $("#menuEditPrice").value=item?.price_yen??0;
+    $("#menuEditDuration").value=item?.duration_minutes??60;
+    $("#menuEditCapacity").value=item?.booking_capacity??1;
+    $("#menuEditOrder").value=item?.sort_order??100;
+    $("#menuEditAudience").value=item?.audience_type||"all";
+    $("#menuEditSlug").value=item?.catalog_slug||item?.menu_code||"";
+    $("#menuEditDescription").value=item?.description||"";
+    $("#menuEditShortDescription").value=item?.short_description||"";
+    $("#menuEditConcerns").value=(item?.target_concerns||[]).join(", ");
+    $("#menuEditPriceNote").value=item?.public_price_note||"";
+    $("#menuEditActive").checked=item?item.is_active!==false:true;
+    $("#menuEditPublic").checked=item?Boolean(item.is_public):true;
+    $("#menuEditFeatured").checked=Boolean(item?.is_featured);
+    $("#menuEditRequest").checked=item?item.request_enabled!==false:true;
+    $("#menuEditNewCustomer").checked=item?item.new_customer_enabled!==false:true;
+    openModal("menuModal");
+  }
+  async function saveMenu(){
+    const button=$("#menuSaveButton");
+    const duration=Number($("#menuEditDuration").value||60);
+    if(duration%30!==0){
+      setNotice("所要時間は30分単位で入力してください。","warning");
+      return;
+    }
+    const body={
+      id:$("#menuEditId").value||undefined,
+      menu_code:$("#menuEditCode").value.trim(),
+      menu_name:$("#menuEditName").value.trim(),
+      category_id:$("#menuEditCategory").value||undefined,
+      price_yen:Number($("#menuEditPrice").value||0),
+      duration_minutes:duration,
+      booking_capacity:Number($("#menuEditCapacity").value||1),
+      sort_order:Number($("#menuEditOrder").value||100),
+      audience_type:$("#menuEditAudience").value,
+      catalog_slug:$("#menuEditSlug").value.trim(),
+      description:$("#menuEditDescription").value.trim(),
+      short_description:$("#menuEditShortDescription").value.trim(),
+      target_concerns:commaList($("#menuEditConcerns").value),
+      public_price_note:$("#menuEditPriceNote").value.trim(),
+      is_active:$("#menuEditActive").checked,
+      is_public:$("#menuEditPublic").checked,
+      is_featured:$("#menuEditFeatured").checked,
+      request_enabled:$("#menuEditRequest").checked,
+      new_customer_enabled:$("#menuEditNewCustomer").checked,
+      operated_by:"owner.html",
+    };
+    if(!body.menu_code||!body.menu_name){
+      setNotice("メニューコードとメニュー名を入力してください。","warning");
+      return;
+    }
+    button.disabled=true;button.textContent="保存中...";
+    try{
+      const data=await api().adminPost(endpoint("ADMIN_MENU_SAVE"),body);
+      closeModal("menuModal");
+      setNotice(data.message||"メニューを保存しました。","success");
+      await loadMenus();
+      if(state.settings)renderSettingsOverview();
+    }catch(error){
+      handleError(error,"メニューを保存できませんでした。");
+    }finally{
+      button.disabled=false;button.textContent="メニューを保存";
+    }
+  }
+  function renderMenuSetItems(selectedIds=[]){
+    const selected=new Set(selectedIds);
+    const menus=state.menus?.menus||[];
+    $("#menuSetItemList").innerHTML=menus.length?menus.map((menu,index)=>`<label class="menu-item-option"><input type="checkbox" data-menu-set-item="${menu.id}" ${selected.has(menu.id)?"checked":""}><span><b>${safe(menu.menu_name)}</b><br><small>${safe(yen(menu.price_yen))}／${Number(menu.duration_minutes||0)}分</small></span></label>`).join(""):'<div class="empty">先に単独メニューを登録してください。</div>';
+  }
+  function openMenuSetModal(id=""){
+    const item=(state.menus?.menu_sets||[]).find(row=>row.id===id)||null;
+    $("#menuSetForm").reset();
+    $("#menuSetEditId").value=item?.id||"";
+    $("#menuSetModalTitle").textContent=item?"組み合わせメニューを編集":"組み合わせメニューを追加";
+    $("#menuSetEditCode").value=item?.set_code||"";
+    $("#menuSetEditName").value=item?.set_name||"";
+    $("#menuSetEditAudience").value=item?.audience_type||"all";
+    $("#menuSetEditPrice").value=item?.price_yen??0;
+    $("#menuSetEditDuration").value=item?.duration_minutes??60;
+    $("#menuSetEditOrder").value=item?.sort_order??100;
+    $("#menuSetEditDescription").value=item?.description||"";
+    $("#menuSetEditShortDescription").value=item?.short_description||"";
+    $("#menuSetEditConcerns").value=(item?.target_concerns||[]).join(", ");
+    $("#menuSetEditActive").checked=item?item.is_active!==false:true;
+    $("#menuSetEditPublic").checked=item?Boolean(item.is_public):true;
+    $("#menuSetEditFeatured").checked=Boolean(item?.is_featured);
+    $("#menuSetEditBooking").checked=item?item.booking_enabled!==false:true;
+    renderMenuSetItems((item?.items||[]).map(row=>row.menu_id));
+    openModal("menuSetModal");
+  }
+  async function saveMenuSet(){
+    const button=$("#menuSetSaveButton");
+    const duration=Number($("#menuSetEditDuration").value||60);
+    const selected=$$("[data-menu-set-item]:checked");
+    if(duration%30!==0){
+      setNotice("合計所要時間は30分単位で入力してください。","warning");
+      return;
+    }
+    if(!selected.length){
+      setNotice("組み合わせに含めるメニューを1件以上選択してください。","warning");
+      return;
+    }
+    const body={
+      id:$("#menuSetEditId").value||undefined,
+      set_code:$("#menuSetEditCode").value.trim(),
+      set_name:$("#menuSetEditName").value.trim(),
+      audience_type:$("#menuSetEditAudience").value,
+      price_yen:Number($("#menuSetEditPrice").value||0),
+      duration_minutes:duration,
+      sort_order:Number($("#menuSetEditOrder").value||100),
+      description:$("#menuSetEditDescription").value.trim(),
+      short_description:$("#menuSetEditShortDescription").value.trim(),
+      target_concerns:commaList($("#menuSetEditConcerns").value),
+      is_active:$("#menuSetEditActive").checked,
+      is_public:$("#menuSetEditPublic").checked,
+      is_featured:$("#menuSetEditFeatured").checked,
+      booking_enabled:$("#menuSetEditBooking").checked,
+      items:selected.map((input,index)=>({menu_id:input.dataset.menuSetItem,quantity:1,sort_order:(index+1)*10,is_required:true})),
+      operated_by:"owner.html",
+    };
+    if(!body.set_code||!body.set_name){
+      setNotice("組み合わせコードと表示名を入力してください。","warning");
+      return;
+    }
+    button.disabled=true;button.textContent="保存中...";
+    try{
+      const data=await api().adminPost(endpoint("ADMIN_MENU_SET_SAVE"),body);
+      closeModal("menuSetModal");
+      setNotice(data.message||"組み合わせメニューを保存しました。","success");
+      await loadMenus();
+      if(state.settings)renderSettingsOverview();
+    }catch(error){
+      handleError(error,"組み合わせメニューを保存できませんでした。");
+    }finally{
+      button.disabled=false;button.textContent="組み合わせを保存";
+    }
+  }
+  function filterStaffRows(rows){
+    const query=state.staffKeyword.trim().toLowerCase();
+    return (rows||[]).filter(item=>{
+      if(query&&![item.staff_code,item.display_name,item.role,item.description].join(" ").toLowerCase().includes(query))return false;
+      if(state.staffStatus==="active"&&item.is_active===false)return false;
+      if(state.staffStatus==="stopped"&&item.is_active!==false)return false;
+      if(state.staffStatus==="bookable"&&!(item.is_active!==false&&item.can_take_booking))return false;
+      return true;
+    });
+  }
+  async function loadStaff(){
+    try{
+      const data=await api().adminGet(endpoint("ADMIN_STAFF"),{});
+      state.staff=data.staff||[];
+      renderStaff();
+      return state.staff;
+    }catch(e){
+      handleError(e,"スタッフを読み込めませんでした。");
+    }
+  }
+  function renderStaff(){
+    const all=state.staff||[];
+    const rows=filterStaffRows(all);
+    $("#staffGrid").innerHTML=rows.length?rows.map(staff=>`<article class="staff-card"><div class="row-actions" style="justify-content:space-between"><span class="badge ${staff.is_active!==false?"ok":"err"}">${staff.is_active!==false?"在籍":"停止"}</span><span class="badge">${safe(DPRO_HAIR.utils.staffRoleLabel(staff.role))}</span></div><h4>${safe(staff.display_name)}</h4><p>${safe(staff.description||"説明未登録")}</p><small>${safe(staff.staff_code||"コード未設定")}</small><div class="detail-grid" style="grid-template-columns:repeat(3,1fr)"><div class="detail-box"><small>指名</small><b>${staff.can_be_requested?"可能":"不可"}</b></div><div class="detail-box"><small>予約受付</small><b>${staff.can_take_booking?"可能":"停止"}</b></div><div class="detail-box"><small>対応メニュー</small><b>${staff.menu_ids?.length||0}件</b></div></div><div class="staff-card__actions"><button class="btn outline small" type="button" data-staff-edit="${staff.id}">編集</button></div></article>`).join(""):'<div class="empty">条件に一致するスタッフはありません。</div>';
+  }
+  function renderStaffMenuOptions(selectedIds=[]){
+    const selected=new Set(selectedIds);
+    const menus=state.menus?.menus||[];
+    $("#staffMenuList").innerHTML=menus.length?menus.map(menu=>`<label class="menu-item-option"><input type="checkbox" data-staff-menu="${menu.id}" ${selected.has(menu.id)?"checked":""}><span><b>${safe(menu.menu_name)}</b><br><small>${Number(menu.duration_minutes||0)}分</small></span></label>`).join(""):'<div class="empty">先にメニューを登録してください。</div>';
+  }
+  async function openStaffModal(id=""){
+    if(!state.menus)await loadMenus();
+    const item=(state.staff||[]).find(row=>row.id===id)||null;
+    $("#staffForm").reset();
+    $("#staffEditId").value=item?.id||"";
+    $("#staffModalTitle").textContent=item?"スタッフを編集":"スタッフを追加";
+    $("#staffEditCode").value=item?.staff_code||"";
+    $("#staffEditName").value=item?.display_name||"";
+    $("#staffEditRole").value=item?.role||"stylist";
+    $("#staffEditColor").value=item?.color_label||"";
+    $("#staffEditOrder").value=item?.sort_order??100;
+    $("#staffEditDescription").value=item?.description||"";
+    $("#staffEditActive").checked=item?item.is_active!==false:true;
+    $("#staffEditBookable").checked=item?item.can_take_booking!==false:true;
+    $("#staffEditRequestable").checked=item?item.can_be_requested!==false:true;
+    renderStaffMenuOptions(item?.menu_ids||[]);
+    openModal("staffModal");
+  }
+  async function saveStaff(){
+    const button=$("#staffSaveButton");
+    const body={
+      id:$("#staffEditId").value||undefined,
+      staff_code:$("#staffEditCode").value.trim(),
+      display_name:$("#staffEditName").value.trim(),
+      role:$("#staffEditRole").value,
+      color_label:$("#staffEditColor").value.trim(),
+      sort_order:Number($("#staffEditOrder").value||100),
+      description:$("#staffEditDescription").value.trim(),
+      is_active:$("#staffEditActive").checked,
+      can_take_booking:$("#staffEditBookable").checked,
+      can_be_requested:$("#staffEditRequestable").checked,
+      menu_ids:$$("[data-staff-menu]:checked").map(input=>input.dataset.staffMenu),
+      operated_by:"owner.html",
+    };
+    if(!body.staff_code||!body.display_name){
+      setNotice("スタッフコードと表示名を入力してください。","warning");
+      return;
+    }
+    button.disabled=true;button.textContent="保存中...";
+    try{
+      const data=await api().adminPost(endpoint("ADMIN_STAFF_SAVE"),body);
+      closeModal("staffModal");
+      setNotice(data.message||"スタッフを保存しました。","success");
+      await loadStaff();
+      if(state.settings)renderSettingsOverview();
+    }catch(error){
+      handleError(error,"スタッフを保存できませんでした。");
+    }finally{
+      button.disabled=false;button.textContent="スタッフを保存";
+    }
+  }
 
   async function loadCsvImports(){try{const data=await api().adminGet(endpoint("ADMIN_CSV_IMPORTS"),{limit:100});state.csvImports=data.imports||[];$("#csvImportList").innerHTML=state.csvImports.length?state.csvImports.map(i=>`<article class="list-item"><div><h4>${safe(i.original_filename)} <span class="badge ${i.status==='completed'?'ok':i.status?.includes('error')||i.status==='failed'?'err':'info'}">${safe(i.status)}</span></h4><p>成功 ${Number(i.success_rows||0)}件／エラー ${Number(i.error_rows||0)}件／重複 ${Number(i.duplicate_rows||0)}件</p><small>${safe(fmtDateTime(i.created_at))}</small></div></article>`).join(""):'<div class="empty">取込履歴はありません。</div>';}catch(e){handleError(e,"CSV取込履歴を読み込めませんでした。")}}
   function parseCsv(textValue){const rows=[];let row=[],cell="",quote=false;for(let i=0;i<textValue.length;i++){const ch=textValue[i],next=textValue[i+1];if(ch==='"'){if(quote&&next==='"'){cell+='"';i++;}else quote=!quote;}else if(ch===','&&!quote){row.push(cell);cell="";}else if((ch==='\n'||ch==='\r')&&!quote){if(ch==='\r'&&next==='\n')i++;row.push(cell);if(row.some(v=>String(v).trim()))rows.push(row);row=[];cell="";}else cell+=ch;}row.push(cell);if(row.some(v=>String(v).trim()))rows.push(row);if(rows.length<2)return[];const headers=rows[0].map(h=>h.trim());return rows.slice(1).map(cols=>Object.fromEntries(headers.map((h,i)=>[h,cols[i]??""])));}
   async function previewCsv(){const file=$("#csvFileInput").files?.[0];if(!file)return setNotice("CSVファイルを選択してください。","warning");const btn=$("#csvPreviewButton");btn.disabled=true;btn.textContent="確認中...";try{const content=await file.text();const rows=parseCsv(content);if(!rows.length)throw new Error("CSVのデータ行を読み込めませんでした。");const data=await api().csvPreview({original_filename:file.name,rows,default_existing_action:$("#csvExistingAction").value,uploaded_by:"owner.html"});const s=data.summary||{};$("#csvPreviewResult").innerHTML=`<div class="notice" data-state="success"><span class="notice__icon">✓</span><span class="notice__text">全${s.total||0}件／新規${s.create||0}件／追記${s.append||0}件／更新${s.update||0}件／確認${s.review||0}件</span></div><button class="btn gold wide" type="button" data-csv-execute="${data.import?.id}">この内容で取込を実行</button>`;await loadCsvImports();}catch(e){handleError(e,"CSVの事前確認に失敗しました。")}finally{btn.disabled=false;btn.textContent="事前確認を実行"}}
   async function executeCsv(id){if(!confirm("事前確認済みの内容で顧客データを取り込みます。よろしいですか？"))return;try{const data=await api().csvExecute({import_id:id,operated_by:"owner.html"});setNotice(data.message||"CSV取込が完了しました。",data.summary?.errors?"warning":"success");await loadCsvImports();}catch(e){handleError(e,"CSV取込を実行できませんでした。")}}
 
-  async function loadSettings(){try{const data=await api().adminGet(endpoint("ADMIN_SETTINGS"),{});state.settings=data;renderSettings();}catch(e){handleError(e,"設定を読み込めませんでした。")}}
-  function renderSettings(){const d=state.settings||{};const s=d.settings||{};$("#settingShopName").value=d.shop?.shop_name||"";$("#settingPhone").value=d.shop?.phone||"";$("#settingAddress").value=d.shop?.address||"";$("#settingBookingDays").value=s.booking_open_days??60;$("#settingLostDays").value=s.lost_customer_days??120;$("#featureSettings").innerHTML=FEATURE_DEFS.map(([k,l,h])=>`<label class="feature"><input type="checkbox" data-setting-key="${k}" ${s[k]?'checked':''}><span><b>${safe(l)}</b><small>${safe(h)}</small></span></label>`).join("");updateVersionBox();}
-  async function saveSettings(){const settings={booking_open_days:Number($("#settingBookingDays").value||60),lost_customer_days:Number($("#settingLostDays").value||120)};$$('[data-setting-key]').forEach(el=>settings[el.dataset.settingKey]=el.checked);try{const data=await api().adminPost(endpoint("ADMIN_SETTINGS_SAVE"),{shop_name:$("#settingShopName").value,phone:$("#settingPhone").value,address:$("#settingAddress").value,settings,operated_by:"owner.html"});state.settings=data;state.dashboard.settings=data.settings;setNotice("店舗設定を保存しました。");renderSettings();}catch(e){handleError(e,"店舗設定を保存できませんでした。")}}
+  function switchSettingsPane(pane){
+    const target=$(`[data-settings-pane-panel="${pane}"]`);
+    if(!target)return;
+    state.settingsPane=pane;
+    $$("[data-settings-pane]").forEach(button=>button.setAttribute("aria-current",button.dataset.settingsPane===pane?"page":"false"));
+    $$("[data-settings-pane-panel]").forEach(panel=>panel.classList.toggle("active",panel.dataset.settingsPanePanel===pane));
+    target.scrollIntoView({behavior:"smooth",block:"start"});
+  }
+  function updateSettingsState(){
+    const indicator=$("#settingsState");
+    if(!indicator)return;
+    indicator.textContent=state.settingsDirty?"未保存":"保存済み";
+    indicator.classList.toggle("dirty",state.settingsDirty);
+    $("#settingsSaveHelp").textContent=state.settingsDirty?"変更内容がまだ保存されていません。":"最新の設定が保存されています。";
+  }
+  function markSettingsDirty(){
+    if(!state.settings)return;
+    state.settingsDirty=true;
+    updateSettingsState();
+  }
+  function setSettingsClean(){
+    state.settingsDirty=false;
+    updateSettingsState();
+  }
+  function timeValue(value,fallback){
+    return String(value||fallback||"").slice(0,5);
+  }
+  async function loadSettings(){
+    try{
+      const [data]=await Promise.all([
+        api().adminGet(endpoint("ADMIN_SETTINGS"),{}),
+        state.menus?Promise.resolve(state.menus):loadMenus(),
+        state.staff?Promise.resolve(state.staff):loadStaff(),
+      ]);
+      state.settings=data;
+      renderSettings();
+      return data;
+    }catch(e){
+      handleError(e,"設定を読み込めませんでした。");
+    }
+  }
+  function renderSettingsOverview(){
+    const data=state.settings||{};
+    const settings=data.settings||{};
+    const hours=data.business_hours||[];
+    const openDays=hours.filter(row=>!row.is_closed).length;
+    const menuCount=(state.menus?.menus||[]).filter(row=>row.is_active!==false).length;
+    const setCount=(state.menus?.menu_sets||[]).filter(row=>row.is_active!==false).length;
+    const staffCount=(state.staff||[]).filter(row=>row.is_active!==false&&row.can_take_booking).length;
+    const values=[
+      ["営業日",`${openDays}日／週`],
+      ["予約受付",`${Number(settings.booking_open_days||60)}日先まで`],
+      ["1日上限",Number(settings.daily_reservation_limit||0)?`${Number(settings.daily_reservation_limit)}件`:"上限なし"],
+      ["同時上限",Number(settings.simultaneous_reservation_limit||0)?`${Number(settings.simultaneous_reservation_limit)}件`:"上限なし"],
+      ["メニュー",`${menuCount}件＋組合せ${setCount}件`],
+      ["予約スタッフ",`${staffCount}名`],
+      ["臨時設定",`${(data.special_days||[]).length}件`],
+      ["公開カタログ",settings.menu_catalog_enabled?"公開中":"非公開"],
+    ];
+    $("#settingsOverview").innerHTML=values.map(([label,value])=>`<div class="settings-overview__item"><small>${safe(label)}</small><b>${safe(value)}</b></div>`).join("");
+  }
+  function renderBusinessHours(){
+    const rows=state.settings?.business_hours||[];
+    const map=new Map(rows.map(row=>[Number(row.weekday),row]));
+    $("#businessHoursEditor").innerHTML=WEEKDAY_LABELS.map((label,weekday)=>{
+      const row=map.get(weekday)||{weekday,is_closed:weekday===0,open_time:"10:00",close_time:"19:00",last_booking_time:"18:00"};
+      const closed=Boolean(row.is_closed);
+      return `<div class="hour-row" data-hour-row="${weekday}"><div class="hour-day">${label}曜日</div><label class="hour-closed"><input type="checkbox" data-hour-closed ${closed?"checked":""}>定休日</label><div class="field"><label class="label">開店</label><input class="input" type="time" step="1800" data-hour-open value="${safe(timeValue(row.open_time,"10:00"))}" ${closed?"disabled":""}></div><div class="field"><label class="label">閉店</label><input class="input" type="time" step="1800" data-hour-close value="${safe(timeValue(row.close_time,"19:00"))}" ${closed?"disabled":""}></div><div class="field"><label class="label">最終受付</label><input class="input" type="time" step="1800" data-hour-last value="${safe(timeValue(row.last_booking_time,"18:00"))}" ${closed?"disabled":""}></div></div>`;
+    }).join("");
+  }
+  function syncSpecialDraftFromDom(){
+    const rows=$$("[data-special-row]");
+    if(!rows.length)return;
+    state.specialDaysDraft=rows.map(row=>({
+      target_date:row.querySelector("[data-special-date]")?.value||"",
+      _original_target_date:row.dataset.specialOriginal||"",
+      is_closed:Boolean(row.querySelector("[data-special-closed]")?.checked),
+      open_time:row.querySelector("[data-special-open]")?.value||"10:00",
+      close_time:row.querySelector("[data-special-close]")?.value||"19:00",
+      reason:row.querySelector("[data-special-reason]")?.value||"",
+    }));
+  }
+  function renderSpecialDays(){
+    const rows=state.specialDaysDraft||[];
+    $("#specialDayList").innerHTML=rows.length?rows.map((row,index)=>{
+      const closed=Boolean(row.is_closed);
+      return `<div class="special-row" data-special-row="${index}" data-special-original="${safe(row._original_target_date||"")}"><div class="field"><label class="label">日付</label><input class="input" type="date" data-special-date value="${safe(row.target_date||"")}"></div><label class="special-closed"><input type="checkbox" data-special-closed ${closed?"checked":""}>臨時休業</label><div class="field"><label class="label">開店</label><input class="input" type="time" step="1800" data-special-open value="${safe(timeValue(row.open_time,"10:00"))}" ${closed?"disabled":""}></div><div class="field"><label class="label">閉店</label><input class="input" type="time" step="1800" data-special-close value="${safe(timeValue(row.close_time,"19:00"))}" ${closed?"disabled":""}></div><div class="field"><label class="label">理由・メモ</label><input class="input" data-special-reason value="${safe(row.reason||"")}" placeholder="例：夏季休業・特別営業"></div><button class="btn danger small" type="button" data-special-remove="${index}">削除</button></div>`;
+    }).join(""):'<div class="empty">臨時営業・休業日は設定されていません。</div>';
+  }
+  function addSpecialDay(){
+    syncSpecialDraftFromDom();
+    const used=new Set(state.specialDaysDraft.map(row=>row.target_date));
+    let date=DPRO_HAIR.utils.addDaysISO(DPRO_HAIR.utils.todayISO(),1);
+    while(used.has(date))date=DPRO_HAIR.utils.addDaysISO(date,1);
+    state.specialDaysDraft.push({target_date:date,_original_target_date:"",is_closed:true,open_time:"10:00",close_time:"19:00",reason:""});
+    renderSpecialDays();
+    markSettingsDirty();
+  }
+  function removeSpecialDay(index){
+    syncSpecialDraftFromDom();
+    const row=state.specialDaysDraft[index];
+    const originalDate=row?._original_target_date||row?.target_date||"";
+    const originals=new Set((state.settings?.special_days||[]).map(item=>item.target_date));
+    if(originalDate&&originals.has(originalDate)&&!state.deletedSpecialDates.includes(originalDate)){
+      state.deletedSpecialDates.push(originalDate);
+    }
+    state.specialDaysDraft.splice(index,1);
+    renderSpecialDays();
+    markSettingsDirty();
+  }
+  function setTimeInputsDisabled(container,closed){
+    container.querySelectorAll('input[type="time"]').forEach(input=>input.disabled=closed);
+  }
+  function copyMondayHours(){
+    const monday=$('[data-hour-row="1"]');
+    if(!monday)return;
+    const values={
+      closed:monday.querySelector("[data-hour-closed]").checked,
+      open:monday.querySelector("[data-hour-open]").value,
+      close:monday.querySelector("[data-hour-close]").value,
+      last:monday.querySelector("[data-hour-last]").value,
+    };
+    [2,3,4,5].forEach(weekday=>{
+      const row=$(`[data-hour-row="${weekday}"]`);
+      if(!row)return;
+      row.querySelector("[data-hour-closed]").checked=values.closed;
+      row.querySelector("[data-hour-open]").value=values.open;
+      row.querySelector("[data-hour-close]").value=values.close;
+      row.querySelector("[data-hour-last]").value=values.last;
+      setTimeInputsDisabled(row,values.closed);
+    });
+    markSettingsDirty();
+    setNotice("月曜日の営業時間を火曜〜金曜へコピーしました。","success");
+  }
+  function collectBusinessHours(){
+    return $$("[data-hour-row]").map(row=>({
+      weekday:Number(row.dataset.hourRow),
+      is_closed:row.querySelector("[data-hour-closed]").checked,
+      open_time:row.querySelector("[data-hour-open]").value||"10:00",
+      close_time:row.querySelector("[data-hour-close]").value||"19:00",
+      last_booking_time:row.querySelector("[data-hour-last]").value||null,
+      slot_minutes:30,
+    }));
+  }
+  function collectSpecialDays(){
+    syncSpecialDraftFromDom();
+    const seen=new Set();
+    const rows=[];
+    for(const row of state.specialDaysDraft){
+      if(!row.target_date||seen.has(row.target_date))continue;
+      seen.add(row.target_date);
+      if(row._original_target_date&&row._original_target_date!==row.target_date&&!state.deletedSpecialDates.includes(row._original_target_date)){
+        state.deletedSpecialDates.push(row._original_target_date);
+      }
+      rows.push({
+        target_date:row.target_date,
+        is_closed:row.is_closed,
+        open_time:row.open_time,
+        close_time:row.close_time,
+        reason:row.reason,
+      });
+    }
+    return rows;
+  }
+  function renderSettings(){
+    const data=state.settings||{};
+    const settings=data.settings||{};
+    $("#settingShopName").value=data.shop?.shop_name||"";
+    $("#settingPhone").value=data.shop?.phone||"";
+    $("#settingAddress").value=data.shop?.address||"";
+    $("#settingTimezone").value=data.shop?.timezone||"Asia/Tokyo";
+    $("#settingBookingDays").value=settings.booking_open_days??60;
+    $("#settingSameDayCutoff").value=settings.same_day_cutoff_minutes??0;
+    $("#settingLostDays").value=settings.lost_customer_days??120;
+    $("#settingDailyLimit").value=settings.daily_reservation_limit??0;
+    $("#settingConcurrentLimit").value=settings.simultaneous_reservation_limit??0;
+    $("#settingMenuCapacityGuard").checked=Boolean(settings.menu_capacity_guard_enabled);
+    $$("[data-reservation-setting-key]").forEach(input=>input.checked=Boolean(settings[input.dataset.reservationSettingKey]));
+    $("#featureSettings").innerHTML=FEATURE_DEFS.map(([key,label,help])=>`<label class="feature"><input type="checkbox" data-setting-key="${key}" ${settings[key]?"checked":""}><span><b>${safe(label)}</b><small>${safe(help)}</small></span></label>`).join("");
+    $("#settingPhotoMaxBytes").value=Math.round(Number(settings.photo_max_bytes||2097152)/1024);
+    $("#settingPhotoMaxPerRecord").value=settings.photo_max_per_record??8;
+    $("#settingCsvMaxRows").value=settings.csv_import_max_rows??5000;
+    $("#settingBookingNotice").value=settings.booking_notice||"";
+    $("#settingCancellationNotice").value=settings.cancellation_notice||"";
+    $("#settingMemberNotice").value=settings.member_notice||"";
+    $("#settingCatalogNotice").value=settings.catalog_notice||"";
+    state.specialDaysDraft=(data.special_days||[]).map(row=>({...row,_original_target_date:row.target_date}));
+    state.deletedSpecialDates=[];
+    renderBusinessHours();
+    renderSpecialDays();
+    renderSettingsOverview();
+    updateVersionBox();
+    switchSettingsPane(state.settingsPane||"overview");
+    setSettingsClean();
+  }
+  function validateOwnerSettings(hours,specialDays){
+    const invalidHour=hours.find(row=>!row.is_closed&&(!row.open_time||!row.close_time||row.open_time>=row.close_time));
+    if(invalidHour){
+      switchSettingsPane("hours");
+      throw new Error(`${WEEKDAY_LABELS[invalidHour.weekday]}曜日の開店・閉店時刻を確認してください。`);
+    }
+    const invalidLast=hours.find(row=>!row.is_closed&&row.last_booking_time&&(row.last_booking_time<row.open_time||row.last_booking_time>row.close_time));
+    if(invalidLast){
+      switchSettingsPane("hours");
+      throw new Error(`${WEEKDAY_LABELS[invalidLast.weekday]}曜日の最終受付時刻を営業時間内に設定してください。`);
+    }
+    const invalidSpecial=specialDays.find(row=>!row.is_closed&&(!row.open_time||!row.close_time||row.open_time>=row.close_time));
+    if(invalidSpecial){
+      switchSettingsPane("special");
+      throw new Error(`${invalidSpecial.target_date}の臨時営業時間を確認してください。`);
+    }
+  }
+  async function saveSettings(){
+    const buttons=[$("#settingsSaveButton"),$("#settingsSaveBottom")].filter(Boolean);
+    const hours=collectBusinessHours();
+    const specialDays=collectSpecialDays();
+    try{
+      validateOwnerSettings(hours,specialDays);
+    }catch(error){
+      setNotice(error.message,"warning");
+      return;
+    }
+    const settings={
+      booking_open_days:Number($("#settingBookingDays").value||60),
+      same_day_cutoff_minutes:Number($("#settingSameDayCutoff").value||0),
+      lost_customer_days:Number($("#settingLostDays").value||120),
+      daily_reservation_limit:Number($("#settingDailyLimit").value||0),
+      simultaneous_reservation_limit:Number($("#settingConcurrentLimit").value||0),
+      menu_capacity_guard_enabled:$("#settingMenuCapacityGuard").checked,
+      photo_max_bytes:Number($("#settingPhotoMaxBytes").value||2048)*1024,
+      photo_max_per_record:Number($("#settingPhotoMaxPerRecord").value||8),
+      csv_import_max_rows:Number($("#settingCsvMaxRows").value||5000),
+      booking_notice:$("#settingBookingNotice").value.trim(),
+      cancellation_notice:$("#settingCancellationNotice").value.trim(),
+      member_notice:$("#settingMemberNotice").value.trim(),
+      catalog_notice:$("#settingCatalogNotice").value.trim(),
+    };
+    $$("[data-reservation-setting-key]").forEach(input=>settings[input.dataset.reservationSettingKey]=input.checked);
+    $$("[data-setting-key]").forEach(input=>settings[input.dataset.settingKey]=input.checked);
+    const body={
+      shop_name:$("#settingShopName").value.trim(),
+      phone:$("#settingPhone").value.trim(),
+      address:$("#settingAddress").value.trim(),
+      timezone:$("#settingTimezone").value||"Asia/Tokyo",
+      settings,
+      business_hours:hours,
+      special_days:specialDays,
+      deleted_special_dates:[...state.deletedSpecialDates],
+      operated_by:"owner.html",
+    };
+    buttons.forEach(button=>{button.disabled=true;button.dataset.originalText=button.textContent;button.textContent="保存中...";});
+    try{
+      const data=await api().adminPost(endpoint("ADMIN_SETTINGS_SAVE"),body);
+      state.settings=data;
+      if(state.dashboard)state.dashboard.settings=data.settings;
+      setNotice(data.message||"店舗設定を保存しました。","success");
+      renderSettings();
+      await ensureConfig();
+    }catch(error){
+      handleError(error,"店舗設定を保存できませんでした。");
+    }finally{
+      buttons.forEach(button=>{button.disabled=false;button.textContent=button.dataset.originalText||"設定を保存";});
+    }
+  }
+
   function updateVersionBox(extra=null){if(!window.DPRO_HAIR)return;const worker=state.dashboard?.version||extra?.actual_version||"未確認";$("#versionBox").innerHTML=`<b>owner.html</b><br>${PAGE_VERSION}<br><b>config.js</b><br>${safe(DPRO_HAIR.config.VERSION)}<br><b>Worker</b><br>${safe(worker)}<br><b>店舗コード</b><br>${safe(DPRO_HAIR.shop.getCode())}<br><b>GitHub Pages</b><br>${safe(DPRO_HAIR.config.SITE_BASE_URL)}`;}
   async function runSystemCheck(){try{setNotice("Worker総合検査を実行しています。","warning");const data=await api().systemCheck();const passed=data.passed??Object.values(data.checks||{}).filter(Boolean).length;const failed=data.failed??Object.values(data.checks||{}).filter(v=>!v).length;setNotice(`総合検査：${passed}件合格／${failed}件不合格`,failed?"warning":"success");updateVersionBox({actual_version:data.version});}catch(e){handleError(e,"総合検査を実行できませんでした。")}}
 
@@ -497,6 +1153,12 @@
   function bindEvents(){
     document.addEventListener("click",async e=>{
       const view=e.target.closest("[data-view]")?.dataset.view;if(view)return switchView(view);const jump=e.target.closest("[data-view-jump]")?.dataset.viewJump;if(jump)return switchView(jump);
+      const settingsPane=e.target.closest("[data-settings-pane]")?.dataset.settingsPane;if(settingsPane)return switchSettingsPane(settingsPane);
+      const settingsJump=e.target.closest("[data-settings-pane-jump]")?.dataset.settingsPaneJump;if(settingsJump)return switchSettingsPane(settingsJump);
+      const menuEdit=e.target.closest("[data-menu-edit]")?.dataset.menuEdit;if(menuEdit)return openMenuModal(menuEdit);
+      const menuSetEdit=e.target.closest("[data-menu-set-edit]")?.dataset.menuSetEdit;if(menuSetEdit)return openMenuSetModal(menuSetEdit);
+      const staffEdit=e.target.closest("[data-staff-edit]")?.dataset.staffEdit;if(staffEdit)return openStaffModal(staffEdit).catch(handleError);
+      const specialRemove=e.target.closest("[data-special-remove]")?.dataset.specialRemove;if(specialRemove!==undefined)return removeSpecialDay(Number(specialRemove));
       const move=e.target.closest("[data-date-move]")?.dataset.dateMove;if(move)return changeDate(Number(move));if(e.target.closest("[data-date-today]")){state.selectedDate=DPRO_HAIR.utils.todayISO();syncDateLabels();return loadDashboard(true).catch(handleError)}
       const close=e.target.closest("[data-close-modal]")?.dataset.closeModal;if(close)return closeModal(close);if(e.target.closest('[data-action="open-manual"]'))return openManual().catch(handleError);
       if(e.target.closest('[data-action="open-note"]'))return openNoteModal().catch(handleError);if(e.target.closest('[data-action="open-hair-record"]'))return openHairRecordModal().catch(handleError);if(e.target.closest('[data-action="open-formula"]'))return openFormulaModal().catch(handleError);if(e.target.closest('[data-action="open-proposal"]'))return openProposalModal().catch(handleError);
@@ -513,22 +1175,28 @@
     $("#topAdminCodeForm").addEventListener("submit",async e=>{e.preventDefault();try{await connectAdminCode($("#topAdminCodeInput"));}catch(error){handleError(error,"管理コードを確認できませんでした。")}});
     $("#topAdminCodeClear").addEventListener("click",clearSavedAdminCode);
     $("#reservationStatusFilter").addEventListener("change",e=>{state.reservationFilter=e.target.value;renderReservations()});$("#reservationKeyword").addEventListener("input",DPRO_HAIR.utils.debounce(e=>{state.reservationKeyword=e.target.value;renderReservations()},180));$("#reservationFilterClear").addEventListener("click",()=>{state.reservationFilter="all";state.reservationKeyword="";$("#reservationStatusFilter").value="all";$("#reservationKeyword").value="";renderReservations()});
-    $("#customerSearchInput").addEventListener("input",DPRO_HAIR.utils.debounce(e=>searchCustomers(e.target.value),350));$("#followStatusFilter").addEventListener("change",loadFollow);$("#followTypeFilter").addEventListener("change",e=>{state.followType=e.target.value;renderFollow()});$("#followDueFilter").addEventListener("change",e=>{state.followDue=e.target.value;renderFollow()});$("#followKeyword").addEventListener("input",DPRO_HAIR.utils.debounce(e=>{state.followKeyword=e.target.value;renderFollow()},220));$("#followReload").addEventListener("click",loadFollow);$("#csvPreviewButton").addEventListener("click",previewCsv);$("#settingsSaveButton").addEventListener("click",saveSettings);$("#settingsAdminCodeForm").addEventListener("submit",async e=>{e.preventDefault();try{$("#topAdminCodeInput").value=$("#settingsAdminCode").value;await connectAdminCode($("#topAdminCodeInput"));}catch(error){handleError(error,"管理コードを確認できませんでした。")}});$("#settingsAdminClear").addEventListener("click",clearSavedAdminCode);$("#manualSaveButton").addEventListener("click",saveManual);
+    $("#customerSearchInput").addEventListener("input",DPRO_HAIR.utils.debounce(e=>searchCustomers(e.target.value),350));$("#followStatusFilter").addEventListener("change",loadFollow);$("#followTypeFilter").addEventListener("change",e=>{state.followType=e.target.value;renderFollow()});$("#followDueFilter").addEventListener("change",e=>{state.followDue=e.target.value;renderFollow()});$("#followKeyword").addEventListener("input",DPRO_HAIR.utils.debounce(e=>{state.followKeyword=e.target.value;renderFollow()},220));$("#followReload").addEventListener("click",loadFollow);$("#csvPreviewButton").addEventListener("click",previewCsv);
+    $("#menuSearchInput").addEventListener("input",DPRO_HAIR.utils.debounce(e=>{state.menuKeyword=e.target.value;renderMenus()},180));$("#menuPublicFilter").addEventListener("change",e=>{state.menuVisibility=e.target.value;renderMenus()});$("#menuAddButton").addEventListener("click",()=>openMenuModal());$("#menuSetAddButton").addEventListener("click",()=>openMenuSetModal());$("#menuForm").addEventListener("submit",e=>{e.preventDefault();saveMenu()});$("#menuSetForm").addEventListener("submit",e=>{e.preventDefault();saveMenuSet()});
+    $("#staffSearchInput").addEventListener("input",DPRO_HAIR.utils.debounce(e=>{state.staffKeyword=e.target.value;renderStaff()},180));$("#staffStatusFilter").addEventListener("change",e=>{state.staffStatus=e.target.value;renderStaff()});$("#staffAddButton").addEventListener("click",()=>openStaffModal().catch(handleError));$("#staffForm").addEventListener("submit",e=>{e.preventDefault();saveStaff()});
+    $("#settingsSaveButton").addEventListener("click",saveSettings);$("#settingsSaveBottom").addEventListener("click",saveSettings);$("#copyMondayHours").addEventListener("click",copyMondayHours);$("#specialDayAdd").addEventListener("click",addSpecialDay);$("#settingsAdminCodeForm").addEventListener("submit",async e=>{e.preventDefault();try{$("#topAdminCodeInput").value=$("#settingsAdminCode").value;await connectAdminCode($("#topAdminCodeInput"));}catch(error){handleError(error,"管理コードを確認できませんでした。")}});$("#settingsAdminClear").addEventListener("click",clearSavedAdminCode);$("#manualSaveButton").addEventListener("click",saveManual);
+    document.addEventListener("change",e=>{const hourClosed=e.target.closest("[data-hour-closed]");if(hourClosed){setTimeInputsDisabled(hourClosed.closest("[data-hour-row]"),hourClosed.checked);markSettingsDirty();return}const specialClosed=e.target.closest("[data-special-closed]");if(specialClosed){setTimeInputsDisabled(specialClosed.closest("[data-special-row]"),specialClosed.checked);markSettingsDirty();return}if(e.target.closest("[data-settings-pane-panel]")&&!e.target.closest('[data-settings-pane-panel="connection"]'))markSettingsDirty()});
+    document.addEventListener("input",e=>{if(e.target.closest("[data-settings-pane-panel]")&&!e.target.closest('[data-settings-pane-panel="connection"]'))markSettingsDirty()});
     $("#noteForm").addEventListener("submit",e=>{e.preventDefault();saveNote().catch(error=>handleError(error,"注意事項を保存できませんでした。"))});$("#hairRecordForm").addEventListener("submit",e=>{e.preventDefault();saveHairRecord().catch(error=>handleError(error,"施術カルテを保存できませんでした。"))});$("#formulaForm").addEventListener("submit",e=>{e.preventDefault();saveFormula().catch(error=>handleError(error,"薬剤履歴を保存できませんでした。"))});$("#proposalForm").addEventListener("submit",e=>{e.preventDefault();saveProposal().catch(error=>handleError(error,"次回来店提案を保存できませんでした。"))});$("#followActionForm").addEventListener("submit",e=>{e.preventDefault();saveFollowAction().catch(error=>handleError(error,"フォロー対応を保存できませんでした。"))});
-        $$('.modal').forEach(m=>m.addEventListener('click',e=>{if(e.target===m&&m.id!=="authModal")closeModal(m.id)}));document.addEventListener('keydown',e=>{if(e.key==='Escape')$$('.modal.open').forEach(m=>{if(m.id!=="authModal")closeModal(m.id)})});
+    window.addEventListener("beforeunload",e=>{if(!state.settingsDirty)return;e.preventDefault();e.returnValue=""});
+    $$('.modal').forEach(m=>m.addEventListener('click',e=>{if(e.target===m&&m.id!=="authModal")closeModal(m.id)}));document.addEventListener('keydown',e=>{if(e.key==='Escape')$$('.modal.open').forEach(m=>{if(m.id!=="authModal")closeModal(m.id)})});
   }
 
   async function init(){
     try{
       if(!window.DPRO_HAIR) throw new Error("config.jsを読み込めませんでした。Ctrl＋F5で再読み込みしてください。");
       bindEvents();
-      $("#authCodeInput").value=DPRO_HAIR.admin.getCode()||DPRO_HAIR.config.demo.adminCode||"";
+      $("#authCodeInput").value=DPRO_HAIR.admin.getCode()||(DEMO_MODE?DPRO_HAIR.config.demo.adminCode:"");
       await ensureConfig();
-      $("#topAdminCodeInput").value=DPRO_HAIR.admin.getCode()||DPRO_HAIR.config.demo.adminCode||"";
+      $("#topAdminCodeInput").value=DPRO_HAIR.admin.getCode()||(DEMO_MODE?DPRO_HAIR.config.demo.adminCode:"");
       $("#settingsAdminCode").value=DPRO_HAIR.admin.getCode();
       updateCodeChip();
       if(!DPRO_HAIR.admin.hasCode()){
-        setNotice("右上の管理コード欄に「1234」を入力し、接続を押してください。","warning");
+        setNotice(DEMO_MODE?"右上の管理コード欄に「1234」を入力し、接続を押してください。":"右上の管理コードを入力し、接続を押してください。","warning");
         setAdminConnectionStatus("未接続です。管理コードを入力してください。","idle");
         return;
       }
