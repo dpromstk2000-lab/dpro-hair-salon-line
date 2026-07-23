@@ -317,11 +317,11 @@ body #dpro-toast-container{
 
 <div class="modal" id="manualModal" aria-hidden="true"><div class="modal__panel"><div class="modal__head"><div><h3>電話・店頭予約を登録</h3><p>既存顧客は顧客管理で選択してから開くと自動入力されます。</p></div><button class="modal__close" type="button" data-close-modal="manualModal">×</button></div><div class="modal__body"><div class="form-grid"><div class="field"><label class="label" for="manualName">お客様名</label><input class="input" id="manualName"></div><div class="field"><label class="label" for="manualPhone">電話番号</label><input class="input" id="manualPhone" inputmode="tel"></div><div class="field"><label class="label" for="manualDate">予約日</label><input class="input" type="date" id="manualDate"></div><div class="field"><label class="label" for="manualTime">予約時間</label><input class="input" type="time" step="1800" id="manualTime"></div><div class="field"><label class="label" for="manualMenu">メニュー</label><select class="select" id="manualMenu"></select></div><div class="field"><label class="label" for="manualStaff">担当</label><select class="select" id="manualStaff"><option value="">おまかせ</option></select></div><div class="field full"><label class="label" for="manualRequest">ご要望・メモ</label><textarea class="textarea" id="manualRequest"></textarea></div></div><input type="hidden" id="manualCustomerId"></div><div class="modal__foot"><button class="btn outline" type="button" data-close-modal="manualModal">取消</button><button class="btn primary" type="button" id="manualSaveButton">予約を登録</button></div></div></div>
 
-<script src="./config.js?v=hair-next-9-r1"></script>
+<script src="./config.js?v=hair-next-9-r2"></script>
 <script>
 (() => {
   "use strict";
-  const PAGE_VERSION = "HAIR-NEXT-9-R1-ADMIN-CODE-UX-FIX-20260723";
+  const PAGE_VERSION = "HAIR-NEXT-9-R2-DISCONNECT-DATA-RESET-20260723";
   const PARAMS = new URLSearchParams(location.search);
   const DEMO_MODE = PARAMS.get("demo") === "1";
   const WEEKDAY_LABELS = ["日","月","火","水","木","金","土"];
@@ -350,7 +350,8 @@ body #dpro-toast-container{
     followTasks:[], proposals:[], followActionLogs:[], menus:null, staff:null, settings:null, csvImports:[],
     reservationFilter:"all", reservationKeyword:"", followKeyword:"", followType:"all", followDue:"all", busy:false,
     menuKeyword:"", menuVisibility:"all", staffKeyword:"", staffStatus:"all",
-    settingsPane:"overview", settingsDirty:false, specialDaysDraft:[], deletedSpecialDates:[], demoCodeCleared:false
+    settingsPane:"overview", settingsDirty:false, specialDaysDraft:[], deletedSpecialDates:[], demoCodeCleared:false,
+    adminSessionGeneration:0
   };
   const $ = (s,r=document) => r.querySelector(s); const $$ = (s,r=document) => [...r.querySelectorAll(s)];
   const safe = v => window.DPRO_HAIR?.utils?.escapeHtml ? DPRO_HAIR.utils.escapeHtml(v ?? "") : String(v ?? "").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"}[m]));
@@ -429,6 +430,7 @@ body #dpro-toast-container{
     }
   }
   function applyDashboardData(data){
+    if(!isAdminConnected())return;
     state.dashboard=data;
     state.followTasks=data?.follow_tasks||[];
     state.proposals=data?.next_proposals||[];
@@ -454,20 +456,27 @@ body #dpro-toast-container{
       button.setAttribute("aria-busy","true");
     }
     setAdminConnectionStatus("管理コードを確認しています。少しお待ちください。","checking");
+    const generation=state.adminSessionGeneration+1;
+    state.adminSessionGeneration=generation;
     DPRO_HAIR.admin.saveCode(code);
     state.demoCodeCleared=false;
     $("#settingsAdminCode").value=code;
     try{
       const data=await api().adminGet(endpoint("ADMIN_TODAY"),{date:state.selectedDate});
+      if(!isAdminSessionCurrent(generation))return null;
       applyDashboardData(data);
+      setAdminActionAvailability(true);
       updateCodeChip({message:"接続しました。予約・顧客データを表示しています。",state:"success"});
       closeModal("authModal");
       setNotice("管理コードを確認し、データへ接続しました。","success");
       return data;
     }catch(error){
+      if(generation!==state.adminSessionGeneration)return null;
       DPRO_HAIR.admin.clearCode();
-      $("#settingsAdminCode").value="";
-      updateCodeChip({message:"接続できませんでした。管理コードを確認してください。",state:"error"});
+      state.demoCodeCleared=true;
+      clearAdminCodeInputs();
+      disconnectAdminData({switchToToday:true});
+      updateCodeChip({message:"接続できませんでした。管理コードを確認してください。",state:"error",allowDemoPrefill:false});
       throw error;
     }finally{
       if(button){
@@ -486,17 +495,192 @@ body #dpro-toast-container{
       input.setAttribute("value","");
     });
   }
+  function isAdminConnected(){
+    return Boolean(window.DPRO_HAIR?.admin?.hasCode?.());
+  }
+  function isAdminSessionCurrent(generation){
+    return generation===state.adminSessionGeneration && isAdminConnected();
+  }
+  function disconnectedMarkup(message="管理コードを入力して接続してください。"){
+    return `<div class="empty">${safe(message)}</div>`;
+  }
+  function setAdminActionAvailability(enabled){
+    [
+      "#menuAddButton","#menuSetAddButton","#staffAddButton",
+      "#settingsSaveButton","#settingsSaveBottom","#copyMondayHours","#specialDayAdd",
+      "#csvPreviewButton","#manualSaveButton",
+      "#carteAddNote","#carteAddRecord","#carteAddProposal"
+    ].forEach(selector=>{
+      const button=$(selector);
+      if(button)button.disabled=!enabled;
+    });
+  }
+  function clearSettingsFormValues(){
+    [
+      "#settingShopName","#settingPhone","#settingAddress",
+      "#settingBookingDays","#settingSameDayCutoff","#settingLostDays",
+      "#settingDailyLimit","#settingConcurrentLimit",
+      "#settingPhotoMaxBytes","#settingPhotoMaxPerRecord","#settingCsvMaxRows",
+      "#settingBookingNotice","#settingCancellationNotice",
+      "#settingMemberNotice","#settingCatalogNotice"
+    ].forEach(selector=>{
+      const input=$(selector);
+      if(input)input.value="";
+    });
+    const timezone=$("#settingTimezone");
+    if(timezone)timezone.value="Asia/Tokyo";
+    $$("[data-reservation-setting-key],[data-setting-key]").forEach(input=>input.checked=false);
+    const menuGuard=$("#settingMenuCapacityGuard");
+    if(menuGuard)menuGuard.checked=false;
+  }
+  function closeAdminDataModals(){
+    $$(".modal.open").forEach(modal=>{
+      if(modal.id!=="authModal")closeModal(modal.id);
+    });
+    [
+      "#noteForm","#hairRecordForm","#formulaForm","#proposalForm","#followActionForm",
+      "#menuForm","#menuSetForm","#staffForm"
+    ].forEach(selector=>{
+      const form=$(selector);
+      if(form?.reset)form.reset();
+    });
+    [
+      "#manualCustomerId","#manualName","#manualPhone","#manualDate","#manualTime",
+      "#manualRequest","#followActionTaskId","#followActionDueDate","#followActionNote",
+      "#proposalId"
+    ].forEach(selector=>{
+      const input=$(selector);
+      if(input)input.value="";
+    });
+    [
+      "#manualMenu","#manualStaff","#recordStaff","#formulaStaff",
+      "#proposalMenu","#proposalStaff"
+    ].forEach(selector=>{
+      const select=$(selector);
+      if(select)select.innerHTML="";
+    });
+    [
+      "#reservationModalBody","#menuSetItemList","#staffMenuList"
+    ].forEach(selector=>{
+      const element=$(selector);
+      if(element)element.innerHTML="";
+    });
+    const reservationTitle=$("#reservationModalTitle");
+    if(reservationTitle)reservationTitle.textContent="予約詳細";
+    const reservationSub=$("#reservationModalSub");
+    if(reservationSub)reservationSub.textContent="—";
+    const followCustomer=$("#followActionCustomer");
+    if(followCustomer)followCustomer.textContent="—";
+  }
+  function resetAdminDataState(){
+    state.adminSessionGeneration+=1;
+    state.dashboard=null;
+    state.customerResults=[];
+    state.selectedCustomerId=null;
+    state.customerDetail=null;
+    state.followTasks=[];
+    state.proposals=[];
+    state.followActionLogs=[];
+    state.menus=null;
+    state.staff=null;
+    state.settings=null;
+    state.csvImports=[];
+    state.reservationFilter="all";
+    state.reservationKeyword="";
+    state.followKeyword="";
+    state.followType="all";
+    state.followDue="all";
+    state.menuKeyword="";
+    state.menuVisibility="all";
+    state.staffKeyword="";
+    state.staffStatus="all";
+    state.settingsPane="overview";
+    state.settingsDirty=false;
+    state.specialDaysDraft=[];
+    state.deletedSpecialDates=[];
+    setBusy(false);
+  }
+  function renderDisconnectedAdminData(){
+    const message="管理コードを入力して接続してください。";
+    const placeholder=disconnectedMarkup(message);
+
+    renderStats();
+    renderPipeline();
+
+    $("#todayReservationTable").innerHTML=placeholder;
+    $("#reservationPageList").innerHTML=placeholder;
+    $("#reservationSummary").textContent=`${selectedDateLabel()}・未接続`;
+    $("#reservationPageSummary").textContent="管理コード未接続";
+    $("#attentionList").innerHTML=placeholder;
+    $("#analyticsAttention").innerHTML=placeholder;
+    $("#analyticsStatus").innerHTML=placeholder;
+
+    $("#todayFollowList").innerHTML=placeholder;
+    $("#followTaskList").innerHTML=placeholder;
+    $("#proposalList").innerHTML=placeholder;
+    $("#followActionRecent").innerHTML=placeholder;
+    $("#followStats").innerHTML="";
+    $("#followCountLabel").textContent="管理コード未接続";
+
+    $("#customerList").innerHTML=placeholder;
+    $("#customerDetailCard").innerHTML=placeholder;
+    $("#carteContent").innerHTML=`<div class="card">${placeholder}</div>`;
+    $("#photoContent").innerHTML=placeholder;
+    updateSelectedCustomerLabels();
+
+    $("#menuGrid").innerHTML=placeholder;
+    $("#menuSetGrid").innerHTML=placeholder;
+    $("#menuCountLabel").textContent="管理コード未接続";
+    $("#menuSetCountLabel").textContent="管理コード未接続";
+    $("#staffGrid").innerHTML=placeholder;
+
+    $("#csvImportList").innerHTML=placeholder;
+    $("#csvPreviewResult").innerHTML=placeholder;
+    const csvFile=$("#csvFileInput");
+    if(csvFile)csvFile.value="";
+
+    $("#settingsOverview").innerHTML=placeholder;
+    $("#businessHoursEditor").innerHTML=placeholder;
+    $("#specialDayList").innerHTML=placeholder;
+    $("#featureSettings").innerHTML=placeholder;
+    clearSettingsFormValues();
+    updateVersionBox();
+    setSettingsClean();
+
+    [
+      "#customerSearchInput","#reservationKeyword","#followKeyword",
+      "#menuSearchInput","#staffSearchInput"
+    ].forEach(selector=>{
+      const input=$(selector);
+      if(input)input.value="";
+    });
+    const reservationStatus=$("#reservationStatusFilter");
+    if(reservationStatus)reservationStatus.value="all";
+    const followStatus=$("#followStatusFilter");
+    if(followStatus)followStatus.value="pending";
+    const followType=$("#followTypeFilter");
+    if(followType)followType.value="all";
+    const followDue=$("#followDueFilter");
+    if(followDue)followDue.value="all";
+    const menuVisibility=$("#menuPublicFilter");
+    if(menuVisibility)menuVisibility.value="all";
+    const staffStatus=$("#staffStatusFilter");
+    if(staffStatus)staffStatus.value="all";
+
+    closeAdminDataModals();
+    setAdminActionAvailability(false);
+  }
+  function disconnectAdminData(options={}){
+    resetAdminDataState();
+    renderDisconnectedAdminData();
+    if(options.switchToToday!==false)switchView("today",{skipEnsure:true});
+  }
   function clearSavedAdminCode(){
     const hadSavedCode=DPRO_HAIR.admin.hasCode();
     DPRO_HAIR.admin.clearCode();
     state.demoCodeCleared=true;
     clearAdminCodeInputs();
-    state.dashboard=null;
-    state.followTasks=[];
-    state.proposals=[];
-    $("#todayStats").innerHTML="";
-    $("#todayReservationTable").innerHTML='<div class="empty">管理コードを入力して接続してください。</div>';
-    $("#attentionList").innerHTML='<div class="empty">管理コードを入力して接続してください。</div>';
+    disconnectAdminData({switchToToday:true});
     const message=hadSavedCode
       ?"このブラウザに保存されていた管理コードを削除しました。"
       :"保存されている管理コードはありません。入力欄を空にしました。";
@@ -575,13 +759,58 @@ body #dpro-toast-container{
   }
     function renderAnalytics(){const c=state.dashboard?.counts||{};const max=Math.max(1,...STATUS_FLOW.map(([k])=>Number(c[k]||0)));$("#analyticsStatus").innerHTML=STATUS_FLOW.map(([k,l])=>`<div style="display:grid;grid-template-columns:90px 1fr 36px;gap:9px;align-items:center;margin:10px 0"><b style="font-size:.75rem">${safe(l)}</b><div style="height:11px;border-radius:99px;background:#edf2ef;overflow:hidden"><div style="width:${Math.round((Number(c[k]||0)/max)*100)}%;height:100%;background:var(--brand2);border-radius:99px"></div></div><strong style="text-align:right">${Number(c[k]||0)}</strong></div>`).join("");}
 
-  async function loadDashboard(force=false){if(state.busy&&!force)return;setBusy(true);try{const data=await api().adminGet(endpoint("ADMIN_TODAY"),{date:state.selectedDate});applyDashboardData(data);return data;}finally{setBusy(false)}}
+  async function loadDashboard(force=false){
+    if(!isAdminConnected()){renderDisconnectedAdminData();return null;}
+    if(state.busy&&!force)return null;
+    const generation=state.adminSessionGeneration;
+    setBusy(true);
+    try{
+      const data=await api().adminGet(endpoint("ADMIN_TODAY"),{date:state.selectedDate});
+      if(!isAdminSessionCurrent(generation))return null;
+      applyDashboardData(data);
+      return data;
+    }finally{
+      if(generation===state.adminSessionGeneration)setBusy(false);
+    }
+  }
   async function updateReservationStatus(id,status){try{await api().adminPost(endpoint("ADMIN_RESERVATION_STATUS"),{reservation_id:id,status,operated_by:"owner.html"});setNotice(`予約を「${statusLabel(status)}」へ更新しました。`);await loadDashboard(true);}catch(e){handleError(e,"予約状態を更新できませんでした。")}}
   async function showReservationDetail(id){openModal("reservationModal");$("#reservationModalBody").innerHTML='<div class="skeleton"></div>';try{const data=await api().adminGet(endpoint("ADMIN_RESERVATION_DETAIL"),{reservation_id:id});const r=data.reservation;$("#reservationModalTitle").textContent=`${customerName(r)}様の予約`;$("#reservationModalSub").textContent=`${fmtDateTime(r.start_at)}／${menuName(r)}`;$("#reservationModalBody").innerHTML=`<div class="detail-grid"><div class="detail-box"><small>予約番号</small><b>${safe(r.reservation_no)}</b></div><div class="detail-box"><small>状態</small><b>${safe(statusLabel(r.status))}</b></div><div class="detail-box"><small>担当</small><b>${safe(staffName(r))}</b></div><div class="detail-box"><small>料金</small><b>${safe(yen(r.menu_set?.price_yen||r.menu?.price_yen))}</b></div></div><div class="card soft" style="margin-top:13px"><b>お客様の希望</b><p class="help">${safe(r.customer_request||"なし")}</p><b>髪のお悩み</b><p class="help">${safe(r.hair_concern||"なし")}</p><b>アレルギー・注意</b><p class="help" style="color:${r.allergy_notice?'var(--err)':'var(--muted)'}">${safe(r.allergy_notice||"なし")}</p></div><div class="row-actions" style="margin-top:13px">${statusButtons(r)}</div>`;}catch(e){$("#reservationModalBody").innerHTML=`<div class="empty">${safe(DPRO_HAIR.utils.errorMessage(e))}</div>`}}
 
-  async function searchCustomers(q=""){try{const data=await api().adminGet(endpoint("ADMIN_SEARCH"),{q,limit:80});state.customerResults=data.customers||data.results||[];renderCustomerList();}catch(e){handleError(e,"顧客検索に失敗しました。")}}
+  async function searchCustomers(q=""){
+    if(!isAdminConnected()){renderDisconnectedAdminData();return null;}
+    const generation=state.adminSessionGeneration;
+    try{
+      const data=await api().adminGet(endpoint("ADMIN_SEARCH"),{q,limit:80});
+      if(!isAdminSessionCurrent(generation))return null;
+      state.customerResults=data.customers||data.results||[];
+      renderCustomerList();
+      return data;
+    }catch(e){
+      if(generation===state.adminSessionGeneration)handleError(e,"顧客検索に失敗しました。");
+      return null;
+    }
+  }
   function renderCustomerList(){const list=state.customerResults;$("#customerList").innerHTML=list.length?list.map(c=>`<button type="button" class="customer-row ${state.selectedCustomerId===c.id?'active':''}" data-customer-id="${c.id}"><span><b>${safe(c.full_name)}</b><small>${safe(c.customer_no||"")} ${safe(c.phone||"")}</small></span><span class="customer-row__tag">${Number(c.visit_count||0)}回来店</span></button>`).join(""):`<div class="empty">顧客が見つかりません。</div>`;}
-  async function selectCustomer(id,jump=false){state.selectedCustomerId=id;renderCustomerList();$("#customerDetailCard").innerHTML='<div class="skeleton"></div>';try{const data=await api().adminGet(endpoint("ADMIN_CUSTOMER_DETAIL"),{customer_id:id});state.customerDetail=data;renderCustomerDetail();renderCarte();renderPhotos();if(jump)switchView("customers");}catch(e){handleError(e,"顧客詳細を読み込めませんでした。")}}
+  async function selectCustomer(id,jump=false){
+    if(!isAdminConnected()){renderDisconnectedAdminData();return null;}
+    const generation=state.adminSessionGeneration;
+    state.selectedCustomerId=id;
+    renderCustomerList();
+    $("#customerDetailCard").innerHTML='<div class="skeleton"></div>';
+    try{
+      const data=await api().adminGet(endpoint("ADMIN_CUSTOMER_DETAIL"),{customer_id:id});
+      if(!isAdminSessionCurrent(generation))return null;
+      state.customerDetail=data;
+      renderCustomerDetail();
+      renderCarte();
+      renderPhotos();
+      if(jump)switchView("customers");
+      return data;
+    }catch(e){
+      if(generation===state.adminSessionGeneration)handleError(e,"顧客詳細を読み込めませんでした。");
+      return null;
+    }
+  }
   function selectedCustomer(){return state.customerDetail?.customer||null;}
   function requireSelectedCustomer(){const customer=selectedCustomer();if(!customer){setNotice("先に顧客を選択してください。","warning");switchView("customers");throw new Error("顧客が選択されていません。");}return customer;}
   function updateSelectedCustomerLabels(){const customer=selectedCustomer();$$("[data-selected-customer-label]").forEach(el=>{el.textContent=customer?`${customer.full_name}様（${customer.customer_no||"顧客番号なし"}）`:"顧客を選択してください。";});}
@@ -609,7 +838,27 @@ body #dpro-toast-container{
   function openFollowAction(taskId){const task=(state.followTasks||[]).find(t=>t.id===taskId)||(state.customerDetail?.follow_tasks||[]).find(t=>t.id===taskId);if(!task)return;$("#followActionForm").reset();$("#followActionTaskId").value=task.id;$("#followActionCustomer").textContent=`${task.customer?.full_name||state.customerDetail?.customer?.full_name||"お客様"}様／${followTypeLabel(task.task_type)}`;$("#followActionDueDate").value=task.due_date||"";openModal("followActionModal");}
   async function saveFollowAction(){const taskId=$("#followActionTaskId").value;const actionType=$("#followActionType").value;const task=(state.followTasks||[]).find(t=>t.id===taskId)||(state.customerDetail?.follow_tasks||[]).find(t=>t.id===taskId);const button=$("#followActionSaveButton");button.disabled=true;button.textContent="保存中...";try{await api().adminPost(endpoint("ADMIN_FOLLOW_ACTION_SAVE"),{follow_task_id:taskId,customer_id:task?.customer_id,action_type:actionType,note:$("#followActionNote").value,due_date:actionType==="rescheduled"?$("#followActionDueDate").value||undefined:undefined,operated_by:"owner.html"});closeModal("followActionModal");setNotice("フォロー対応を記録しました。");await loadFollow();await loadDashboard(true);if(state.selectedCustomerId)await refreshSelectedCustomer();}finally{button.disabled=false;button.textContent="履歴を保存";}}
 
-  async function loadFollow(){try{const status=$("#followStatusFilter")?.value||"pending";const [tasks,props,logs]=await Promise.all([api().adminGet(endpoint("ADMIN_FOLLOW_TASKS"),{status,limit:500}),api().adminGet(endpoint("ADMIN_NEXT_PROPOSALS"),{status:status==='pending'?'proposed':'all',limit:300}),api().adminGet(endpoint("ADMIN_FOLLOW_ACTION_LOGS"),{limit:100})]);state.followTasks=tasks.tasks||[];state.proposals=props.proposals||[];state.followActionLogs=logs.logs||[];renderFollow();}catch(e){handleError(e,"フォローを読み込めませんでした。")}}
+  async function loadFollow(){
+    if(!isAdminConnected()){renderDisconnectedAdminData();return null;}
+    const generation=state.adminSessionGeneration;
+    try{
+      const status=$("#followStatusFilter")?.value||"pending";
+      const [tasks,props,logs]=await Promise.all([
+        api().adminGet(endpoint("ADMIN_FOLLOW_TASKS"),{status,limit:500}),
+        api().adminGet(endpoint("ADMIN_NEXT_PROPOSALS"),{status:status==='pending'?'proposed':'all',limit:300}),
+        api().adminGet(endpoint("ADMIN_FOLLOW_ACTION_LOGS"),{limit:100})
+      ]);
+      if(!isAdminSessionCurrent(generation))return null;
+      state.followTasks=tasks.tasks||[];
+      state.proposals=props.proposals||[];
+      state.followActionLogs=logs.logs||[];
+      renderFollow();
+      return {tasks,props,logs};
+    }catch(e){
+      if(generation===state.adminSessionGeneration)handleError(e,"フォローを読み込めませんでした。");
+      return null;
+    }
+  }
   async function copyFollow(id){const task=state.followTasks.find(t=>t.id===id)||(state.dashboard?.follow_tasks||[]).find(t=>t.id===id)||(state.customerDetail?.follow_tasks||[]).find(t=>t.id===id);if(!task?.message_draft)return setNotice("コピーする文章がありません。","warning");try{await DPRO_HAIR.utils.copyText(task.message_draft);await Promise.all([api().adminPost(endpoint("ADMIN_MESSAGE_LOG_COPY"),{customer_id:task.customer_id,follow_task_id:task.id,body_text:task.message_draft,action_type:"copy",operated_by:"owner.html"}),api().adminPost(endpoint("ADMIN_FOLLOW_ACTION_SAVE"),{follow_task_id:task.id,customer_id:task.customer_id,action_type:"copied",note:"LINE送信用文章をコピー",operated_by:"owner.html"})]);setNotice("文章をコピーし、対応履歴を記録しました。");await loadFollow();}catch(e){handleError(e,"文章をコピーできませんでした。")}}
   async function updateFollow(id,status){let reason=null;if(status==='skipped')reason=prompt("見送り理由を入力してください。")||"オーナー判断で見送り";try{await api().adminPost(endpoint("ADMIN_FOLLOW_TASK_STATUS"),{follow_task_id:id,status,skip_reason:reason,operated_by:"owner.html"});setNotice("フォロー状態を更新しました。");await loadFollow();await loadDashboard(true);}catch(e){handleError(e,"フォロー状態を更新できませんでした。")}}
   async function updateProposal(id,status){try{await api().adminPost(endpoint("ADMIN_NEXT_PROPOSAL_STATUS"),{proposal_id:id,status});setNotice("次回来店提案を更新しました。");await loadFollow();}catch(e){handleError(e,"提案状態を更新できませんでした。")}}
@@ -631,13 +880,17 @@ body #dpro-toast-container{
     });
   }
   async function loadMenus(){
+    if(!isAdminConnected()){renderDisconnectedAdminData();return null;}
+    const generation=state.adminSessionGeneration;
     try{
       const data=await api().adminGet(endpoint("ADMIN_MENUS"),{});
+      if(!isAdminSessionCurrent(generation))return null;
       state.menus=data;
       renderMenus();
       return data;
     }catch(e){
-      handleError(e,"メニューを読み込めませんでした。");
+      if(generation===state.adminSessionGeneration)handleError(e,"メニューを読み込めませんでした。");
+      return null;
     }
   }
   function renderMenus(){
@@ -824,13 +1077,17 @@ body #dpro-toast-container{
     });
   }
   async function loadStaff(){
+    if(!isAdminConnected()){renderDisconnectedAdminData();return null;}
+    const generation=state.adminSessionGeneration;
     try{
       const data=await api().adminGet(endpoint("ADMIN_STAFF"),{});
+      if(!isAdminSessionCurrent(generation))return null;
       state.staff=data.staff||[];
       renderStaff();
       return state.staff;
     }catch(e){
-      handleError(e,"スタッフを読み込めませんでした。");
+      if(generation===state.adminSessionGeneration)handleError(e,"スタッフを読み込めませんでした。");
+      return null;
     }
   }
   function renderStaff(){
@@ -895,7 +1152,20 @@ body #dpro-toast-container{
     }
   }
 
-  async function loadCsvImports(){try{const data=await api().adminGet(endpoint("ADMIN_CSV_IMPORTS"),{limit:100});state.csvImports=data.imports||[];$("#csvImportList").innerHTML=state.csvImports.length?state.csvImports.map(i=>`<article class="list-item"><div><h4>${safe(i.original_filename)} <span class="badge ${i.status==='completed'?'ok':i.status?.includes('error')||i.status==='failed'?'err':'info'}">${safe(i.status)}</span></h4><p>成功 ${Number(i.success_rows||0)}件／エラー ${Number(i.error_rows||0)}件／重複 ${Number(i.duplicate_rows||0)}件</p><small>${safe(fmtDateTime(i.created_at))}</small></div></article>`).join(""):'<div class="empty">取込履歴はありません。</div>';}catch(e){handleError(e,"CSV取込履歴を読み込めませんでした。")}}
+  async function loadCsvImports(){
+    if(!isAdminConnected()){renderDisconnectedAdminData();return null;}
+    const generation=state.adminSessionGeneration;
+    try{
+      const data=await api().adminGet(endpoint("ADMIN_CSV_IMPORTS"),{limit:100});
+      if(!isAdminSessionCurrent(generation))return null;
+      state.csvImports=data.imports||[];
+      $("#csvImportList").innerHTML=state.csvImports.length?state.csvImports.map(i=>`<article class="list-item"><div><h4>${safe(i.original_filename)} <span class="badge ${i.status==='completed'?'ok':i.status?.includes('error')||i.status==='failed'?'err':'info'}">${safe(i.status)}</span></h4><p>成功 ${Number(i.success_rows||0)}件／エラー ${Number(i.error_rows||0)}件／重複 ${Number(i.duplicate_rows||0)}件</p><small>${safe(fmtDateTime(i.created_at))}</small></div></article>`).join(""):'<div class="empty">取込履歴はありません。</div>';
+      return data;
+    }catch(e){
+      if(generation===state.adminSessionGeneration)handleError(e,"CSV取込履歴を読み込めませんでした。");
+      return null;
+    }
+  }
   function parseCsv(textValue){const rows=[];let row=[],cell="",quote=false;for(let i=0;i<textValue.length;i++){const ch=textValue[i],next=textValue[i+1];if(ch==='"'){if(quote&&next==='"'){cell+='"';i++;}else quote=!quote;}else if(ch===','&&!quote){row.push(cell);cell="";}else if((ch==='\n'||ch==='\r')&&!quote){if(ch==='\r'&&next==='\n')i++;row.push(cell);if(row.some(v=>String(v).trim()))rows.push(row);row=[];cell="";}else cell+=ch;}row.push(cell);if(row.some(v=>String(v).trim()))rows.push(row);if(rows.length<2)return[];const headers=rows[0].map(h=>h.trim());return rows.slice(1).map(cols=>Object.fromEntries(headers.map((h,i)=>[h,cols[i]??""])));}
   async function previewCsv(){const file=$("#csvFileInput").files?.[0];if(!file)return setNotice("CSVファイルを選択してください。","warning");const btn=$("#csvPreviewButton");btn.disabled=true;btn.textContent="確認中...";try{const content=await file.text();const rows=parseCsv(content);if(!rows.length)throw new Error("CSVのデータ行を読み込めませんでした。");const data=await api().csvPreview({original_filename:file.name,rows,default_existing_action:$("#csvExistingAction").value,uploaded_by:"owner.html"});const s=data.summary||{};$("#csvPreviewResult").innerHTML=`<div class="notice" data-state="success"><span class="notice__icon">✓</span><span class="notice__text">全${s.total||0}件／新規${s.create||0}件／追記${s.append||0}件／更新${s.update||0}件／確認${s.review||0}件</span></div><button class="btn gold wide" type="button" data-csv-execute="${data.import?.id}">この内容で取込を実行</button>`;await loadCsvImports();}catch(e){handleError(e,"CSVの事前確認に失敗しました。")}finally{btn.disabled=false;btn.textContent="事前確認を実行"}}
   async function executeCsv(id){if(!confirm("事前確認済みの内容で顧客データを取り込みます。よろしいですか？"))return;try{const data=await api().csvExecute({import_id:id,operated_by:"owner.html"});setNotice(data.message||"CSV取込が完了しました。",data.summary?.errors?"warning":"success");await loadCsvImports();}catch(e){handleError(e,"CSV取込を実行できませんでした。")}}
@@ -928,17 +1198,21 @@ body #dpro-toast-container{
     return String(value||fallback||"").slice(0,5);
   }
   async function loadSettings(){
+    if(!isAdminConnected()){renderDisconnectedAdminData();return null;}
+    const generation=state.adminSessionGeneration;
     try{
       const [data]=await Promise.all([
         api().adminGet(endpoint("ADMIN_SETTINGS"),{}),
         state.menus?Promise.resolve(state.menus):loadMenus(),
         state.staff?Promise.resolve(state.staff):loadStaff(),
       ]);
+      if(!isAdminSessionCurrent(generation))return null;
       state.settings=data;
       renderSettings();
       return data;
     }catch(e){
-      handleError(e,"設定を読み込めませんでした。");
+      if(generation===state.adminSessionGeneration)handleError(e,"設定を読み込めませんでした。");
+      return null;
     }
   }
   function renderSettingsOverview(){
@@ -1171,8 +1445,35 @@ body #dpro-toast-container{
   async function openManual(){if(!state.menus)await loadMenus();if(!state.staff)await loadStaff();const c=state.customerDetail?.customer;$("#manualCustomerId").value=c?.id||"";$("#manualName").value=c?.full_name||"";$("#manualPhone").value=c?.phone||"";$("#manualDate").value=state.selectedDate;$("#manualTime").value="10:00";const menus=state.menus?.menus||[];const sets=state.menus?.menu_sets||[];$("#manualMenu").innerHTML=`<optgroup label="単独メニュー">${menus.filter(m=>m.is_active).map(m=>`<option value="menu:${m.id}">${safe(m.menu_name)}／${safe(yen(m.price_yen))}／${m.duration_minutes}分</option>`).join("")}</optgroup><optgroup label="組み合わせ">${sets.filter(m=>m.is_active&&m.booking_enabled!==false).map(m=>`<option value="set:${m.id}">${safe(m.set_name)}／${safe(yen(m.price_yen))}／${m.duration_minutes}分</option>`).join("")}</optgroup>`;$("#manualStaff").innerHTML='<option value="">おまかせ</option>'+state.staff.filter(s=>s.is_active&&s.can_take_booking).map(s=>`<option value="${s.id}">${safe(s.display_name)}</option>`).join("");openModal("manualModal");}
   async function saveManual(){const choice=$("#manualMenu").value;const [kind,id]=choice.split(":");const staffId=$("#manualStaff").value;const body={customer_id:$("#manualCustomerId").value||undefined,full_name:$("#manualName").value,phone:$("#manualPhone").value,date:$("#manualDate").value,time:$("#manualTime").value,menu_id:kind==='menu'?id:undefined,menu_set_id:kind==='set'?id:undefined,staff_id:staffId||undefined,staff_preference:staffId?'specific':'any',customer_request:$("#manualRequest").value,source:"phone",operated_by:"owner.html"};const btn=$("#manualSaveButton");btn.disabled=true;btn.textContent="登録中...";try{const data=await api().adminPost(endpoint("ADMIN_MANUAL_RESERVATION"),body);closeModal("manualModal");setNotice(`${data.customer?.full_name||body.full_name}様の予約を登録しました。`);state.selectedDate=body.date;syncDateLabels();await loadDashboard(true);}catch(e){handleError(e,"予約を登録できませんでした。")}finally{btn.disabled=false;btn.textContent="予約を登録"}}
 
-  async function ensureView(view){if(view==="customers"&&!state.customerResults.length)await searchCustomers("");if(view==="follow")await loadFollow();if(view==="menus")await loadMenus();if(view==="staff")await loadStaff();if(view==="csv")await loadCsvImports();if(view==="settings")await loadSettings();if(view==="analytics")renderAnalytics();if(view==="carte"){await ensureCarteMasters();renderCarte();}if(view==="photos")renderPhotos();}
-  function switchView(view){if(!VIEW_META[view])return;state.currentView=view;$$('[data-view-panel]').forEach(p=>p.classList.toggle('active',p.dataset.viewPanel===view));$$('[data-view]').forEach(b=>b.setAttribute('aria-current',b.dataset.view===view?'page':'false'));const meta=VIEW_META[view];$("#pageEyebrow").textContent=meta[0];$("#pageTitle").textContent=meta[1];$("#sidebar").classList.remove("open");$("#mobileOverlay").classList.remove("open");ensureView(view).catch(handleError);window.scrollTo({top:0,behavior:"smooth"});}
+  async function ensureView(view){
+    if(!isAdminConnected()){
+      renderDisconnectedAdminData();
+      return null;
+    }
+    if(view==="customers"&&!state.customerResults.length)await searchCustomers("");
+    if(view==="follow")await loadFollow();
+    if(view==="menus")await loadMenus();
+    if(view==="staff")await loadStaff();
+    if(view==="csv")await loadCsvImports();
+    if(view==="settings")await loadSettings();
+    if(view==="analytics")renderAnalytics();
+    if(view==="carte"){await ensureCarteMasters();renderCarte();}
+    if(view==="photos")renderPhotos();
+    return true;
+  }
+  function switchView(view,options={}){
+    if(!VIEW_META[view])return;
+    state.currentView=view;
+    $$('[data-view-panel]').forEach(p=>p.classList.toggle('active',p.dataset.viewPanel===view));
+    $$('[data-view]').forEach(b=>b.setAttribute('aria-current',b.dataset.view===view?'page':'false'));
+    const meta=VIEW_META[view];
+    $("#pageEyebrow").textContent=meta[0];
+    $("#pageTitle").textContent=meta[1];
+    $("#sidebar").classList.remove("open");
+    $("#mobileOverlay").classList.remove("open");
+    if(!options.skipEnsure)ensureView(view).catch(handleError);
+    window.scrollTo({top:0,behavior:"smooth"});
+  }
 
   function bindEvents(){
     document.addEventListener("click",async e=>{
@@ -1220,6 +1521,7 @@ body #dpro-toast-container{
       $("#settingsAdminCode").value=DPRO_HAIR.admin.getCode();
       updateCodeChip();
       if(!DPRO_HAIR.admin.hasCode()){
+        disconnectAdminData({switchToToday:false});
         setNotice(DEMO_MODE?"右上の管理コード欄に「1234」を入力し、接続を押してください。":"右上の管理コードを入力し、接続を押してください。","warning");
         setAdminConnectionStatus("未接続です。管理コードを入力してください。","idle");
         return;
