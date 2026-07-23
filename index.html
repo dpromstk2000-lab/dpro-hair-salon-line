@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#153f34">
-<title>DPRO美容室｜かんたんLINE予約</title>
-<meta name="description" content="DPRO美容室のLINE予約。前回と同じ内容の再予約、メニュー・担当者・日時の選択ができます。">
+<title>DPRO美容室｜LINE予約・メニュー・来店受付</title>
+<meta name="description" content="DPRO美容室のLINE予約、写真付きメニューカタログ、QR来店受付。前回と同じ内容の再予約にも対応します。">
 <style>
 :root{
   --bg:#f2f6f3;--surface:#fff;--soft:#f8faf8;--ink:#17231e;--muted:#65746d;--line:#d5e1db;
@@ -37,6 +37,14 @@ body.locked{overflow:hidden}button,input,select,textarea{font:inherit}button{col
 @media(max-width:980px){.main{grid-template-columns:1fr}.summary{position:static}.summary-card:first-child{display:none}.mobile-bar{display:grid}}
 @media(max-width:720px){.shell{width:min(calc(100% - 20px),var(--max));padding-top:10px}.hero{padding:21px 19px;border-radius:21px}.shop{min-width:0;width:100%}.stepper{grid-template-columns:repeat(2,minmax(0,1fr))}.rebook-grid{grid-template-columns:1fr}.menu-grid,.form-grid{grid-template-columns:1fr}.staff-list{grid-template-columns:repeat(2,minmax(0,1fr))}.quick-dates{grid-template-columns:repeat(4,minmax(0,1fr))}.slots{grid-template-columns:repeat(3,minmax(0,1fr))}.full{grid-column:auto}}
 @media(max-width:440px){.mode-switch,.staff-choice,.rebook-options{grid-template-columns:1fr}.quick-dates{grid-template-columns:repeat(3,minmax(0,1fr))}.summary-row{grid-template-columns:78px minmax(0,1fr)}}
+
+.special-view{display:grid;gap:15px;margin-bottom:16px}.special-hero{padding:22px;border:1px solid var(--line);border-radius:20px;background:linear-gradient(135deg,#fff,#edf6f1);box-shadow:var(--shadow)}.special-hero h2{margin:0;font-size:clamp(1.45rem,4vw,2rem)}.special-hero p{margin:6px 0 0;color:var(--muted)}
+.view-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:15px}.catalog-toolbar{display:flex;gap:7px;overflow:auto;padding-bottom:3px}.catalog-category{flex:0 0 auto;min-height:38px;padding:7px 12px;border:1px solid var(--line);border-radius:999px;background:#fff;color:var(--muted);cursor:pointer;font-size:.72rem;font-weight:900}.catalog-category[aria-pressed=true]{background:var(--brand);border-color:var(--brand);color:#fff}
+.catalog-grid-next10{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.catalog-card-next10{overflow:hidden;border:1px solid var(--line);border-radius:17px;background:#fff;box-shadow:var(--shadow)}.catalog-image{display:grid;place-items:center;aspect-ratio:16/10;background:linear-gradient(135deg,#dbeae3,#fbf2df);color:var(--brand);font-size:.8rem;font-weight:950}.catalog-image img{width:100%;height:100%;object-fit:cover}.catalog-body{padding:14px}.catalog-kicker{color:var(--gold);font-size:.65rem;font-weight:950;letter-spacing:.07em}.catalog-name{margin-top:3px;font-size:1rem;font-weight:950}.catalog-desc{min-height:44px;margin-top:5px;color:var(--muted);font-size:.72rem}.catalog-meta{display:flex;justify-content:space-between;gap:8px;margin-top:10px;color:var(--brand);font-size:.72rem;font-weight:900}.catalog-actions{display:grid;grid-template-columns:1fr;gap:7px;margin-top:12px}
+.checkin-shell{display:grid;grid-template-columns:minmax(0,1fr) minmax(280px,.75fr);gap:14px}.checkin-result{min-height:260px}.checkin-summary{display:grid;gap:9px}.checkin-row{display:grid;grid-template-columns:105px minmax(0,1fr);gap:8px;padding:10px;border-radius:10px;background:var(--soft)}.checkin-row small{color:var(--muted);font-weight:850}.checkin-row b{text-align:right;overflow-wrap:anywhere}.checkin-success{padding:18px;border:1px solid #abd6bd;border-radius:14px;background:var(--okSoft);text-align:center}.checkin-success h3{margin:0}.mini-note{padding:11px;border:1px solid #ead5a7;border-radius:11px;background:var(--goldSoft);color:#654a20;font-size:.74rem;font-weight:800}
+@media(max-width:900px){.catalog-grid-next10{grid-template-columns:repeat(2,minmax(0,1fr))}.checkin-shell{grid-template-columns:1fr}}
+@media(max-width:580px){.catalog-grid-next10{grid-template-columns:1fr}.catalog-desc{min-height:0}}
+
 </style>
 </head>
 <body>
@@ -46,7 +54,7 @@ body.locked{overflow:hidden}button,input,select,textarea{font:inherit}button{col
       <div><div class="brand"><span class="brand__icon">DP</span>DPRO NEXT STANDARD</div><h1>美容室LINE予約</h1><p class="hero__lead">前回と同じ内容なら、メニューを選び直さず日付と時間だけで予約できます。</p></div>
       <div class="shop"><small>ご予約店舗</small><b id="shopName">DPRO美容室</b><span id="shopMeta">店舗情報を読み込み中です。</span></div>
     </div>
-    <div class="mode-switch">
+    <div class="mode-switch" id="bookingModeSwitch">
       <button class="mode-button" id="rebookModeButton" type="button" aria-pressed="true">前回と同じ内容で予約</button>
       <button class="mode-button" id="newModeButton" type="button" aria-pressed="false">メニューから新しく予約</button>
     </div>
@@ -54,14 +62,53 @@ body.locked{overflow:hidden}button,input,select,textarea{font:inherit}button{col
 
   <div class="notice" id="notice" data-state="info"><span class="notice__icon" id="noticeIcon">i</span><span class="notice__text" id="noticeText">店舗情報を読み込んでいます。</span><button class="notice__close" id="noticeClose" type="button">×</button></div>
 
-  <section class="stepper">
+
+  <section class="special-view" id="catalogView" hidden>
+    <div class="special-hero">
+      <span class="badge gold">PUBLIC MENU CATALOG</span>
+      <h2>美容室メニューカタログ</h2>
+      <p id="catalogNotice">写真・料金・所要時間を確認し、そのままLINE予約へ進めます。</p>
+      <div class="view-actions"><button class="outline" id="catalogToBooking" type="button">予約画面へ</button><a class="outline" id="catalogMemberLink" href="./member.html">マイページ</a></div>
+    </div>
+    <section class="card">
+      <div class="card-head"><div><h2>公開メニュー</h2><div class="help" id="catalogCount">読み込み中です。</div></div></div>
+      <div class="catalog-toolbar" id="catalogCategories"></div>
+      <div class="catalog-grid-next10" id="catalogGrid" style="margin-top:13px"><div class="empty loading" style="grid-column:1/-1">メニューカタログを読み込んでいます。</div></div>
+    </section>
+  </section>
+
+  <section class="special-view" id="checkinView" hidden>
+    <div class="special-hero">
+      <span class="badge gold">QR CHECK-IN</span>
+      <h2>ご来店受付</h2>
+      <p>予約番号と予約時の電話番号を入力すると、店内へ来店済みとして受付します。</p>
+      <div class="view-actions"><button class="outline" id="checkinToBooking" type="button">予約画面へ</button><a class="outline" id="checkinMemberLink" href="./member.html">マイページ</a></div>
+    </div>
+    <div class="checkin-shell">
+      <section class="card">
+        <div class="card-head"><div><h2>1．予約を確認</h2><div class="help">予約完了時に表示された予約番号をご入力ください。</div></div><span class="badge" id="checkinBadge">未確認</span></div>
+        <div class="form-grid">
+          <div><label class="label" for="checkinReservationNo">予約番号</label><input class="input" id="checkinReservationNo" autocomplete="off" placeholder="例：HAIR-20260723-001"></div>
+          <div><label class="label" for="checkinPhone">電話番号</label><input class="input" id="checkinPhone" type="tel" inputmode="tel" autocomplete="tel" placeholder="090-1234-5678"></div>
+        </div>
+        <div class="mini-note" style="margin-top:12px">受付後は、店舗のPC・iPad・スタッフ画面へ「来店済み」として即時反映されます。</div>
+        <button class="primary wide" id="checkinLookupButton" type="button" style="margin-top:12px">予約を確認する</button>
+      </section>
+      <section class="card checkin-result">
+        <div class="card-head"><div><h2>2．来店受付</h2><div class="help">予約内容を確認して受付してください。</div></div></div>
+        <div id="checkinResult"><div class="empty">予約番号と電話番号を入力してください。</div></div>
+      </section>
+    </div>
+  </section>
+
+  <section class="stepper" id="bookingStepper">
     <div class="step" id="step1" data-state="active"><span class="step__num">1</span><span><b id="step1Label">前回内容</b><small>予約内容を確認</small></span></div>
     <div class="step" id="step2"><span class="step__num">2</span><span><b>日時</b><small>空き時間を選択</small></span></div>
     <div class="step" id="step3"><span class="step__num">3</span><span><b>お客様情報</b><small>連絡先・相談内容</small></span></div>
     <div class="step" id="step4"><span class="step__num">4</span><span><b>確認</b><small>内容を確定</small></span></div>
   </section>
 
-  <section class="main">
+  <section class="main" id="bookingMain">
     <div class="flow">
       <section class="card" id="serviceCard">
         <div class="card-head"><div class="card-title"><span class="card-num">1</span><div><h2 id="serviceTitle">前回の予約内容</h2><div class="help" id="serviceHelp">内容を確認し、同じ担当にするか選択します。</div></div></div><span class="badge gold" id="serviceBadge">確認中</span></div>
@@ -105,7 +152,7 @@ body.locked{overflow:hidden}button,input,select,textarea{font:inherit}button{col
   </section>
 </main>
 
-<div class="mobile-bar"><button class="primary gold" id="mobileConfirmButton" type="button" disabled>予約内容を確認</button><button class="outline" id="mobileSummaryButton" type="button">内容</button></div>
+<div class="mobile-bar" id="bookingMobileBar"><button class="primary gold" id="mobileConfirmButton" type="button" disabled>予約内容を確認</button><button class="outline" id="mobileSummaryButton" type="button">内容</button></div>
 
 <div class="dialog" id="confirmDialog" hidden>
   <section class="dialog-card" role="dialog" aria-modal="true">
@@ -117,17 +164,17 @@ body.locked{overflow:hidden}button,input,select,textarea{font:inherit}button{col
   </section>
 </div>
 
-<script src="./config.js?v=hair-next-4-r3-next8"></script>
+<script src="./config.js?v=hair-next-10"></script>
 <script>
 (()=>{
 "use strict";
-const VERSION="HAIR-NEXT-8-CUSTOMER-REBOOK-20260723";
+const VERSION="HAIR-NEXT-10-CATALOG-CHECKIN-20260723";
 const C=()=>window.DPRO_HAIR;
 const $=(s,r=document)=>r.querySelector(s),$$=(s,r=document)=>[...r.querySelectorAll(s)];
 const e=v=>C().utils.escapeHtml(v??"");
 const P=new URLSearchParams(location.search);
-const S={config:null,mode:"rebook",rebook:null,identity:null,category:"all",menu:null,staffMode:"any",staff:null,date:"",slot:null,availability:null,submitting:false};
-const el={notice:$("#notice"),noticeIcon:$("#noticeIcon"),noticeText:$("#noticeText"),shopName:$("#shopName"),shopMeta:$("#shopMeta"),rebookModeButton:$("#rebookModeButton"),newModeButton:$("#newModeButton"),serviceTitle:$("#serviceTitle"),serviceHelp:$("#serviceHelp"),serviceBadge:$("#serviceBadge"),rebookArea:$("#rebookArea"),rebookCard:$("#rebookCard"),newBookingArea:$("#newBookingArea"),categories:$("#categories"),menuGrid:$("#menuGrid"),staffList:$("#staffList"),dateCard:$("#dateCard"),dateInput:$("#dateInput"),dateBadge:$("#dateBadge"),quickDates:$("#quickDates"),slotGrid:$("#slotGrid"),customerCard:$("#customerCard"),identityBadge:$("#identityBadge"),customerHelp:$("#customerHelp"),fullName:$("#fullName"),fullNameKana:$("#fullNameKana"),phone:$("#phone"),hairConcern:$("#hairConcern"),customerRequest:$("#customerRequest"),allergyNotice:$("#allergyNotice"),consentContact:$("#consentContact"),consentPhoto:$("#consentPhoto"),summaryList:$("#summaryList"),confirmButton:$("#confirmButton"),mobileConfirmButton:$("#mobileConfirmButton"),confirmDialog:$("#confirmDialog"),confirmList:$("#confirmList"),submitButton:$("#submitButton"),successView:$("#successView"),confirmView:$("#confirmView"),reservationNumber:$("#reservationNumber"),copyMessage:$("#copyMessage"),successMemberButton:$("#successMemberButton"),memberLink:$("#memberLink")};
+const S={config:null,mode:"rebook",rebook:null,identity:null,category:"all",menu:null,staffMode:"any",staff:null,date:"",slot:null,availability:null,submitting:false,catalog:null,catalogCategory:"all",checkin:null,view:"booking"};
+const el={notice:$("#notice"),noticeIcon:$("#noticeIcon"),noticeText:$("#noticeText"),shopName:$("#shopName"),shopMeta:$("#shopMeta"),rebookModeButton:$("#rebookModeButton"),newModeButton:$("#newModeButton"),serviceTitle:$("#serviceTitle"),serviceHelp:$("#serviceHelp"),serviceBadge:$("#serviceBadge"),rebookArea:$("#rebookArea"),rebookCard:$("#rebookCard"),newBookingArea:$("#newBookingArea"),categories:$("#categories"),menuGrid:$("#menuGrid"),staffList:$("#staffList"),dateCard:$("#dateCard"),dateInput:$("#dateInput"),dateBadge:$("#dateBadge"),quickDates:$("#quickDates"),slotGrid:$("#slotGrid"),customerCard:$("#customerCard"),identityBadge:$("#identityBadge"),customerHelp:$("#customerHelp"),fullName:$("#fullName"),fullNameKana:$("#fullNameKana"),phone:$("#phone"),hairConcern:$("#hairConcern"),customerRequest:$("#customerRequest"),allergyNotice:$("#allergyNotice"),consentContact:$("#consentContact"),consentPhoto:$("#consentPhoto"),summaryList:$("#summaryList"),confirmButton:$("#confirmButton"),mobileConfirmButton:$("#mobileConfirmButton"),confirmDialog:$("#confirmDialog"),confirmList:$("#confirmList"),submitButton:$("#submitButton"),successView:$("#successView"),confirmView:$("#confirmView"),reservationNumber:$("#reservationNumber"),copyMessage:$("#copyMessage"),successMemberButton:$("#successMemberButton"),memberLink:$("#memberLink"),bookingModeSwitch:$("#bookingModeSwitch"),bookingStepper:$("#bookingStepper"),bookingMain:$("#bookingMain"),bookingMobileBar:$("#bookingMobileBar"),catalogView:$("#catalogView"),catalogNotice:$("#catalogNotice"),catalogCategories:$("#catalogCategories"),catalogGrid:$("#catalogGrid"),catalogCount:$("#catalogCount"),checkinView:$("#checkinView"),checkinReservationNo:$("#checkinReservationNo"),checkinPhone:$("#checkinPhone"),checkinBadge:$("#checkinBadge"),checkinResult:$("#checkinResult")};
 function notify(message,type="info"){const icons={info:"i",success:"✓",warning:"!",error:"×"};el.notice.hidden=false;el.notice.dataset.state=type;el.noticeIcon.textContent=icons[type]||"i";el.noticeText.textContent=message}
 function identity(){const query={public_token:P.get("public_token")||"",phone:P.get("phone")||"",line_user_id:P.get("line_user_id")||"",customer_no:P.get("customer_no")||""};const clean=Object.fromEntries(Object.entries(query).filter(([,v])=>v));if(Object.keys(clean).length)return clean;return C().member.getIdentity()||{}}
 function identityParams(){const id=S.identity||{};if(id.line_user_id)return{line_user_id:id.line_user_id};if(id.public_token)return{public_token:id.public_token};if(id.phone)return{phone:id.phone};if(el.phone.value)return{phone:el.phone.value};return{}}
@@ -142,6 +189,78 @@ function complete(){return canService()&&S.date&&S.slot&&el.fullName.value.trim(
 function setMode(mode){S.mode=mode==="new"?"new":"rebook";el.rebookModeButton.setAttribute("aria-pressed",S.mode==="rebook");el.newModeButton.setAttribute("aria-pressed",S.mode==="new");el.rebookArea.hidden=S.mode!=="rebook";el.newBookingArea.hidden=S.mode!=="new";el.serviceTitle.textContent=S.mode==="rebook"?"前回の予約内容":"予約メニュー";el.serviceHelp.textContent=S.mode==="rebook"?"内容を確認し、同じ担当にするか選択します。":"メニューと担当者を選択します。";$("#step1Label").textContent=S.mode==="rebook"?"前回内容":"メニュー";resetDate();renderAll();if(S.mode==="rebook"&&!S.rebook?.can_rebook)loadRebook()}
 function resetDate(){S.date="";S.slot=null;S.availability=null;el.dateInput.value="";renderDates();renderSlots()}
 function serviceQuery(){if(S.mode==="rebook"){const r=S.rebook?.last_reservation||{};const q={};if(r.menu_set_id)q.menu_set_id=r.menu_set_id;else if(r.items?.length)q.menu_ids=r.items.map(x=>x.menu_id);else if(r.menu_id)q.menu_id=r.menu_id;const same=Boolean($("#sameStaff")?.checked);if(same&&r.assigned_staff_id){q.staff_preference="specific";q.requested_staff_id=r.assigned_staff_id}else q.staff_preference="any";return q}const q={menu_id:S.menu?.id,staff_preference:S.staffMode};if(S.staffMode==="specific")q.requested_staff_id=S.staff?.id;return q}
+
+function setPageView(view){
+  S.view=view==="catalog"?"catalog":view==="checkin"?"checkin":"booking";
+  const special=S.view!=="booking";
+  el.bookingModeSwitch.hidden=special;
+  el.bookingStepper.hidden=special;
+  el.bookingMain.hidden=special;
+  el.bookingMobileBar.hidden=special;
+  el.catalogView.hidden=S.view!=="catalog";
+  el.checkinView.hidden=S.view!=="checkin";
+  const title=$(".hero h1"),lead=$(".hero__lead");
+  if(S.view==="catalog"){title.textContent="美容室メニューカタログ";lead.textContent="写真・料金・所要時間を見ながら、予約したいメニューを選べます。"}
+  else if(S.view==="checkin"){title.textContent="美容室ご来店受付";lead.textContent="店頭QRから、予約番号と電話番号でかんたんに来店受付できます。"}
+  else{title.textContent="美容室LINE予約";lead.textContent="前回と同じ内容なら、メニューを選び直さず日付と時間だけで予約できます。"}
+}
+function catalogItemName(x){return x.menu_name||x.set_name||"メニュー"}
+function catalogItemCode(x){return x.menu_code||x.set_code||""}
+function catalogItemImage(x){return x.image_url||x.public_image_url||x.signed_url||""}
+function catalogItemDuration(x){return Number(x.duration_minutes||0)}
+function catalogItemPrice(x){return Number(x.price_yen||0)}
+function renderPublicCatalog(){
+  const data=S.catalog||{},categories=data.categories||[];
+  el.catalogNotice.textContent=data.notice||"写真・料金・所要時間を確認し、そのままLINE予約へ進めます。";
+  el.catalogCategories.innerHTML=[{id:"all",category_name:"すべて"},...categories].map(c=>`<button class="catalog-category" type="button" data-catalog-category="${e(c.id)}" aria-pressed="${S.catalogCategory===c.id}">${e(c.category_name)}</button>`).join("");
+  const menus=(data.menus||[]).filter(x=>S.catalogCategory==="all"||x.category_id===S.catalogCategory);
+  const sets=(data.menu_sets||[]).filter(x=>S.catalogCategory==="all");
+  const rows=[...sets.map(x=>({...x,_set:true})),...menus];
+  el.catalogCount.textContent=`${rows.length}件を表示`;
+  el.catalogGrid.innerHTML=rows.length?rows.map(x=>{
+    const image=catalogItemImage(x),name=catalogItemName(x),code=catalogItemCode(x);
+    const params=x._set?{menu_set_id:x.id}:{menu_id:x.id};
+    const href=C().utils.buildPageUrl("RESERVATION",{...params,line_user_id:P.get("line_user_id")||undefined,demo:P.get("demo")==="1"?"1":undefined,v:"hair-next-10"});
+    return `<article class="catalog-card-next10"><div class="catalog-image">${image?`<img src="${e(image)}" alt="${e(x.image_alt_text||name)}" loading="lazy">`:"DPRO HAIR"}</div><div class="catalog-body"><div class="catalog-kicker">${e(x._set?"MENU SET":code||"SALON MENU")}</div><div class="catalog-name">${e(name)}</div><div class="catalog-desc">${e(x.short_description||x.description||"美容室メニュー")}</div><div class="catalog-meta"><span>${e(C().utils.minutesToLabel(catalogItemDuration(x)))}</span><span>${e(C().utils.yen(catalogItemPrice(x)))}</span></div><div class="catalog-actions"><a class="primary gold wide" href="${e(href)}">この内容で予約</a></div></div></article>`;
+  }).join(""):'<div class="empty" style="grid-column:1/-1">公開中のメニューはありません。</div>';
+}
+async function loadPublicCatalog(){
+  try{S.catalog=await C().api.publicCatalog();renderPublicCatalog();notify("公開メニューカタログを表示しました。","success")}
+  catch(error){el.catalogGrid.innerHTML=`<div class="empty" style="grid-column:1/-1">${e(C().utils.errorMessage(error))}</div>`;notify(C().utils.errorMessage(error),"error")}
+}
+function checkinIdentity(){
+  const reservationNo=el.checkinReservationNo.value.trim()||P.get("reservation_no")||"";
+  const phone=el.checkinPhone.value.trim()||P.get("phone")||"";
+  const publicToken=P.get("public_token")||"";
+  return Object.fromEntries(Object.entries({reservation_no:reservationNo,phone,public_token:publicToken}).filter(([,v])=>v));
+}
+function renderCheckinResult(){
+  const data=S.checkin;
+  if(!data){el.checkinBadge.textContent="未確認";el.checkinResult.innerHTML='<div class="empty">予約番号と電話番号を入力してください。</div>';return}
+  const r=data.reservation||{},c=data.customer||{},checked=Boolean(data.checked_in);
+  el.checkinBadge.textContent=checked?"受付済み":"予約確認済み";
+  el.checkinBadge.className=`badge ${checked?"ok":"gold"}`;
+  if(checked){el.checkinResult.innerHTML=`<div class="checkin-success"><h3>来店受付済みです</h3><p>${e(c.full_name||"お客様")}様、受付でお待ちください。</p></div>`;return}
+  const menu=reservationMenu(r),staff=reservationStaff(r);
+  el.checkinResult.innerHTML=`<div class="checkin-summary"><div class="checkin-row"><small>お名前</small><b>${e(c.full_name||r.customer?.full_name||"お客様")}</b></div><div class="checkin-row"><small>予約日時</small><b>${e(C().utils.formatDateTime(r.start_at))}</b></div><div class="checkin-row"><small>メニュー</small><b>${e(menu)}</b></div><div class="checkin-row"><small>担当</small><b>${e(staff)}</b></div></div><button class="primary gold wide" id="checkinSubmitButton" type="button" style="margin-top:13px">来店受付する</button>`;
+  $("#checkinSubmitButton").onclick=submitCheckin;
+}
+async function lookupCheckin(){
+  const identity=checkinIdentity();
+  if(!identity.reservation_no&&!identity.public_token){notify("予約番号を入力してください。","warning");return}
+  if(!identity.public_token&&!C().utils.isLikelyJapanesePhone(identity.phone)){notify("予約時の電話番号を確認してください。","warning");return}
+  const b=$("#checkinLookupButton"),old=b.textContent;b.disabled=true;b.textContent="確認中...";
+  try{S.checkin=await C().api.checkinStatus(identity);renderCheckinResult();notify(S.checkin.checked_in?"すでに来店受付済みです。":"予約を確認しました。","success")}
+  catch(error){S.checkin=null;renderCheckinResult();notify(C().utils.errorMessage(error),"error")}
+  finally{b.disabled=false;b.textContent=old}
+}
+async function submitCheckin(){
+  const b=$("#checkinSubmitButton");if(!b)return;const old=b.textContent;b.disabled=true;b.textContent="受付中...";
+  try{const result=await C().api.checkin({...checkinIdentity(),checkin_method:"qr",device_info:{page:VERSION}});S.checkin={...result,checked_in:true};renderCheckinResult();notify(result.message||"来店受付が完了しました。","success")}
+  catch(error){notify(C().utils.errorMessage(error),"error");b.disabled=false;b.textContent=old}
+}
+function openBookingView(){const u=new URL(location.href);u.searchParams.delete("view");u.searchParams.set("v","hair-next-10");location.href=u.toString()}
+
 function renderRebook(){if(!S.rebook){el.rebookCard.innerHTML='<div class="empty loading">前回の予約内容を確認しています。</div>';el.serviceBadge.textContent="確認中";return}if(!S.rebook.can_rebook||!S.rebook.last_reservation){el.rebookCard.innerHTML='<div class="empty">前回の予約が見つかりません。下の「メニューから新しく予約」をご利用ください。</div>';el.serviceBadge.textContent="履歴なし";return}const r=S.rebook.last_reservation;el.serviceBadge.textContent="前回内容あり";el.rebookCard.innerHTML=`<div class="rebook-top"><div><div class="rebook-eye">LAST RESERVATION</div><div class="rebook-title">${e(reservationMenu(r))}</div><div class="rebook-date">${e(C().utils.formatDateTime(r.start_at,{weekday:true}))}</div></div><span class="badge gold">前回と同じ</span></div><div class="rebook-grid"><div class="rebook-item"><small>担当</small><b>${e(reservationStaff(r))}</b></div><div class="rebook-item"><small>所要時間</small><b>${e(C().utils.minutesToLabel(reservationMinutes(r)))}</b></div><div class="rebook-item"><small>料金目安</small><b>${e(C().utils.yen(reservationPrice(r)))}</b></div></div><div class="rebook-options"><label class="choice"><input type="radio" name="rebookStaff" id="sameStaff" value="same" ${r.assigned_staff_id?"checked":""}>前回と同じ担当</label><label class="choice"><input type="radio" name="rebookStaff" id="anyStaff" value="any" ${r.assigned_staff_id?"":"checked"}>担当はおまかせ</label></div>`;$$('input[name="rebookStaff"]').forEach(x=>x.onchange=()=>{resetDate();renderAll();notify("担当条件を変更しました。日付を選択してください。","success")})}
 function renderCategories(){const cats=S.config?.categories||[];el.categories.innerHTML=[{id:"all",category_name:"すべて"},...cats].map(c=>`<button class="category" type="button" data-category="${e(c.id)}" aria-pressed="${S.category===c.id}">${e(c.category_name)}</button>`).join("")}
 function renderMenus(){const menus=(S.config?.menus||[]).filter(m=>S.category==="all"||m.category_id===S.category);el.menuGrid.innerHTML=menus.length?menus.map(m=>`<button class="menu" type="button" data-menu="${e(m.id)}" aria-pressed="${S.menu?.id===m.id}"><span><span class="menu__name">${e(m.menu_name)}</span><span class="menu__desc">${e(m.description||"")}</span><span class="menu__meta">${e(C().utils.minutesToLabel(m.duration_minutes))} ／ ${e(C().utils.yen(m.price_yen))}</span></span><span class="menu__check">✓</span></button>`).join(""):'<div class="empty" style="grid-column:1/-1">該当するメニューはありません。</div>'}
@@ -151,7 +270,7 @@ function renderDates(){const rows=quickDateRows();el.quickDates.innerHTML=rows.m
 function renderSlots(){if(!S.date){el.slotGrid.innerHTML=`<div class="empty" style="grid-column:1/-1">${canDate()?"日付を選択してください。":"予約内容を決めると空き時間を確認できます。"}</div>`;return}const rows=S.availability?.slots||[];if(!S.availability){el.slotGrid.innerHTML='<div class="empty loading" style="grid-column:1/-1">空き時間を確認しています。</div>';return}if(!rows.length){el.slotGrid.innerHTML=`<div class="empty" style="grid-column:1/-1">${e(S.availability.message||"予約できる時間がありません。")}</div>`;return}el.slotGrid.innerHTML=rows.map(x=>`<button class="slot" type="button" data-time="${e(x.time)}" aria-pressed="${S.slot?.time===x.time}">${e(x.time)}</button>`).join("")}
 function renderCustomer(){const ready=Boolean(S.date&&S.slot);el.customerCard.classList.toggle("disabled",!ready);[el.fullName,el.fullNameKana,el.phone,el.hairConcern,el.customerRequest,el.allergyNotice,el.consentContact,el.consentPhoto].forEach(x=>x.disabled=!ready);el.identityBadge.textContent=S.identity?.line_user_id?"LINE会員":S.identity?.phone?"電話番号確認":"入力してください"}
 function summaryRows(){let menu="未選択",staff="未選択",duration="—",price="—";if(S.mode==="rebook"&&S.rebook?.last_reservation){const r=S.rebook.last_reservation;menu=reservationMenu(r);staff=$("#sameStaff")?.checked?reservationStaff(r):"おまかせ";duration=C().utils.minutesToLabel(reservationMinutes(r));price=C().utils.yen(reservationPrice(r))}else if(S.menu){menu=S.menu.menu_name;staff=S.staffMode==="specific"?(S.staff?.display_name||"未選択"):"おまかせ";duration=C().utils.minutesToLabel(S.menu.duration_minutes);price=C().utils.yen(S.menu.price_yen)}return[["予約方法",S.mode==="rebook"?"前回と同じ":"新しい予約"],["メニュー",menu],["担当",staff],["日時",S.date&&S.slot?`${dateLabel(S.date)} ${S.slot.time}`:"未選択"],["所要時間",duration],["料金目安",price]]}
-function renderSummary(){el.summaryList.innerHTML=summaryRows().map(([k,v])=>`<div class="summary-row"><small>${e(k)}</small><b>${e(v)}</b></div>`).join("");const ok=complete();el.confirmButton.disabled=!ok;el.mobileConfirmButton.disabled=!ok;const id=identityParams();el.memberLink.href=C().utils.buildPageUrl("MEMBER",{...id,demo:P.get("demo")==="1"?"1":undefined,v:"hair-next-8"})}
+function renderSummary(){el.summaryList.innerHTML=summaryRows().map(([k,v])=>`<div class="summary-row"><small>${e(k)}</small><b>${e(v)}</b></div>`).join("");const ok=complete();el.confirmButton.disabled=!ok;el.mobileConfirmButton.disabled=!ok;const id=identityParams();el.memberLink.href=C().utils.buildPageUrl("MEMBER",{...id,demo:P.get("demo")==="1"?"1":undefined,v:"hair-next-10"})}
 function renderSteps(){const s1=canService(),s2=Boolean(S.date&&S.slot),s3=complete();[["#step1",s1,true],["#step2",s2,s1],["#step3",s3,s2],["#step4",false,s3]].forEach(([id,done,active])=>$(id).dataset.state=done?"done":active?"active":"")}
 function renderAll(){renderRebook();renderCategories();renderMenus();renderStaff();renderDates();renderSlots();renderCustomer();renderSummary();renderSteps()}
 async function loadConfig(){S.config=await C().api.publicConfig();el.shopName.textContent=S.config.shop?.shop_name||"DPRO美容室";el.shopMeta.textContent=[S.config.shop?.phone?C().utils.formatPhone(S.config.shop.phone):"",S.config.shop?.address||""].filter(Boolean).join(" ／ ")||"LINE予約受付";const settings=S.config.settings||{};el.dateInput.min=settings.same_day_booking_enabled?C().utils.todayISO():C().utils.addDaysISO(C().utils.todayISO(),1);el.dateInput.max=C().utils.addDaysISO(C().utils.todayISO(),Number(settings.booking_open_days||60));renderAll()}
@@ -163,13 +282,17 @@ function confirmation(){return[...summaryRows(),["お名前",el.fullName.value.t
 function openConfirm(){if(!validate())return;el.confirmList.innerHTML=confirmation().map(([k,v])=>`<div class="confirm-row"><small>${e(k)}</small><b>${e(v)}</b></div>`).join("");el.confirmView.hidden=false;el.successView.hidden=true;el.confirmDialog.hidden=false;document.body.classList.add("locked")}
 function closeConfirm(){if(S.submitting)return;el.confirmDialog.hidden=true;document.body.classList.remove("locked")}
 function customerBody(){return{full_name:el.fullName.value.trim(),full_name_kana:el.fullNameKana.value.trim(),phone:el.phone.value.trim(),line_user_id:S.identity?.line_user_id||undefined,hair_concern:el.hairConcern.value.trim(),customer_request:el.customerRequest.value.trim(),allergy_notice:el.allergyNotice.value.trim(),consent_contact:el.consentContact.checked,consent_photo:el.consentPhoto.checked,date:S.date,time:S.slot.time}}
-async function submit(){if(S.submitting||!validate())return;S.submitting=true;const old=el.submitButton.textContent;el.submitButton.disabled=true;el.submitButton.textContent="予約を確定しています...";try{let result;if(S.mode==="rebook"){result=await C().api.rebook({...customerBody(),...identityParams(),reservation_id:S.rebook.last_reservation.id,same_staff:Boolean($("#sameStaff")?.checked)})}else{result=await C().api.createReservation({...customerBody(),menu_id:S.menu.id,staff_preference:S.staffMode,requested_staff_id:S.staffMode==="specific"?S.staff.id:undefined,source:"line"})}C().member.saveIdentity(S.identity?.line_user_id?{line_user_id:S.identity.line_user_id}:{phone:el.phone.value});el.confirmView.hidden=true;el.successView.hidden=false;el.reservationNumber.textContent=`予約番号：${result.reservation?.reservation_no||"受付済み"}`;el.copyMessage.textContent=result.copy_text||result.message||"ご予約を受け付けました。";const token=result.reservation?.public_token;el.successMemberButton.href=C().utils.buildPageUrl("MEMBER",{public_token:token||undefined,phone:token?undefined:el.phone.value,demo:P.get("demo")==="1"?"1":undefined,v:"hair-next-8"});notify(result.message||"ご予約を受け付けました。","success")}catch(error){notify(C().utils.errorMessage(error),"error");if(error.code==="SLOT_UNAVAILABLE"){closeConfirm();await selectDate(S.date)}}finally{S.submitting=false;el.submitButton.disabled=false;el.submitButton.textContent=old}}
+async function submit(){if(S.submitting||!validate())return;S.submitting=true;const old=el.submitButton.textContent;el.submitButton.disabled=true;el.submitButton.textContent="予約を確定しています...";try{let result;if(S.mode==="rebook"){result=await C().api.rebook({...customerBody(),...identityParams(),reservation_id:S.rebook.last_reservation.id,same_staff:Boolean($("#sameStaff")?.checked)})}else{result=await C().api.createReservation({...customerBody(),menu_id:S.menu.id,staff_preference:S.staffMode,requested_staff_id:S.staffMode==="specific"?S.staff.id:undefined,source:"line"})}C().member.saveIdentity(S.identity?.line_user_id?{line_user_id:S.identity.line_user_id}:{phone:el.phone.value});el.confirmView.hidden=true;el.successView.hidden=false;el.reservationNumber.textContent=`予約番号：${result.reservation?.reservation_no||"受付済み"}`;el.copyMessage.textContent=result.copy_text||result.message||"ご予約を受け付けました。";const token=result.reservation?.public_token;el.successMemberButton.href=C().utils.buildPageUrl("MEMBER",{public_token:token||undefined,phone:token?undefined:el.phone.value,demo:P.get("demo")==="1"?"1":undefined,v:"hair-next-10"});notify(result.message||"ご予約を受け付けました。","success")}catch(error){notify(C().utils.errorMessage(error),"error");if(error.code==="SLOT_UNAVAILABLE"){closeConfirm();await selectDate(S.date)}}finally{S.submitting=false;el.submitButton.disabled=false;el.submitButton.textContent=old}}
 function reset(){S.date="";S.slot=null;S.availability=null;el.confirmDialog.hidden=true;document.body.classList.remove("locked");renderAll();$("#serviceCard").scrollIntoView({behavior:"smooth"})}
-function bind(){ $("#noticeClose").onclick=()=>el.notice.hidden=true;el.rebookModeButton.onclick=()=>setMode("rebook");el.newModeButton.onclick=()=>setMode("new");el.categories.onclick=ev=>{const b=ev.target.closest("[data-category]");if(!b)return;S.category=b.dataset.category;renderAll()};el.menuGrid.onclick=ev=>{const b=ev.target.closest("[data-menu]");if(!b)return;S.menu=(S.config.menus||[]).find(x=>x.id===b.dataset.menu)||null;S.staff=null;resetDate();renderAll();notify(`${S.menu.menu_name}を選択しました。`,"success")};$$("[data-staff-mode]").forEach(b=>b.onclick=()=>{S.staffMode=b.dataset.staffMode;S.staff=null;$$("[data-staff-mode]").forEach(x=>x.setAttribute("aria-pressed",x===b));resetDate();renderAll()});el.staffList.onclick=ev=>{const b=ev.target.closest("[data-staff]");if(!b)return;S.staff=(S.config.staff||[]).find(x=>x.id===b.dataset.staff)||null;resetDate();renderAll()};el.dateInput.onchange=()=>el.dateInput.value&&selectDate(el.dateInput.value);$("#todayButton").onclick=()=>{const first=quickDateRows()[0];if(first)selectDate(first)};el.quickDates.onclick=ev=>{const b=ev.target.closest("[data-date]");if(b)selectDate(b.dataset.date)};el.slotGrid.onclick=ev=>{const b=ev.target.closest("[data-time]");if(!b)return;S.slot=(S.availability.slots||[]).find(x=>x.time===b.dataset.time)||null;renderAll();$("#customerCard").scrollIntoView({behavior:"smooth"})};[el.fullName,el.phone,el.fullNameKana,el.hairConcern,el.customerRequest,el.allergyNotice,el.consentContact,el.consentPhoto].forEach(x=>x.oninput=x.onchange=renderAll);el.confirmButton.onclick=openConfirm;el.mobileConfirmButton.onclick=openConfirm;$("#mobileSummaryButton").onclick=()=>$(".summary-card:last-child").scrollIntoView({behavior:"smooth"});$("#closeDialogButton").onclick=closeConfirm;$("#backButton").onclick=closeConfirm;el.confirmDialog.onclick=ev=>{if(ev.target===el.confirmDialog)closeConfirm()};el.submitButton.onclick=submit;$("#copyButton").onclick=()=>C().utils.copyText(el.copyMessage.textContent).then(()=>notify("確認文面をコピーしました。","success"));$("#newReservationButton").onclick=reset}
-async function init(){if(!window.DPRO_HAIR){alert("共通設定を読み込めませんでした。");return}bind();notify("店舗情報と会員情報を読み込んでいます。");await loadConfig();await loadIdentity();const requested=P.get("view")==="rebook"||P.get("rebook")==="1"||Boolean(P.get("reservation_id"));S.mode=requested?"rebook":"new";if(S.mode==="rebook")await loadRebook();const menuId=P.get("menu_id"),staffId=P.get("staff_id");if(menuId){S.mode="new";S.menu=(S.config.menus||[]).find(x=>x.id===menuId)||null;if(staffId){S.staffMode="specific";S.staff=(S.config.staff||[]).find(x=>x.id===staffId)||null}}setMode(S.mode);renderAll()}
+function bind(){ $("#noticeClose").onclick=()=>el.notice.hidden=true;
+$("#catalogToBooking").onclick=openBookingView;$("#checkinToBooking").onclick=openBookingView;
+el.catalogCategories.onclick=ev=>{const b=ev.target.closest("[data-catalog-category]");if(!b)return;S.catalogCategory=b.dataset.catalogCategory;renderPublicCatalog()};
+$("#checkinLookupButton").onclick=lookupCheckin;
+el.rebookModeButton.onclick=()=>setMode("rebook");el.newModeButton.onclick=()=>setMode("new");el.categories.onclick=ev=>{const b=ev.target.closest("[data-category]");if(!b)return;S.category=b.dataset.category;renderAll()};el.menuGrid.onclick=ev=>{const b=ev.target.closest("[data-menu]");if(!b)return;S.menu=(S.config.menus||[]).find(x=>x.id===b.dataset.menu)||null;S.staff=null;resetDate();renderAll();notify(`${S.menu.menu_name}を選択しました。`,"success")};$$("[data-staff-mode]").forEach(b=>b.onclick=()=>{S.staffMode=b.dataset.staffMode;S.staff=null;$$("[data-staff-mode]").forEach(x=>x.setAttribute("aria-pressed",x===b));resetDate();renderAll()});el.staffList.onclick=ev=>{const b=ev.target.closest("[data-staff]");if(!b)return;S.staff=(S.config.staff||[]).find(x=>x.id===b.dataset.staff)||null;resetDate();renderAll()};el.dateInput.onchange=()=>el.dateInput.value&&selectDate(el.dateInput.value);$("#todayButton").onclick=()=>{const first=quickDateRows()[0];if(first)selectDate(first)};el.quickDates.onclick=ev=>{const b=ev.target.closest("[data-date]");if(b)selectDate(b.dataset.date)};el.slotGrid.onclick=ev=>{const b=ev.target.closest("[data-time]");if(!b)return;S.slot=(S.availability.slots||[]).find(x=>x.time===b.dataset.time)||null;renderAll();$("#customerCard").scrollIntoView({behavior:"smooth"})};[el.fullName,el.phone,el.fullNameKana,el.hairConcern,el.customerRequest,el.allergyNotice,el.consentContact,el.consentPhoto].forEach(x=>x.oninput=x.onchange=renderAll);el.confirmButton.onclick=openConfirm;el.mobileConfirmButton.onclick=openConfirm;$("#mobileSummaryButton").onclick=()=>$(".summary-card:last-child").scrollIntoView({behavior:"smooth"});$("#closeDialogButton").onclick=closeConfirm;$("#backButton").onclick=closeConfirm;el.confirmDialog.onclick=ev=>{if(ev.target===el.confirmDialog)closeConfirm()};el.submitButton.onclick=submit;$("#copyButton").onclick=()=>C().utils.copyText(el.copyMessage.textContent).then(()=>notify("確認文面をコピーしました。","success"));$("#newReservationButton").onclick=reset}
+async function init(){if(!window.DPRO_HAIR){alert("共通設定を読み込めませんでした。");return}bind();const requestedView=P.get("view");setPageView(requestedView);notify("店舗情報を読み込んでいます。");await loadConfig();await loadIdentity();const memberParams={line_user_id:P.get("line_user_id")||undefined,phone:P.get("phone")||undefined,demo:P.get("demo")==="1"?"1":undefined,v:"hair-next-10"};$("#catalogMemberLink").href=C().utils.buildPageUrl("MEMBER",memberParams);$("#checkinMemberLink").href=C().utils.buildPageUrl("MEMBER",memberParams);el.checkinReservationNo.value=P.get("reservation_no")||"";el.checkinPhone.value=P.get("phone")||"";if(S.view==="catalog"){await loadPublicCatalog();return}if(S.view==="checkin"){if(P.get("public_token")||P.get("reservation_no"))await lookupCheckin();return}const requested=requestedView==="rebook"||P.get("rebook")==="1"||Boolean(P.get("reservation_id"));S.mode=requested?"rebook":"new";if(S.mode==="rebook")await loadRebook();const menuId=P.get("menu_id"),staffId=P.get("staff_id");if(menuId){S.mode="new";S.menu=(S.config.menus||[]).find(x=>x.id===menuId)||null;if(staffId){S.staffMode="specific";S.staff=(S.config.staff||[]).find(x=>x.id===staffId)||null}}setMode(S.mode);renderAll()}
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init,{once:true});else init();
 })();
 </script>
-<footer style="text-align:center;padding:20px;color:var(--muted);font-size:.66rem">HAIR-NEXT-8-CUSTOMER-REBOOK-20260723</footer>
+<footer style="text-align:center;padding:20px;color:var(--muted);font-size:.66rem">HAIR-NEXT-10-CATALOG-CHECKIN-20260723</footer>
 </body>
 </html>
