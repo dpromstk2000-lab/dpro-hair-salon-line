@@ -19,7 +19,7 @@
   "use strict";
 
   const VERSION = "HAIR-NEXT-9-COMMON-CONFIG-20260723";
-  const EXPECTED_WORKER_VERSION = "HAIR-PRODUCT-READY-2.1-WORKER-20260822";
+  const EXPECTED_WORKER_VERSION = "HAIR-PRODUCT-READY-2.2-WORKER-20260822";
   const SERVICE_NAME = "DPRO 美容室 LINE";
   const API_BASE_URL = "https://dpro-hair-salon-line-api.dpromstk2000.workers.dev";
   const SITE_BASE_URL = "https://dpromstk2000-lab.github.io/dpro-hair-salon-line";
