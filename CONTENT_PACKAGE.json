@@ -1,0 +1,929 @@
+{
+  "schema": "DPRO-TUTORIAL-CONTENT-PACKAGE-V1.0",
+  "package_id": "HAIR_CONTENT_PACKAGE_V1.0",
+  "industry_code": "HAIR",
+  "product_name": "DPRO 美容室 LINE",
+  "version": "V1.1",
+  "date": "2026-08-22",
+  "status": "R2_INFORMATION_DESIGN_LOCK_V1.1",
+  "single_source_of_truth": true,
+  "source_lock": {
+    "repository": "dpromstk2000-lab/dpro-hair-salon-line",
+    "branch": "main",
+    "commit": "682b48772f5859199ae98cf87ef72d7e43bf389c",
+    "tree": "46d72a7468c74aa7544234278117aaad487da95a"
+  },
+  "output_consumers": {
+    "in_app_first10": "R3",
+    "guide_center": "R4",
+    "quick_start_pdf": "R5",
+    "detailed_manual_pdf": "R5",
+    "product_site": "R6"
+  },
+  "global_rules": {
+    "mutation_zero_tutorial": true,
+    "real_customer_data": false,
+    "real_customer_photos": false,
+    "credentials_in_content": false,
+    "invented_role_page_api_db_feature": false,
+    "backend_contract_change_for_tutorial": false,
+    "language": "ja-JP",
+    "internal_support_only_excluded_from_customer_content": [
+      "system-check",
+      "demo_prepare",
+      "Worker/DB/API internal inspection"
+    ]
+  },
+  "first10": [
+    {
+      "id": "F10-01",
+      "chapter": "F10-C01",
+      "targets": [
+        "TUTORIAL_LAUNCHER",
+        "OWNER_NAV"
+      ],
+      "title": "このチュートリアルで覚えること",
+      "body": "最初の10分では、管理コード接続、今日の予約確認、顧客検索、カルテ、再来店フォロー、店舗内画面の役割、安全な終了方法だけを覚えます。",
+      "action": "説明を確認して次へ進む",
+      "safety": "TutorialのNext/Back操作だけでは業務データを変更しません。"
+    },
+    {
+      "id": "F10-02",
+      "chapter": "F10-C01",
+      "targets": [
+        "OWNER_ADMIN_AREA"
+      ],
+      "title": "管理コードで接続する",
+      "body": "店舗側データを見るには管理コードで接続します。接続できると予約・顧客データが表示されます。",
+      "action": "管理コード欄と接続ボタンの場所を確認",
+      "safety": "本番の管理コードをTutorial本文・PDF・共有資料には記載しません。"
+    },
+    {
+      "id": "F10-03",
+      "chapter": "F10-C01",
+      "targets": [
+        "OWNER_TODAY_NAV"
+      ],
+      "title": "毎日は「今日」から始める",
+      "body": "Owner PCの日常運用は「今日」が起点です。予約確認から来店、施術、会計、退店、フォローまでの入口がまとまっています。",
+      "action": "左メニューの「今日」を確認",
+      "safety": "Tutorialは画面の場所を案内するだけで予約状態を変更しません。"
+    },
+    {
+      "id": "F10-04",
+      "chapter": "F10-C02",
+      "targets": [
+        "OWNER_TODAY_STATS"
+      ],
+      "title": "本日の数字を確認する",
+      "body": "最初に本日の予約や進行状況の数字を見て、忙しさと確認対象を把握します。",
+      "action": "本日の主要数値を確認",
+      "safety": "数字を確認するだけでデータは変更されません。"
+    },
+    {
+      "id": "F10-05",
+      "chapter": "F10-C02",
+      "targets": [
+        "OWNER_STATUS_PIPELINE"
+      ],
+      "title": "施術の流れを見る",
+      "body": "予約済み、確認済み、来店済み、施術中、仕上げ中、会計待ちの流れで現在地を把握します。",
+      "action": "施術の流れを確認",
+      "safety": "状態変更は実際の業務操作で行い、Tutorialが自動変更しません。"
+    },
+    {
+      "id": "F10-06",
+      "chapter": "F10-C02",
+      "targets": [
+        "OWNER_TODAY_RESERVATIONS",
+        "OWNER_ATTENTION"
+      ],
+      "title": "予約と要確認を先に見る",
+      "body": "本日の予約一覧と、遅れ・キャンセル希望・注意事項などの要確認を先に見ます。",
+      "action": "本日の予約と要確認欄を確認",
+      "safety": "実顧客の情報をTutorial用のサンプルへ転記しません。"
+    },
+    {
+      "id": "F10-07",
+      "chapter": "F10-C03",
+      "targets": [
+        "OWNER_MANUAL_ENTRY"
+      ],
+      "title": "電話・店頭予約の入口",
+      "body": "LINE以外の予約は「電話・店頭予約」から登録します。既存顧客と新規顧客の両方に対応します。",
+      "action": "入口ボタンの場所だけ確認",
+      "safety": "初回Tutorial中はNext操作だけで予約登録を実行しません。"
+    },
+    {
+      "id": "F10-08",
+      "chapter": "F10-C03",
+      "targets": [
+        "OWNER_RESERVATIONS_NAV",
+        "OWNER_RESERVATION_STATUS",
+        "OWNER_RESERVATION_LIST"
+      ],
+      "title": "予約一覧を絞り込む",
+      "body": "「予約」画面では日付、状態、氏名・電話・メニュー・担当などで対象予約を絞り込めます。",
+      "action": "予約画面とフィルター位置を確認",
+      "safety": "絞り込みは表示だけを変え、予約内容は変更しません。"
+    },
+    {
+      "id": "F10-09",
+      "chapter": "F10-C03",
+      "targets": [
+        "OWNER_CUSTOMERS_NAV",
+        "OWNER_CUSTOMER_SEARCH",
+        "OWNER_CUSTOMER_DETAIL"
+      ],
+      "title": "顧客を検索する",
+      "body": "「顧客」から氏名・電話番号・顧客番号で検索し、予約・カルテ・写真・フォローにつながる顧客詳細を開きます。",
+      "action": "顧客検索欄と顧客詳細の場所を確認",
+      "safety": "架空/デモ情報で確認し、実顧客情報を教材化しません。"
+    },
+    {
+      "id": "F10-10",
+      "chapter": "F10-C04",
+      "targets": [
+        "OWNER_CARTE_NAV",
+        "OWNER_CARTE_CONTENT",
+        "OWNER_CARTE_RECORD"
+      ],
+      "title": "美容室360°カルテを確認する",
+      "body": "美容カルテには重要注意事項、髪・頭皮、施術履歴、薬剤、写真、次回提案、フォロー履歴がまとまります。",
+      "action": "カルテ画面と追加ボタンの位置を確認",
+      "safety": "Tutorial中にカルテ保存を自動実行しません。"
+    },
+    {
+      "id": "F10-11",
+      "chapter": "F10-C04",
+      "targets": [
+        "OWNER_SIDEFOOT"
+      ],
+      "title": "スタッフ施術画面の役割",
+      "body": "スタッフ画面は担当予約を起点に、施術前確認、施術カルテ、カラー・薬剤、写真、次回提案の5つを扱います。",
+      "action": "Owner PC下部のスタッフ画面導線を確認",
+      "safety": "深い入力手順はGuide Centerで確認します。"
+    },
+    {
+      "id": "F10-12",
+      "chapter": "F10-C05",
+      "targets": [
+        "OWNER_FOLLOW_NAV",
+        "OWNER_FOLLOW_LIST",
+        "OWNER_PROPOSAL_LIST"
+      ],
+      "title": "再来店フォローを見る",
+      "body": "再来店フォローでは、誰に、なぜ、いつ連絡するかと、次回来店提案・対応履歴を確認します。",
+      "action": "フォロー対象と次回来店提案を確認",
+      "safety": "Tutorialが連絡済み・完了などの状態を自動変更しません。"
+    },
+    {
+      "id": "F10-13",
+      "chapter": "F10-C06",
+      "targets": [
+        "OWNER_SIDEFOOT"
+      ],
+      "title": "PC・iPad・スタッフを使い分ける",
+      "body": "Owner PCは全体管理、店内iPadは受付と進行、スタッフ画面は施術記録、お客様画面は予約・会員利用という役割分担です。",
+      "action": "各画面への導線を確認",
+      "safety": "画面personaと認証権限を混同せず、存在しないロール差を作りません。"
+    },
+    {
+      "id": "F10-14",
+      "chapter": "F10-C06",
+      "targets": [
+        "OWNER_ADMIN_CLEAR"
+      ],
+      "title": "使い終わったら保存コードを削除",
+      "body": "共有端末や商談デモでは、作業終了後に保存した管理コードを削除します。",
+      "action": "「保存コード削除」の場所を確認",
+      "safety": "コード削除は接続情報を消す操作で、顧客・予約データを削除する操作ではありません。"
+    },
+    {
+      "id": "F10-15",
+      "chapter": "F10-C07",
+      "targets": [
+        "GUIDE_CENTER_LINK"
+      ],
+      "title": "操作ガイドから何度でも復習する",
+      "body": "分からない操作はGuide Centerで検索し、記事・FAQから確認できます。最初の10分も再生できます。",
+      "action": "「操作ガイド」を開く場所を確認",
+      "safety": "Guide Centerは説明・再生専用で、業務データを自動変更しません。"
+    }
+  ],
+  "guide_articles": [
+    {
+      "id": "G01-01",
+      "category": "GC01",
+      "title": "画面構成と毎日の開始場所",
+      "targets": [
+        "OWNER_NAV",
+        "OWNER_TODAY_NAV"
+      ],
+      "summary": "Owner PCでは「今日」を日常運用の起点にし、必要な時だけ各管理画面へ移動します。",
+      "steps": [
+        "Owner PCを開く",
+        "管理コードで接続する",
+        "左メニューの「今日」を開く"
+      ],
+      "role": "store_operator",
+      "caution": ""
+    },
+    {
+      "id": "G01-02",
+      "category": "GC01",
+      "title": "管理コードで接続・再接続する",
+      "targets": [
+        "OWNER_ADMIN_AREA"
+      ],
+      "summary": "店舗側データを表示するための管理コード接続方法です。",
+      "steps": [
+        "管理コード欄へ入力",
+        "「接続」を押す",
+        "接続完了表示を確認"
+      ],
+      "role": "store_operator",
+      "caution": "本番の管理コードを印刷物や共有資料へ記載しない。"
+    },
+    {
+      "id": "G01-03",
+      "category": "GC01",
+      "title": "今日の主要数値を読む",
+      "targets": [
+        "OWNER_TODAY_STATS"
+      ],
+      "summary": "表示日の予約・進行状況を先に把握します。",
+      "steps": [
+        "「今日」を開く",
+        "主要数値を確認",
+        "気になる項目から予約一覧へ進む"
+      ],
+      "role": "store_operator",
+      "caution": ""
+    },
+    {
+      "id": "G01-04",
+      "category": "GC01",
+      "title": "予約状態の流れを理解する",
+      "targets": [
+        "OWNER_STATUS_PIPELINE"
+      ],
+      "summary": "予約済みから来店・施術・会計までの現在地を確認します。",
+      "steps": [
+        "施術の流れを見る",
+        "数字を押して対象を絞る",
+        "予約ごとの状態を確認"
+      ],
+      "role": "store_operator",
+      "caution": ""
+    },
+    {
+      "id": "G01-05",
+      "category": "GC01",
+      "title": "要確認と今日のフォローを確認する",
+      "targets": [
+        "OWNER_ATTENTION",
+        "OWNER_TODAY_FOLLOW"
+      ],
+      "summary": "遅れ・キャンセル希望・注意事項と、当日対応するフォローを先に確認します。",
+      "steps": [
+        "要確認欄を確認",
+        "今日のフォロー欄を確認",
+        "必要な対象を開く"
+      ],
+      "role": "store_operator",
+      "caution": ""
+    },
+    {
+      "id": "G02-01",
+      "category": "GC02",
+      "title": "予約一覧を確認・絞り込みする",
+      "targets": [
+        "OWNER_RESERVATIONS_NAV",
+        "OWNER_RESERVATION_STATUS",
+        "OWNER_RESERVATION_KEYWORD",
+        "OWNER_RESERVATION_LIST"
+      ],
+      "summary": "日付・状態・氏名などから予約を絞り込みます。",
+      "steps": [
+        "「予約」を開く",
+        "状態またはキーワードを指定",
+        "対象予約を確認"
+      ],
+      "role": "store_operator",
+      "caution": ""
+    },
+    {
+      "id": "G02-02",
+      "category": "GC02",
+      "title": "電話・店頭予約を登録する",
+      "targets": [
+        "OWNER_MANUAL_ENTRY"
+      ],
+      "summary": "LINE以外の電話・店頭受付を既存/新規顧客へ登録する入口です。",
+      "steps": [
+        "「電話・店頭予約」を開く",
+        "顧客・メニュー・日時を確認",
+        "内容を確認してユーザー自身が登録"
+      ],
+      "role": "store_operator",
+      "caution": "Tutorialの進行だけでは登録を実行しない。"
+    },
+    {
+      "id": "G02-03",
+      "category": "GC02",
+      "title": "店内iPadで予約進行を確認する",
+      "targets": [
+        "IPAD_BOARD"
+      ],
+      "summary": "来店前・店内・会計待ち・完了/取消を大きな予約ボードで確認します。",
+      "steps": [
+        "店内iPadを開く",
+        "表示日を確認",
+        "予約カードの現在地を確認"
+      ],
+      "role": "store_operator",
+      "caution": ""
+    },
+    {
+      "id": "G02-04",
+      "category": "GC02",
+      "title": "QR来店受付を使う",
+      "targets": [
+        "CHECKIN_VIEW",
+        "CHECKIN_RESNO",
+        "CHECKIN_PHONE",
+        "CHECKIN_LOOKUP"
+      ],
+      "summary": "お客様が予約番号と電話番号で来店受付する流れです。",
+      "steps": [
+        "来店受付画面を開く",
+        "予約番号と予約時電話番号を入力",
+        "予約内容確認後に受付する"
+      ],
+      "role": "public_customer",
+      "caution": ""
+    },
+    {
+      "id": "G02-05",
+      "category": "GC02",
+      "title": "変更相談・キャンセル希望を確認する",
+      "targets": [
+        "MEMBER_UPCOMING"
+      ],
+      "summary": "会員ページから送られた変更相談やキャンセル希望は店舗確認前提で扱います。",
+      "steps": [
+        "会員側の対象予約を確認",
+        "店舗側で予約状態を確認",
+        "必要な対応を店舗側で行う"
+      ],
+      "role": "store_operator",
+      "caution": ""
+    },
+    {
+      "id": "G03-01",
+      "category": "GC03",
+      "title": "顧客を氏名・電話・顧客番号で探す",
+      "targets": [
+        "OWNER_CUSTOMERS_NAV",
+        "OWNER_CUSTOMER_SEARCH",
+        "OWNER_CUSTOMER_LIST"
+      ],
+      "summary": "顧客検索から対象のお客様を素早く見つけます。",
+      "steps": [
+        "「顧客」を開く",
+        "氏名・電話・顧客番号を入力",
+        "検索結果から対象を選ぶ"
+      ],
+      "role": "store_operator",
+      "caution": ""
+    },
+    {
+      "id": "G03-02",
+      "category": "GC03",
+      "title": "顧客詳細から予約・カルテ・写真・フォローを見る",
+      "targets": [
+        "OWNER_CUSTOMER_DETAIL"
+      ],
+      "summary": "一人のお客様に紐づく主要情報を顧客詳細から確認します。",
+      "steps": [
+        "顧客を選ぶ",
+        "顧客詳細を開く",
+        "予約・カルテ・写真・フォローの関連情報を確認"
+      ],
+      "role": "store_operator",
+      "caution": ""
+    },
+    {
+      "id": "G03-03",
+      "category": "GC03",
+      "title": "会員マイページを確認する",
+      "targets": [
+        "MEMBER_LOOKUP",
+        "MEMBER_AREA"
+      ],
+      "summary": "予約時の本人識別情報から、次回予約や履歴を確認します。",
+      "steps": [
+        "会員ページを開く",
+        "必要な本人確認情報を入力",
+        "マイページを表示"
+      ],
+      "role": "public_customer",
+      "caution": ""
+    },
+    {
+      "id": "G03-04",
+      "category": "GC03",
+      "title": "前回と同じ内容で再予約する",
+      "targets": [
+        "MEMBER_NEXT",
+        "MEMBER_REBOOK",
+        "BOOKING_MODE"
+      ],
+      "summary": "前回メニュー・担当を基に再予約へ進む流れです。",
+      "steps": [
+        "おすすめ来店時期を確認",
+        "「前回と同じ内容で予約」を選ぶ",
+        "日時を選んで予約内容を確認"
+      ],
+      "role": "public_customer",
+      "caution": ""
+    },
+    {
+      "id": "G04-01",
+      "category": "GC04",
+      "title": "Owner PCで360°カルテを確認する",
+      "targets": [
+        "OWNER_CARTE_NAV",
+        "OWNER_CARTE_CONTENT"
+      ],
+      "summary": "髪・頭皮、施術履歴、薬剤、写真、次回提案、フォローを一つにまとめて確認します。",
+      "steps": [
+        "顧客を選ぶ",
+        "「美容カルテ」を開く",
+        "必要な履歴を確認"
+      ],
+      "role": "store_operator",
+      "caution": ""
+    },
+    {
+      "id": "G04-02",
+      "category": "GC04",
+      "title": "スタッフ画面で施術前確認をする",
+      "targets": [
+        "STAFF_SELECT",
+        "STAFF_RESERVATION_LIST",
+        "STAFF_TAB_CHECK",
+        "STAFF_RESERVATION_INFO"
+      ],
+      "summary": "担当予約を選び、相談・注意事項と前回カルテを確認します。",
+      "steps": [
+        "担当スタッフを選ぶ",
+        "予約を選ぶ",
+        "施術前確認で予約内容と前回情報を見る"
+      ],
+      "role": "store_operator",
+      "caution": ""
+    },
+    {
+      "id": "G04-03",
+      "category": "GC04",
+      "title": "施術カルテを記録する",
+      "targets": [
+        "STAFF_TAB_CARTE",
+        "STAFF_SERVICE_CHECKS",
+        "STAFF_SAVE_HAIR"
+      ],
+      "summary": "施術内容、髪・頭皮状態、次回来店目安、ホームケア等を記録します。",
+      "steps": [
+        "「施術カルテ」を開く",
+        "必要項目を入力",
+        "内容確認後に保存"
+      ],
+      "role": "store_operator",
+      "caution": "実データの保存は担当スタッフが内容確認後に行う。"
+    },
+    {
+      "id": "G04-04",
+      "category": "GC04",
+      "title": "カラー・薬剤履歴を記録する",
+      "targets": [
+        "STAFF_TAB_FORMULA",
+        "STAFF_SAVE_FORMULA"
+      ],
+      "summary": "カラー・パーマ・縮毛矯正の配合・工程・結果を記録します。",
+      "steps": [
+        "「カラー・薬剤」を開く",
+        "種類・配合・工程を入力",
+        "結果と次回注意を確認して保存"
+      ],
+      "role": "store_operator",
+      "caution": ""
+    },
+    {
+      "id": "G04-05",
+      "category": "GC04",
+      "title": "Before／After写真を登録する",
+      "targets": [
+        "STAFF_TAB_PHOTOS",
+        "STAFF_UPLOAD_PHOTO"
+      ],
+      "summary": "同意を確認した写真だけをカルテへ登録します。",
+      "steps": [
+        "写真同意を確認",
+        "写真・種類・撮影部位を指定",
+        "公開可否を確認して登録"
+      ],
+      "role": "store_operator",
+      "caution": "Tutorial/デモでは実在する顔・髪写真を使用しない。"
+    },
+    {
+      "id": "G04-06",
+      "category": "GC04",
+      "title": "次回来店提案と施術後LINE文面を作る",
+      "targets": [
+        "STAFF_TAB_NEXT",
+        "STAFF_SAVE_PROPOSAL",
+        "STAFF_COPY_MESSAGE"
+      ],
+      "summary": "おすすめ時期・メニュー・ホームケアを記録し、案内文面をコピーします。",
+      "steps": [
+        "「次回提案」を開く",
+        "おすすめ内容を入力して保存",
+        "必要に応じて施術後LINE文面を作成・コピー"
+      ],
+      "role": "store_operator",
+      "caution": ""
+    },
+    {
+      "id": "G05-01",
+      "category": "GC05",
+      "title": "フォロー対象を確認する",
+      "targets": [
+        "OWNER_FOLLOW_NAV",
+        "OWNER_FOLLOW_LIST"
+      ],
+      "summary": "誰に、なぜ、いつ連絡するかを一覧で確認します。",
+      "steps": [
+        "「フォロー」を開く",
+        "対象一覧を確認",
+        "必要なお客様を選ぶ"
+      ],
+      "role": "store_operator",
+      "caution": ""
+    },
+    {
+      "id": "G05-02",
+      "category": "GC05",
+      "title": "フォローを状態・理由・期限で絞る",
+      "targets": [
+        "OWNER_FOLLOW_STATUS",
+        "OWNER_FOLLOW_TYPE",
+        "OWNER_FOLLOW_DUE"
+      ],
+      "summary": "未対応・理由・対応期限から優先対象を絞ります。",
+      "steps": [
+        "状態を選ぶ",
+        "理由を選ぶ",
+        "対応日で絞る"
+      ],
+      "role": "store_operator",
+      "caution": ""
+    },
+    {
+      "id": "G05-03",
+      "category": "GC05",
+      "title": "次回来店提案を確認する",
+      "targets": [
+        "OWNER_PROPOSAL_LIST"
+      ],
+      "summary": "おすすめ時期・メニュー・ホームケア・店販の提案内容を確認します。",
+      "steps": [
+        "次回来店提案欄を開く",
+        "提案内容と時期を確認",
+        "対象のお客様への対応を判断"
+      ],
+      "role": "store_operator",
+      "caution": ""
+    },
+    {
+      "id": "G05-04",
+      "category": "GC05",
+      "title": "最近の対応履歴を確認する",
+      "targets": [
+        "OWNER_FOLLOW_HISTORY"
+      ],
+      "summary": "コピー・連絡・延期・完了・見送りなどの履歴を確認します。",
+      "steps": [
+        "最近の対応履歴を見る",
+        "対応内容と日時を確認",
+        "重複連絡がないか確認"
+      ],
+      "role": "store_operator",
+      "caution": ""
+    },
+    {
+      "id": "G06-01",
+      "category": "GC06",
+      "title": "メニューを追加・編集する",
+      "targets": [
+        "OWNER_MENUS_NAV",
+        "OWNER_MENU_GRID"
+      ],
+      "summary": "料金・所要時間・公開状態などを管理します。",
+      "steps": [
+        "「メニュー」を開く",
+        "対象メニューを確認",
+        "変更内容を確認して保存"
+      ],
+      "role": "store_operator",
+      "caution": ""
+    },
+    {
+      "id": "G06-02",
+      "category": "GC06",
+      "title": "組み合わせメニューを管理する",
+      "targets": [
+        "OWNER_MENU_SET_GRID"
+      ],
+      "summary": "カット＋カラーなどの組み合わせメニューを管理します。",
+      "steps": [
+        "組み合わせメニュー欄を確認",
+        "構成内容を確認",
+        "公開状態を確認して保存"
+      ],
+      "role": "store_operator",
+      "caution": ""
+    },
+    {
+      "id": "G06-03",
+      "category": "GC06",
+      "title": "スタッフを追加・編集する",
+      "targets": [
+        "OWNER_STAFF_NAV",
+        "OWNER_STAFF_GRID"
+      ],
+      "summary": "役割・担当可能メニュー・指名可否・予約受付状態を管理します。",
+      "steps": [
+        "「スタッフ」を開く",
+        "対象スタッフを選ぶ",
+        "必要項目を確認して保存"
+      ],
+      "role": "store_operator",
+      "caution": ""
+    },
+    {
+      "id": "G06-04",
+      "category": "GC06",
+      "title": "予約ルール・営業時間・臨時営業/休業を設定する",
+      "targets": [
+        "OWNER_SETTINGS_NAV",
+        "OWNER_SETTINGS_BOOKING",
+        "OWNER_SETTINGS_HOURS",
+        "OWNER_SETTINGS_SPECIAL",
+        "OWNER_HOURS_EDITOR"
+      ],
+      "summary": "予約受付範囲、同時予約上限、曜日営業時間、臨時営業/休業を設定します。",
+      "steps": [
+        "「設定」を開く",
+        "予約/営業時間/臨時設定を選ぶ",
+        "内容確認後に保存"
+      ],
+      "role": "store_operator",
+      "caution": "営業中の変更は予約可能枠に影響するため、内容を確認してから保存する。"
+    },
+    {
+      "id": "G06-05",
+      "category": "GC06",
+      "title": "機能ON/OFFと案内文面を設定する",
+      "targets": [
+        "OWNER_SETTINGS_FEATURES",
+        "OWNER_FEATURE_SETTINGS",
+        "OWNER_SETTINGS_MESSAGES"
+      ],
+      "summary": "利用する機能と、お客様向け案内文面を管理します。",
+      "steps": [
+        "機能ON/OFFを確認",
+        "案内文面を確認",
+        "変更が必要な場合のみ保存"
+      ],
+      "role": "store_operator",
+      "caution": ""
+    },
+    {
+      "id": "G07-01",
+      "category": "GC07",
+      "title": "顧客CSVを事前確認して取り込む",
+      "targets": [
+        "OWNER_CSV_NAV",
+        "OWNER_CSV_FILE",
+        "OWNER_CSV_PREVIEW"
+      ],
+      "summary": "他システムやExcel由来の顧客CSVを事前確認してから取り込みます。",
+      "steps": [
+        "CSVファイルを選ぶ",
+        "既存顧客一致時の扱いを選ぶ",
+        "必ず事前確認を実行してから判断"
+      ],
+      "role": "store_operator",
+      "caution": "TutorialではCSV実行を自動化しない。"
+    },
+    {
+      "id": "G07-02",
+      "category": "GC07",
+      "title": "本日の簡易集計を見る",
+      "targets": [
+        "OWNER_ANALYTICS_NAV",
+        "OWNER_ANALYTICS_STATS"
+      ],
+      "summary": "日常判断に必要な予約進行や対応漏れを確認します。",
+      "steps": [
+        "「集計」を開く",
+        "主要数値を確認",
+        "未対応項目を確認"
+      ],
+      "role": "store_operator",
+      "caution": ""
+    },
+    {
+      "id": "G08-01",
+      "category": "GC08",
+      "title": "公開メニューカタログを見る",
+      "targets": [
+        "CATALOG_VIEW",
+        "CATALOG_GRID"
+      ],
+      "summary": "写真・料金・所要時間を確認し、予約へ進むお客様向け画面です。",
+      "steps": [
+        "カタログを開く",
+        "メニュー内容を確認",
+        "予約画面へ進む"
+      ],
+      "role": "public_customer",
+      "caution": ""
+    },
+    {
+      "id": "G08-02",
+      "category": "GC08",
+      "title": "お客様が新規予約する流れ",
+      "targets": [
+        "BOOKING_MODE",
+        "BOOKING_MENU",
+        "BOOKING_DATE",
+        "BOOKING_SLOTS",
+        "BOOKING_CUSTOMER",
+        "BOOKING_CONFIRM"
+      ],
+      "summary": "メニュー、担当、30分枠、連絡先を選んで予約内容を確認します。",
+      "steps": [
+        "新しい予約を選ぶ",
+        "メニュー・担当・日時を選ぶ",
+        "お客様情報を入力し最終確認"
+      ],
+      "role": "public_customer",
+      "caution": ""
+    },
+    {
+      "id": "G08-03",
+      "category": "GC08",
+      "title": "安全に使い終える・困った時",
+      "targets": [
+        "OWNER_ADMIN_CLEAR",
+        "GUIDE_CENTER_LINK"
+      ],
+      "summary": "共有端末では保存コードを削除し、困った時はGuide Centerから該当記事を再生します。",
+      "steps": [
+        "作業終了後に保存コードを削除",
+        "Guide Centerを開く",
+        "検索またはFAQから該当手順を確認"
+      ],
+      "role": "store_operator",
+      "caution": "実顧客情報・写真をTutorial教材へ転用しない。"
+    }
+  ],
+  "faqs": [
+    {
+      "id": "FAQ-01",
+      "q": "管理コードで接続できません。",
+      "a": "入力内容を確認し、再接続してください。解決しない場合は画面を再読み込みし、接続状態をもう一度確認してください。",
+      "targets": [
+        "OWNER_ADMIN_AREA",
+        "SYSTEM_ADMIN"
+      ]
+    },
+    {
+      "id": "FAQ-02",
+      "q": "画面の内容が更新されません。",
+      "a": "表示日を確認し、画面の再読込を行います。接続状態も確認してください。",
+      "targets": [
+        "OWNER_TODAY_NAV"
+      ]
+    },
+    {
+      "id": "FAQ-03",
+      "q": "予約が見つかりません。",
+      "a": "表示日、状態フィルター、キーワード条件を順に確認してください。",
+      "targets": [
+        "OWNER_RESERVATION_STATUS",
+        "OWNER_RESERVATION_KEYWORD",
+        "OWNER_RESERVATION_LIST"
+      ]
+    },
+    {
+      "id": "FAQ-04",
+      "q": "電話番号で顧客が見つかりません。",
+      "a": "氏名または顧客番号でも検索し、入力した電話番号に誤りがないか確認してください。",
+      "targets": [
+        "OWNER_CUSTOMER_SEARCH"
+      ]
+    },
+    {
+      "id": "FAQ-05",
+      "q": "変更相談やキャンセル希望は自動で確定しますか？",
+      "a": "店舗確認式です。会員側の希望を確認し、店舗側で予約状態を確認して対応します。",
+      "targets": [
+        "MEMBER_UPCOMING",
+        "OWNER_RESERVATION_LIST"
+      ]
+    },
+    {
+      "id": "FAQ-06",
+      "q": "QR来店受付ができません。",
+      "a": "予約番号と予約時の電話番号を確認し、来店受付機能が利用可能か確認してください。",
+      "targets": [
+        "CHECKIN_RESNO",
+        "CHECKIN_PHONE",
+        "CHECKIN_LOOKUP"
+      ]
+    },
+    {
+      "id": "FAQ-07",
+      "q": "スタッフ画面に予約が出ません。",
+      "a": "担当スタッフ、表示日、自分の予約/全予約の範囲を確認してください。",
+      "targets": [
+        "STAFF_SELECT",
+        "STAFF_RESERVATION_LIST"
+      ]
+    },
+    {
+      "id": "FAQ-08",
+      "q": "写真を登録できません。",
+      "a": "写真同意、ファイル形式・容量、対象顧客/予約を確認してください。",
+      "targets": [
+        "STAFF_UPLOAD_PHOTO"
+      ]
+    },
+    {
+      "id": "FAQ-09",
+      "q": "カルテ保存前に何を確認すればよいですか？",
+      "a": "対象顧客、施術内容、注意事項、次回への引き継ぎ内容を確認してから保存してください。",
+      "targets": [
+        "STAFF_TAB_CARTE",
+        "STAFF_SAVE_HAIR"
+      ]
+    },
+    {
+      "id": "FAQ-10",
+      "q": "次回来店提案と再来店フォローの違いは？",
+      "a": "次回来店提案はおすすめ時期・内容の記録、再来店フォローは誰にいつ連絡するかの対応管理です。",
+      "targets": [
+        "STAFF_TAB_NEXT",
+        "OWNER_FOLLOW_LIST"
+      ]
+    },
+    {
+      "id": "FAQ-11",
+      "q": "営業時間を変更したいです。",
+      "a": "店舗設定センターの営業時間または臨時営業・休業から変更し、予約枠への影響を確認して保存します。",
+      "targets": [
+        "OWNER_SETTINGS_HOURS",
+        "OWNER_SETTINGS_SPECIAL"
+      ]
+    },
+    {
+      "id": "FAQ-12",
+      "q": "メニューを一時的に予約不可・非公開にしたいです。",
+      "a": "メニュー管理で対象メニューの公開/停止状態を確認して変更します。",
+      "targets": [
+        "OWNER_MENU_GRID"
+      ]
+    },
+    {
+      "id": "FAQ-13",
+      "q": "CSV取込で最初に何をすればよいですか？",
+      "a": "いきなり実行せず、CSVファイルと一致時の扱いを選び、必ず事前確認から行います。",
+      "targets": [
+        "OWNER_CSV_FILE",
+        "OWNER_CSV_PREVIEW"
+      ]
+    },
+    {
+      "id": "FAQ-14",
+      "q": "デモやTutorialで実在のお客様情報を使ってよいですか？",
+      "a": "使用しません。氏名・電話番号・アレルギー・施術情報・顔や髪写真は架空/デモ情報だけを使用します。",
+      "targets": [
+        "GUIDE_CENTER_LINK"
+      ]
+    }
+  ]
+}

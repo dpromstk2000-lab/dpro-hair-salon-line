@@ -1,0 +1,86 @@
+/* DPRO TUTORIAL HAIR / R3 FIRST10 V1.0
+   Additive UI only. No business mutation. */
+.dpro-tutorial-actions{
+  display:flex;align-items:center;gap:7px;flex-wrap:wrap;justify-content:flex-end
+}
+.dpro-tutorial-launcher,
+.dpro-guide-center-link{
+  min-height:38px;padding:7px 11px;border-radius:10px;border:1px solid #c3d7cd;
+  background:#fff;color:#153f34;font:850 .74rem/1.2 -apple-system,BlinkMacSystemFont,"Segoe UI","Hiragino Sans","Yu Gothic UI","Yu Gothic",Meiryo,sans-serif;
+  cursor:pointer;white-space:nowrap
+}
+.dpro-tutorial-launcher{
+  background:#153f34;color:#fff;border-color:#153f34;box-shadow:0 6px 16px rgba(21,63,52,.14)
+}
+.dpro-guide-center-link[data-r4-pending="true"]::after{
+  content:"R4";display:inline-flex;margin-left:6px;padding:2px 5px;border-radius:999px;
+  background:#fbf2e2;color:#8b611f;font-size:.58rem;font-weight:950;vertical-align:1px
+}
+.dpro-tutorial-launcher:focus-visible,
+.dpro-guide-center-link:focus-visible,
+.dpro-tutorial-card button:focus-visible{
+  outline:3px solid rgba(38,112,92,.26);outline-offset:2px
+}
+.dpro-tutorial-shield{
+  position:fixed;inset:0;z-index:2147483000;background:rgba(7,22,17,.08);pointer-events:auto
+}
+.dpro-tutorial-highlight{
+  position:fixed;z-index:2147483001;pointer-events:none;border:3px solid #f4bd55;border-radius:14px;
+  background:rgba(255,255,255,.03);box-shadow:0 0 0 9999px rgba(5,19,14,.58),0 0 0 6px rgba(244,189,85,.2);
+  transition:top .18s ease,left .18s ease,width .18s ease,height .18s ease,opacity .12s ease
+}
+.dpro-tutorial-highlight[hidden]{display:none!important}
+.dpro-tutorial-card{
+  position:fixed;z-index:2147483002;width:min(430px,calc(100vw - 24px));max-height:min(680px,calc(100vh - 24px));
+  overflow:auto;padding:18px;border:1px solid #cbdad2;border-radius:18px;background:#fff;color:#17221d;
+  box-shadow:0 24px 70px rgba(4,24,17,.34);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Hiragino Sans","Yu Gothic UI","Yu Gothic",Meiryo,sans-serif;
+  line-height:1.6
+}
+.dpro-tutorial-card__top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.dpro-tutorial-card__chapter{color:#26705c;font-size:.68rem;font-weight:950;letter-spacing:.08em}
+.dpro-tutorial-card__progress{display:flex;align-items:center;gap:8px;color:#66756e;font-size:.69rem;font-weight:900}
+.dpro-tutorial-card__bar{width:88px;height:6px;border-radius:999px;background:#e7eeea;overflow:hidden}
+.dpro-tutorial-card__bar>span{display:block;height:100%;border-radius:999px;background:#26705c;transition:width .18s ease}
+.dpro-tutorial-card h3{margin:10px 0 0;font-size:1.18rem;line-height:1.35}
+.dpro-tutorial-card__body{margin:9px 0 0;color:#34443d;font-size:.86rem}
+.dpro-tutorial-card__action{
+  margin-top:12px;padding:10px 11px;border-radius:11px;background:#e8f3ee;color:#153f34;font-size:.78rem;font-weight:900
+}
+.dpro-tutorial-card__safety{
+  margin-top:9px;padding:9px 10px;border:1px solid #ead7ae;border-radius:11px;background:#fff8e9;color:#71521f;font-size:.72rem
+}
+.dpro-tutorial-card__missing{
+  margin-top:9px;padding:8px 10px;border-radius:10px;background:#f1f4f2;color:#607068;font-size:.7rem
+}
+.dpro-tutorial-card__controls{
+  display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:15px;padding-top:13px;border-top:1px solid #e2e9e5
+}
+.dpro-tutorial-card__left,.dpro-tutorial-card__right{display:flex;gap:7px;flex-wrap:wrap}
+.dpro-tutorial-card button{
+  min-height:38px;padding:7px 11px;border:1px solid #c6d5ce;border-radius:9px;background:#fff;color:#153f34;
+  cursor:pointer;font-size:.73rem;font-weight:900
+}
+.dpro-tutorial-card button[data-role="next"]{border-color:#153f34;background:#153f34;color:#fff}
+.dpro-tutorial-card button[data-role="skip"]{color:#7f5c20;border-color:#e4cf9d;background:#fffaf0}
+.dpro-tutorial-card button:disabled{opacity:.45;cursor:not-allowed}
+.dpro-tutorial-toast{
+  position:fixed;z-index:2147482999;right:18px;bottom:18px;max-width:min(360px,calc(100vw - 36px));
+  padding:11px 13px;border:1px solid #c9d8d1;border-radius:12px;background:#fff;color:#34443d;
+  box-shadow:0 12px 34px rgba(20,58,47,.16);font-size:.76rem;font-weight:850
+}
+.dpro-tutorial-toast[hidden]{display:none!important}
+@media(max-width:760px){
+  .dpro-tutorial-actions{gap:5px}
+  .dpro-tutorial-launcher,.dpro-guide-center-link{min-height:36px;padding:6px 8px;font-size:.68rem}
+  .dpro-guide-center-link{display:none}
+  .dpro-tutorial-card{
+    left:8px!important;right:8px!important;bottom:8px!important;top:auto!important;width:auto;
+    max-height:min(62vh,560px);padding:15px;border-radius:17px
+  }
+  .dpro-tutorial-card__bar{width:64px}
+  .dpro-tutorial-highlight{border-radius:11px}
+}
+@media(prefers-reduced-motion:reduce){
+  .dpro-tutorial-highlight,.dpro-tutorial-card__bar>span{transition:none}
+}
