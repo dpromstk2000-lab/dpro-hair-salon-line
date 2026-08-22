@@ -19,7 +19,7 @@
   "use strict";
 
   const VERSION = "HAIR-NEXT-9-COMMON-CONFIG-20260723";
-  const EXPECTED_WORKER_VERSION = "HAIR-NEXT-9-WORKER-SETTINGS-CAPACITY-20260723";
+  const EXPECTED_WORKER_VERSION = "HAIR-PRODUCT-READY-2.1-WORKER-20260822";
   const SERVICE_NAME = "DPRO 美容室 LINE";
   const API_BASE_URL = "https://dpro-hair-salon-line-api.dpromstk2000.workers.dev";
   const SITE_BASE_URL = "https://dpromstk2000-lab.github.io/dpro-hair-salon-line";
@@ -33,6 +33,8 @@
 
   const STORAGE_KEYS = Object.freeze({
     ADMIN_CODE: "dpro_hair_admin_code",
+    STAFF_SESSION: "dpro_hair_staff_session",
+    STAFF_SESSION_EXPIRES: "dpro_hair_staff_session_expires",
     SHOP_CODE: "dpro_hair_shop_code",
     MEMBER_PHONE: "dpro_hair_member_phone",
     MEMBER_LINE_USER_ID: "dpro_hair_member_line_user_id",
@@ -59,6 +61,7 @@
   const ENDPOINTS = Object.freeze({
     ROOT: "/",
     HEALTH: "/api/health",
+    STAFF_SESSION: "/api/auth/staff-session",
 
     PUBLIC_CONFIG: "/api/public/config",
     PUBLIC_CATALOG: "/api/public/catalog",
@@ -337,6 +340,39 @@
 
   function hasAdminCode() {
     return Boolean(getAdminCode());
+  }
+
+
+  function getStaffSessionToken() {
+    const token = readStoredValue(STORAGE_KEYS.STAFF_SESSION, "", "session");
+    const expires = readStoredValue(STORAGE_KEYS.STAFF_SESSION_EXPIRES, "", "session");
+    if (!token) return "";
+    if (expires && Date.parse(expires) <= Date.now()) {
+      clearStaffSession();
+      return "";
+    }
+    return token;
+  }
+
+  function saveStaffSession(session) {
+    const token = String(session?.token || "").trim();
+    if (!token) throw new Error("スタッフセッションを保存できませんでした。");
+    writeStoredValue(STORAGE_KEYS.STAFF_SESSION, token, "session");
+    writeStoredValue(STORAGE_KEYS.STAFF_SESSION_EXPIRES, session?.expires_at || "", "session");
+    if (session?.staff?.id) writeStoredValue(STORAGE_KEYS.LAST_STAFF_ID, session.staff.id);
+    dispatch("dpro:staff-session-changed", { saved: true, role: session?.role || "", scope: session?.scope || "" });
+    return session;
+  }
+
+  function clearStaffSession() {
+    removeStoredValue(STORAGE_KEYS.STAFF_SESSION, "session");
+    removeStoredValue(STORAGE_KEYS.STAFF_SESSION_EXPIRES, "session");
+    dispatch("dpro:staff-session-changed", { saved: false });
+    return true;
+  }
+
+  function hasStaffSession() {
+    return Boolean(getStaffSessionToken());
   }
 
   function requireAdminCode() {
@@ -647,6 +683,8 @@
   async function request(path, options = {}) {
     const method = String(options.method || "GET").toUpperCase();
     const isAdmin = Boolean(options.admin);
+    const isStaff = Boolean(options.staff);
+    if (isAdmin && isStaff) throw new Error("管理者認証とスタッフ認証を同時に指定できません。");
     const timeoutMs = Number(options.timeoutMs || (options.body instanceof FormData ? PHOTO_UPLOAD_TIMEOUT_MS : REQUEST_TIMEOUT_MS));
     const url = buildApiUrl(path, { ...(options.query || {}) });
     const headers = new Headers(options.headers || {});
@@ -654,6 +692,11 @@
     headers.set("X-Requested-With", "DPRO-Hair-Salon");
 
     if (isAdmin) headers.set("X-Admin-Code", options.adminCode || requireAdminCode());
+    if (isStaff) {
+      const token = String(options.staffToken || getStaffSessionToken() || "").trim();
+      if (!token) throw new DPROApiError("スタッフコードで接続してください。", { status: 401, code: "STAFF_SESSION_REQUIRED" });
+      headers.set("Authorization", `Bearer ${token}`);
+    }
 
     let body = options.body;
     if (
@@ -739,6 +782,27 @@
     return post(path, body, { ...options, admin: true });
   }
 
+
+  async function issueStaffSession(staffCode, options = {}) {
+    const code = toHalfWidth(String(staffCode || "")).trim();
+    if (!code) throw new Error("スタッフコードを入力してください。");
+    const result = await post(ENDPOINTS.STAFF_SESSION, options.staffId ? { staff_id: options.staffId } : {}, {
+      ...options,
+      headers: { ...(options.headers || {}), "X-Staff-Code": code },
+    });
+    if (!result?.session?.token) throw new DPROApiError("スタッフセッションを開始できませんでした。", { status: 0, code: "STAFF_SESSION_INVALID", response: result });
+    saveStaffSession(result.session);
+    return result;
+  }
+
+  function staffGet(path, queryParams = {}, options = {}) {
+    return get(path, queryParams, { ...options, staff: true });
+  }
+
+  function staffPost(path, body = {}, options = {}) {
+    return post(path, body, { ...options, staff: true });
+  }
+
   function uploadPhoto(values, file, options = {}) {
     if (!(file instanceof File) && !(file instanceof Blob)) throw new Error("アップロードする写真を選択してください。");
     const formData = new FormData();
@@ -750,8 +814,10 @@
     return request(ENDPOINTS.ADMIN_PHOTO_UPLOAD, {
       method: "POST",
       body: formData,
-      admin: true,
+      admin: !options.staff,
+      staff: Boolean(options.staff),
       adminCode: options.adminCode,
+      staffToken: options.staffToken,
       timeoutMs: options.timeoutMs || PHOTO_UPLOAD_TIMEOUT_MS,
     });
   }
@@ -1150,6 +1216,9 @@
     post,
     adminGet,
     adminPost,
+    issueStaffSession,
+    staffGet,
+    staffPost,
     uploadPhoto,
     healthCheck,
     verifyWorker,
@@ -1193,6 +1262,14 @@
     requireCode: requireAdminCode,
   });
 
+
+  const staff = Object.freeze({
+    getToken: getStaffSessionToken,
+    saveSession: saveStaffSession,
+    clearSession: clearStaffSession,
+    hasSession: hasStaffSession,
+  });
+
   const shop = Object.freeze({
     getCode: getShopCode,
     saveCode: saveShopCode,
@@ -1231,6 +1308,7 @@
   const demo = Object.freeze({
     shopCode: DEFAULT_SHOP_CODE,
     adminCode: "1234",
+    staffCode: "1234",
     customerNo: "HAIR-DEMO-001",
   });
 
@@ -1321,6 +1399,7 @@
     system,
     api,
     admin,
+    staff,
     shop,
     member,
     urls,
@@ -1334,6 +1413,7 @@
     config,
     api,
     admin,
+    staff,
     shop,
     member,
     urls,
