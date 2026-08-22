@@ -1,0 +1,104 @@
+{
+  "ok": true,
+  "generated_at": "2026-08-22T13:19:59.845735+00:00",
+  "page_base": "https://dpromstk2000-lab.github.io/dpro-hair-salon-line",
+  "results": [
+    {
+      "name": "owner-pc",
+      "url": "https://dpromstk2000-lab.github.io/dpro-hair-salon-line/owner.html?demo=1&ready_check=20260822",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "http_status": 200,
+      "horizontal_overflow": 0,
+      "document_scroll_width": 1440,
+      "body_scroll_width": 1440,
+      "console_errors": [],
+      "title": "DPRO 美容室 LINE｜今日の美容室｜公開操作デモ",
+      "staff_ready_marker": null,
+      "ok": true
+    },
+    {
+      "name": "customer-390",
+      "url": "https://dpromstk2000-lab.github.io/dpro-hair-salon-line/index.html?demo=1&line_user_id=demo_hair_line_001&ready_check=20260822",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "http_status": 200,
+      "horizontal_overflow": 0,
+      "document_scroll_width": 390,
+      "body_scroll_width": 390,
+      "console_errors": [],
+      "title": "DPRO美容室｜LINE予約・メニュー・来店受付｜公開操作デモ",
+      "staff_ready_marker": null,
+      "ok": true
+    },
+    {
+      "name": "staff-390",
+      "url": "https://dpromstk2000-lab.github.io/dpro-hair-salon-line/staff.html?demo=1&ready_check=20260822",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "http_status": 200,
+      "horizontal_overflow": 0,
+      "document_scroll_width": 390,
+      "body_scroll_width": 390,
+      "console_errors": [],
+      "title": "DPRO 美容室 LINE｜スタッフ施術｜公開操作デモ",
+      "staff_ready_marker": true,
+      "ok": true
+    },
+    {
+      "name": "customer-320",
+      "url": "https://dpromstk2000-lab.github.io/dpro-hair-salon-line/index.html?demo=1&line_user_id=demo_hair_line_001&ready_check=20260822",
+      "viewport": {
+        "width": 320,
+        "height": 720
+      },
+      "http_status": 200,
+      "horizontal_overflow": 0,
+      "document_scroll_width": 320,
+      "body_scroll_width": 320,
+      "console_errors": [],
+      "title": "DPRO美容室｜LINE予約・メニュー・来店受付｜公開操作デモ",
+      "staff_ready_marker": null,
+      "ok": true
+    },
+    {
+      "name": "staff-320",
+      "url": "https://dpromstk2000-lab.github.io/dpro-hair-salon-line/staff.html?demo=1&ready_check=20260822",
+      "viewport": {
+        "width": 320,
+        "height": 720
+      },
+      "http_status": 200,
+      "horizontal_overflow": 0,
+      "document_scroll_width": 320,
+      "body_scroll_width": 320,
+      "console_errors": [],
+      "title": "DPRO 美容室 LINE｜スタッフ施術｜公開操作デモ",
+      "staff_ready_marker": true,
+      "ok": true
+    },
+    {
+      "name": "owner-ipad",
+      "url": "https://dpromstk2000-lab.github.io/dpro-hair-salon-line/owner-ipad.html?demo=1&ready_check=20260822",
+      "viewport": {
+        "width": 768,
+        "height": 1024
+      },
+      "http_status": 200,
+      "horizontal_overflow": 0,
+      "document_scroll_width": 768,
+      "body_scroll_width": 768,
+      "console_errors": [],
+      "title": "DPRO 美容室 LINE｜店内iPad受付｜公開操作デモ",
+      "staff_ready_marker": null,
+      "ok": true
+    }
+  ],
+  "failed": []
+}

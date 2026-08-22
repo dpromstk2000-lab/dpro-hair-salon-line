@@ -1,0 +1,547 @@
+{
+  "ok": true,
+  "generated_at": "2026-08-22T13:19:49.001058+00:00",
+  "worker_base": "https://dpro-hair-salon-line-api.dpromstk2000.workers.dev",
+  "shop_code": "dpro_hair_demo",
+  "worker_version": "HAIR-PRODUCT-READY-2.2-WORKER-20260822",
+  "adapter": {
+    "adapter_version": "DPRO-CONTROL-ADAPTER-1.0",
+    "worker_version": "HAIR-PRODUCT-READY-2.2-WORKER-20260822",
+    "database_version": "HAIR-NEXT-9-SUPABASE-SETTINGS-CAPACITY-20260723",
+    "frontend_version": "HAIR-NEXT-10-SYSTEM-CHECK-COMPLETION-20260723",
+    "expected": {
+      "worker_version": "HAIR-PRODUCT-READY-2.2-WORKER-20260822",
+      "database_version": "HAIR-NEXT-9-SUPABASE-SETTINGS-CAPACITY-20260723",
+      "frontend_version": "HAIR-NEXT-10-SYSTEM-CHECK-COMPLETION-20260723",
+      "config_version": "HAIR-NEXT-9-COMMON-CONFIG-20260723"
+    },
+    "current": {
+      "worker_version": "HAIR-PRODUCT-READY-2.2-WORKER-20260822",
+      "database_version": "HAIR-NEXT-9-SUPABASE-SETTINGS-CAPACITY-20260723",
+      "frontend_version": "HAIR-NEXT-10-SYSTEM-CHECK-COMPLETION-20260723",
+      "config_version": "HAIR-NEXT-9-COMMON-CONFIG-20260723"
+    },
+    "alignment": {
+      "worker": true,
+      "database": true,
+      "frontend": true,
+      "config": true
+    },
+    "versions_aligned": true,
+    "database_probe": {
+      "ok": true,
+      "version": "HAIR-NEXT-9-SUPABASE-SETTINGS-CAPACITY-20260723",
+      "probes": {
+        "settings_row": true,
+        "production_guard": true,
+        "capacity_columns": true,
+        "operation_log_table": true
+      }
+    },
+    "frontend_probe": {
+      "ok": true,
+      "base_url": "https://dpromstk2000-lab.github.io/dpro-hair-salon-line",
+      "config_version": "HAIR-NEXT-9-COMMON-CONFIG-20260723",
+      "expected_worker_version": "HAIR-PRODUCT-READY-2.2-WORKER-20260822",
+      "frontend_version": "HAIR-NEXT-10-SYSTEM-CHECK-COMPLETION-20260723",
+      "errors": []
+    }
+  },
+  "health_adapter_lightweight": {
+    "adapter_version": "DPRO-CONTROL-ADAPTER-1.0",
+    "worker_version": "HAIR-PRODUCT-READY-2.2-WORKER-20260822",
+    "database_version": "HAIR-NEXT-9-SUPABASE-SETTINGS-CAPACITY-20260723",
+    "frontend_version": null,
+    "expected": {
+      "worker_version": null,
+      "database_version": "HAIR-NEXT-9-SUPABASE-SETTINGS-CAPACITY-20260723",
+      "frontend_version": "HAIR-NEXT-10-SYSTEM-CHECK-COMPLETION-20260723",
+      "config_version": "HAIR-NEXT-9-COMMON-CONFIG-20260723"
+    },
+    "current": {
+      "worker_version": "HAIR-PRODUCT-READY-2.2-WORKER-20260822",
+      "database_version": "HAIR-NEXT-9-SUPABASE-SETTINGS-CAPACITY-20260723",
+      "frontend_version": null,
+      "config_version": null
+    },
+    "alignment": {
+      "worker": null,
+      "database": true,
+      "frontend": null,
+      "config": null
+    },
+    "versions_aligned": false,
+    "database_probe": {
+      "ok": true,
+      "version": "HAIR-NEXT-9-SUPABASE-SETTINGS-CAPACITY-20260723",
+      "probes": {
+        "settings_row": true,
+        "production_guard": true,
+        "capacity_columns": true,
+        "operation_log_table": true
+      }
+    },
+    "frontend_probe": null
+  },
+  "system_check": {
+    "passed": 68,
+    "failed": 0,
+    "total": 68
+  },
+  "checks": [
+    {
+      "name": "health HTTP 200",
+      "ok": true,
+      "detail": 200
+    },
+    {
+      "name": "Worker V2",
+      "ok": true,
+      "detail": "HAIR-PRODUCT-READY-2.2-WORKER-20260822"
+    },
+    {
+      "name": "Adapter 1.0",
+      "ok": true,
+      "detail": {
+        "adapter_version": "DPRO-CONTROL-ADAPTER-1.0",
+        "worker_version": "HAIR-PRODUCT-READY-2.2-WORKER-20260822",
+        "database_version": "HAIR-NEXT-9-SUPABASE-SETTINGS-CAPACITY-20260723",
+        "frontend_version": null,
+        "expected": {
+          "worker_version": null,
+          "database_version": "HAIR-NEXT-9-SUPABASE-SETTINGS-CAPACITY-20260723",
+          "frontend_version": "HAIR-NEXT-10-SYSTEM-CHECK-COMPLETION-20260723",
+          "config_version": "HAIR-NEXT-9-COMMON-CONFIG-20260723"
+        },
+        "current": {
+          "worker_version": "HAIR-PRODUCT-READY-2.2-WORKER-20260822",
+          "database_version": "HAIR-NEXT-9-SUPABASE-SETTINGS-CAPACITY-20260723",
+          "frontend_version": null,
+          "config_version": null
+        },
+        "alignment": {
+          "worker": null,
+          "database": true,
+          "frontend": null,
+          "config": null
+        },
+        "versions_aligned": false,
+        "database_probe": {
+          "ok": true,
+          "version": "HAIR-NEXT-9-SUPABASE-SETTINGS-CAPACITY-20260723",
+          "probes": {
+            "settings_row": true,
+            "production_guard": true,
+            "capacity_columns": true,
+            "operation_log_table": true
+          }
+        },
+        "frontend_probe": null
+      }
+    },
+    {
+      "name": "DB baseline",
+      "ok": true,
+      "detail": "HAIR-NEXT-9-SUPABASE-SETTINGS-CAPACITY-20260723"
+    },
+    {
+      "name": "demo_prepare HTTP 200",
+      "ok": true,
+      "detail": 200
+    },
+    {
+      "name": "demo_prepare ok",
+      "ok": true,
+      "detail": {
+        "ok": true,
+        "service": "DPRO Hair Salon LINE Demo Prepare",
+        "version": "HAIR-PRODUCT-READY-2.2-WORKER-20260822",
+        "time": "2026-08-22T13:19:43.805Z",
+        "jst_date": "2026-08-22",
+        "message": "美容室デモデータを本日の営業用に準備しました。",
+        "production_guard": true,
+        "prepared": {
+          "reservations": 3,
+          "follow_tasks": 3
+        },
+        "system_check": {
+          "deferred_to_separate_request": true,
+          "path": "/api/admin/system-check",
+          "reason": "subrequest_budget_isolation"
+        }
+      }
+    },
+    {
+      "name": "demo_prepare defers full system-check",
+      "ok": true,
+      "detail": {
+        "deferred_to_separate_request": true,
+        "path": "/api/admin/system-check",
+        "reason": "subrequest_budget_isolation"
+      }
+    },
+    {
+      "name": "system-check HTTP 200",
+      "ok": true,
+      "detail": 200
+    },
+    {
+      "name": "system-check version V2",
+      "ok": true,
+      "detail": "HAIR-PRODUCT-READY-2.2-WORKER-20260822"
+    },
+    {
+      "name": "system-check all_ok",
+      "ok": true,
+      "detail": {
+        "passed": 68,
+        "failed": 0,
+        "total": 68
+      }
+    },
+    {
+      "name": "system item adapter_version",
+      "ok": true,
+      "detail": {
+        "key": "adapter_version",
+        "ok": true,
+        "label": "CONTROL Adapter",
+        "detail": "DPRO-CONTROL-ADAPTER-1.0"
+      }
+    },
+    {
+      "name": "system item database_version",
+      "ok": true,
+      "detail": {
+        "key": "database_version",
+        "ok": true,
+        "label": "DB baseline",
+        "detail": "HAIR-NEXT-9-SUPABASE-SETTINGS-CAPACITY-20260723"
+      }
+    },
+    {
+      "name": "system item frontend_version",
+      "ok": true,
+      "detail": {
+        "key": "frontend_version",
+        "ok": true,
+        "label": "Frontend version",
+        "detail": "HAIR-NEXT-10-SYSTEM-CHECK-COMPLETION-20260723"
+      }
+    },
+    {
+      "name": "system item worker_frontend_alignment",
+      "ok": true,
+      "detail": {
+        "key": "worker_frontend_alignment",
+        "ok": true,
+        "label": "Worker/Frontend expected整合",
+        "detail": "HAIR-PRODUCT-READY-2.2-WORKER-20260822 / expected HAIR-PRODUCT-READY-2.2-WORKER-20260822"
+      }
+    },
+    {
+      "name": "system item versions_aligned",
+      "ok": true,
+      "detail": {
+        "key": "versions_aligned",
+        "ok": true,
+        "label": "Worker/DB/Frontend version整合",
+        "detail": "{\"worker\":true,\"database\":true,\"frontend\":true,\"config\":true}"
+      }
+    },
+    {
+      "name": "system item staff_server_scope",
+      "ok": true,
+      "detail": {
+        "key": "staff_server_scope",
+        "ok": true,
+        "label": "Staff server scope",
+        "detail": "署名Staff session / role-scoped operations / shop+staff assignment enforcement"
+      }
+    },
+    {
+      "name": "system item critical_operation_audit",
+      "ok": true,
+      "detail": {
+        "key": "critical_operation_audit",
+        "ok": true,
+        "label": "重要操作監査",
+        "detail": "hair_operation_logs: actor/role/action/time/target/result"
+      }
+    },
+    {
+      "name": "system item private_photo_bucket",
+      "ok": true,
+      "detail": {
+        "key": "private_photo_bucket",
+        "ok": true,
+        "label": "非公開カルテ写真Storage",
+        "detail": "hair-carte-photos"
+      }
+    },
+    {
+      "name": "system item past_datetime_guard",
+      "ok": true,
+      "detail": {
+        "key": "past_datetime_guard",
+        "ok": true,
+        "label": "過去日時禁止",
+        "detail": "予約作成・空き枠API対応"
+      }
+    },
+    {
+      "name": "catalog has menu for past-date test",
+      "ok": true,
+      "detail": 7
+    },
+    {
+      "name": "past date rejected by server",
+      "ok": true,
+      "detail": {
+        "status": 400,
+        "code": "PAST_DATE",
+        "payload": {
+          "ok": false,
+          "service": "DPRO Hair Salon LINE API",
+          "version": "HAIR-PRODUCT-READY-2.2-WORKER-20260822",
+          "error": {
+            "code": "PAST_DATE",
+            "message": "過去の日付は選択できません。",
+            "details": null
+          }
+        }
+      }
+    },
+    {
+      "name": "demo staff session issued",
+      "ok": true,
+      "detail": {
+        "token": "dpro_staff_v1.eyJ2IjoyLCJzaG9wX2NvZGUiOiJkcHJvX2hhaXJfZGVtbyIsInN0YWZmX2lkIjoiMWZiMWZmYzQtZDRkMS00ZDA3LWIxM2QtOTNkMzFhMmY5OWVlIiwicm9sZSI6InN0eWxpc3QiLCJpYXQiOjE3ODc0MDQ3ODcsImV4cCI6MTc4NzQzMzU4N30.cmXw-ePwa-n1iR5-33Y1R4wxiIaToq5RhwjSoHRZCWI",
+        "expires_at": "2026-08-22T21:19:47.000Z",
+        "role": "stylist",
+        "scope": "own_assigned_operate",
+        "permissions": [
+          "reservation_status",
+          "carte",
+          "formula",
+          "photo",
+          "next_proposal",
+          "message_copy"
+        ],
+        "staff": {
+          "id": "1fb1ffc4-d4d1-4d07-b13d-93d31a2f99ee",
+          "display_name": "山本スタイリスト"
+        }
+      }
+    },
+    {
+      "name": "staff role scope returned",
+      "ok": true,
+      "detail": {
+        "token": "dpro_staff_v1.eyJ2IjoyLCJzaG9wX2NvZGUiOiJkcHJvX2hhaXJfZGVtbyIsInN0YWZmX2lkIjoiMWZiMWZmYzQtZDRkMS00ZDA3LWIxM2QtOTNkMzFhMmY5OWVlIiwicm9sZSI6InN0eWxpc3QiLCJpYXQiOjE3ODc0MDQ3ODcsImV4cCI6MTc4NzQzMzU4N30.cmXw-ePwa-n1iR5-33Y1R4wxiIaToq5RhwjSoHRZCWI",
+        "expires_at": "2026-08-22T21:19:47.000Z",
+        "role": "stylist",
+        "scope": "own_assigned_operate",
+        "permissions": [
+          "reservation_status",
+          "carte",
+          "formula",
+          "photo",
+          "next_proposal",
+          "message_copy"
+        ],
+        "staff": {
+          "id": "1fb1ffc4-d4d1-4d07-b13d-93d31a2f99ee",
+          "display_name": "山本スタイリスト"
+        }
+      }
+    },
+    {
+      "name": "staff scoped GET works",
+      "ok": true,
+      "detail": {
+        "role": "stylist",
+        "scope": "own_assigned_operate",
+        "read_only": false,
+        "permissions": [
+          "reservation_status",
+          "carte",
+          "formula",
+          "photo",
+          "next_proposal",
+          "message_copy"
+        ],
+        "actor_id": "1fb1ffc4-d4d1-4d07-b13d-93d31a2f99ee",
+        "server_enforced": true,
+        "audited": true
+      }
+    },
+    {
+      "name": "staff critical audit advertised",
+      "ok": true,
+      "detail": {
+        "role": "stylist",
+        "scope": "own_assigned_operate",
+        "read_only": false,
+        "permissions": [
+          "reservation_status",
+          "carte",
+          "formula",
+          "photo",
+          "next_proposal",
+          "message_copy"
+        ],
+        "actor_id": "1fb1ffc4-d4d1-4d07-b13d-93d31a2f99ee",
+        "server_enforced": true,
+        "audited": true
+      }
+    },
+    {
+      "name": "Worker/DB/Frontend/Config aligned",
+      "ok": true,
+      "detail": {
+        "adapter_version": "DPRO-CONTROL-ADAPTER-1.0",
+        "worker_version": "HAIR-PRODUCT-READY-2.2-WORKER-20260822",
+        "database_version": "HAIR-NEXT-9-SUPABASE-SETTINGS-CAPACITY-20260723",
+        "frontend_version": "HAIR-NEXT-10-SYSTEM-CHECK-COMPLETION-20260723",
+        "expected": {
+          "worker_version": "HAIR-PRODUCT-READY-2.2-WORKER-20260822",
+          "database_version": "HAIR-NEXT-9-SUPABASE-SETTINGS-CAPACITY-20260723",
+          "frontend_version": "HAIR-NEXT-10-SYSTEM-CHECK-COMPLETION-20260723",
+          "config_version": "HAIR-NEXT-9-COMMON-CONFIG-20260723"
+        },
+        "current": {
+          "worker_version": "HAIR-PRODUCT-READY-2.2-WORKER-20260822",
+          "database_version": "HAIR-NEXT-9-SUPABASE-SETTINGS-CAPACITY-20260723",
+          "frontend_version": "HAIR-NEXT-10-SYSTEM-CHECK-COMPLETION-20260723",
+          "config_version": "HAIR-NEXT-9-COMMON-CONFIG-20260723"
+        },
+        "alignment": {
+          "worker": true,
+          "database": true,
+          "frontend": true,
+          "config": true
+        },
+        "versions_aligned": true,
+        "database_probe": {
+          "ok": true,
+          "version": "HAIR-NEXT-9-SUPABASE-SETTINGS-CAPACITY-20260723",
+          "probes": {
+            "settings_row": true,
+            "production_guard": true,
+            "capacity_columns": true,
+            "operation_log_table": true
+          }
+        },
+        "frontend_probe": {
+          "ok": true,
+          "base_url": "https://dpromstk2000-lab.github.io/dpro-hair-salon-line",
+          "config_version": "HAIR-NEXT-9-COMMON-CONFIG-20260723",
+          "expected_worker_version": "HAIR-PRODUCT-READY-2.2-WORKER-20260822",
+          "frontend_version": "HAIR-NEXT-10-SYSTEM-CHECK-COMPLETION-20260723",
+          "errors": []
+        }
+      }
+    },
+    {
+      "name": "frontend expected Worker V2",
+      "ok": true,
+      "detail": {
+        "worker_version": "HAIR-PRODUCT-READY-2.2-WORKER-20260822",
+        "database_version": "HAIR-NEXT-9-SUPABASE-SETTINGS-CAPACITY-20260723",
+        "frontend_version": "HAIR-NEXT-10-SYSTEM-CHECK-COMPLETION-20260723",
+        "config_version": "HAIR-NEXT-9-COMMON-CONFIG-20260723"
+      }
+    },
+    {
+      "name": "adapter alignment worker",
+      "ok": true,
+      "detail": {
+        "worker": true,
+        "database": true,
+        "frontend": true,
+        "config": true
+      }
+    },
+    {
+      "name": "adapter alignment database",
+      "ok": true,
+      "detail": {
+        "worker": true,
+        "database": true,
+        "frontend": true,
+        "config": true
+      }
+    },
+    {
+      "name": "adapter alignment frontend",
+      "ok": true,
+      "detail": {
+        "worker": true,
+        "database": true,
+        "frontend": true,
+        "config": true
+      }
+    },
+    {
+      "name": "adapter alignment config",
+      "ok": true,
+      "detail": {
+        "worker": true,
+        "database": true,
+        "frontend": true,
+        "config": true
+      }
+    },
+    {
+      "name": "final health HTTP 200",
+      "ok": true,
+      "detail": 200
+    },
+    {
+      "name": "final health Worker version",
+      "ok": true,
+      "detail": "HAIR-PRODUCT-READY-2.2-WORKER-20260822"
+    },
+    {
+      "name": "final health DB baseline",
+      "ok": true,
+      "detail": {
+        "adapter_version": "DPRO-CONTROL-ADAPTER-1.0",
+        "worker_version": "HAIR-PRODUCT-READY-2.2-WORKER-20260822",
+        "database_version": "HAIR-NEXT-9-SUPABASE-SETTINGS-CAPACITY-20260723",
+        "frontend_version": null,
+        "expected": {
+          "worker_version": null,
+          "database_version": "HAIR-NEXT-9-SUPABASE-SETTINGS-CAPACITY-20260723",
+          "frontend_version": "HAIR-NEXT-10-SYSTEM-CHECK-COMPLETION-20260723",
+          "config_version": "HAIR-NEXT-9-COMMON-CONFIG-20260723"
+        },
+        "current": {
+          "worker_version": "HAIR-PRODUCT-READY-2.2-WORKER-20260822",
+          "database_version": "HAIR-NEXT-9-SUPABASE-SETTINGS-CAPACITY-20260723",
+          "frontend_version": null,
+          "config_version": null
+        },
+        "alignment": {
+          "worker": null,
+          "database": true,
+          "frontend": null,
+          "config": null
+        },
+        "versions_aligned": false,
+        "database_probe": {
+          "ok": true,
+          "version": "HAIR-NEXT-9-SUPABASE-SETTINGS-CAPACITY-20260723",
+          "probes": {
+            "settings_row": true,
+            "production_guard": true,
+            "capacity_columns": true,
+            "operation_log_table": true
+          }
+        },
+        "frontend_probe": null
+      }
+    }
+  ]
+}
