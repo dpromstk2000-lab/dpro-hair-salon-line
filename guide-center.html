@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#153f34">
+<meta name="description" content="DPRO 美容室 LINE 操作ガイド。予約・顧客・美容カルテ・再来店フォローなどを検索して確認できます。">
+<title>DPRO 美容室 LINE｜操作ガイド</title>
+<link rel="stylesheet" href="guide-center.css?v=20260822-r4">
+</head>
+<body>
+<a class="skip-link" href="#guideMain">本文へ移動</a>
+
+<header class="guide-header">
+  <div class="guide-header__inner">
+    <div class="brand">
+      <span class="brand__mark" aria-hidden="true">D</span>
+      <div>
+        <p class="eyebrow">DPRO 美容室 LINE</p>
+        <h1>操作ガイド</h1>
+      </div>
+    </div>
+    <nav class="header-actions" aria-label="ガイド操作">
+      <a class="button button--ghost" href="owner.html">Owner PCへ戻る</a>
+      <a class="button button--primary" id="replayFirst10" href="owner.html?tutorial=restart">最初の10分を再生</a>
+    </nav>
+  </div>
+</header>
+
+<main id="guideMain" class="guide-shell" tabindex="-1">
+  <section class="guide-hero" aria-labelledby="guideHeroTitle">
+    <div>
+      <p class="eyebrow">GUIDE CENTER</p>
+      <h2 id="guideHeroTitle">分からない操作を、ここですぐ確認</h2>
+      <p>記事・FAQを検索できます。ガイドは説明専用で、予約・顧客・カルテ・設定を自動変更しません。</p>
+    </div>
+    <div class="guide-counts" aria-label="ガイド件数">
+      <div><strong id="categoryCount">—</strong><span>カテゴリ</span></div>
+      <div><strong id="articleCount">—</strong><span>記事</span></div>
+      <div><strong id="faqCount">—</strong><span>FAQ</span></div>
+    </div>
+  </section>
+
+  <section class="search-card" aria-label="操作ガイド検索">
+    <label for="guideSearch">操作・困りごとを検索</label>
+    <div class="search-row">
+      <input id="guideSearch" type="search" autocomplete="off" placeholder="例：予約、顧客、カルテ、CSV、営業時間">
+      <button id="clearSearch" type="button" class="button button--soft">クリア</button>
+    </div>
+    <p class="search-help"><kbd>/</kbd> または <kbd>Ctrl</kbd>＋<kbd>K</kbd> で検索欄へ移動できます。</p>
+  </section>
+
+  <div id="loadError" class="error-panel" role="alert" hidden></div>
+
+  <section id="guideApp" class="guide-layout" aria-busy="true">
+    <aside class="category-panel" aria-label="カテゴリ">
+      <div class="category-panel__head">
+        <h2>カテゴリ</h2>
+        <span id="resultSummary" class="result-summary">読み込み中…</span>
+      </div>
+      <div id="categoryFilters" class="category-list"></div>
+    </aside>
+
+    <div class="guide-content">
+      <section id="articleListSection" aria-labelledby="articleListTitle">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">ARTICLES</p>
+            <h2 id="articleListTitle">操作記事</h2>
+          </div>
+        </div>
+        <div id="articleList" class="article-grid"></div>
+        <div id="articleEmpty" class="empty-state" hidden>条件に一致する記事はありません。</div>
+      </section>
+
+      <section id="articleDetailSection" class="article-detail" aria-labelledby="articleDetailTitle" hidden>
+        <button id="articleBack" type="button" class="back-button">← 記事一覧へ戻る</button>
+        <div class="article-detail__head">
+          <div>
+            <p id="articleDetailMeta" class="eyebrow"></p>
+            <h2 id="articleDetailTitle"></h2>
+            <p id="articleDetailSummary" class="article-detail__summary"></p>
+          </div>
+          <span id="articleRole" class="role-badge"></span>
+        </div>
+        <ol id="articleSteps" class="step-list"></ol>
+        <div id="articleCaution" class="caution" hidden></div>
+        <div id="articleTargets" class="target-links"></div>
+      </section>
+
+      <section id="faqSection" class="faq-section" aria-labelledby="faqTitle">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">FAQ</p>
+            <h2 id="faqTitle">よくある質問</h2>
+          </div>
+        </div>
+        <div id="faqList" class="faq-list"></div>
+        <div id="faqEmpty" class="empty-state" hidden>条件に一致するFAQはありません。</div>
+      </section>
+    </div>
+  </section>
+</main>
+
+<footer class="guide-footer">
+  <p>DPRO 美容室 LINE 操作ガイド</p>
+  <p>実顧客情報・実写真・管理コードはガイド本文に記載しません。</p>
+</footer>
+
+<script src="guide-targets.js?v=20260822-r4"></script>
+<script src="guide-center.js?v=20260822-r4"></script>
+</body>
+</html>
