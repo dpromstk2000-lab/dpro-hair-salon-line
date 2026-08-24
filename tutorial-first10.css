@@ -1,4 +1,4 @@
-/* DPRO TUTORIAL HAIR / R3 FIRST10 V1.0
+/* DPRO TUTORIAL HAIR / R3 FIRST10 V1.1 DRAG CARD
    Additive UI only. No business mutation. */
 .dpro-tutorial-actions{
   display:flex;align-items:center;gap:7px;flex-wrap:wrap;justify-content:flex-end
@@ -37,8 +37,11 @@
   font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Hiragino Sans","Yu Gothic UI","Yu Gothic",Meiryo,sans-serif;
   line-height:1.6
 }
-.dpro-tutorial-card__top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.dpro-tutorial-card__top{display:grid;grid-template-columns:minmax(0,1fr) auto auto;align-items:flex-start;gap:9px}
 .dpro-tutorial-card__chapter{color:#26705c;font-size:.68rem;font-weight:950;letter-spacing:.08em}
+.dpro-tutorial-card.is-dragging{user-select:none}
+.dpro-tutorial-card__drag-handle{display:inline-flex;align-items:center;justify-content:center;min-width:70px;min-height:34px;padding:5px 9px;border:1px dashed #88aa9a;border-radius:999px;background:#eef6f2;color:#153f34;font-size:.66rem;font-weight:950;line-height:1;cursor:grab;touch-action:none;user-select:none;-webkit-user-select:none}
+.dpro-tutorial-card.is-dragging .dpro-tutorial-card__drag-handle{cursor:grabbing;background:#dfeee7}
 .dpro-tutorial-card__progress{display:flex;align-items:center;gap:8px;color:#66756e;font-size:.69rem;font-weight:900}
 .dpro-tutorial-card__bar{width:88px;height:6px;border-radius:999px;background:#e7eeea;overflow:hidden}
 .dpro-tutorial-card__bar>span{display:block;height:100%;border-radius:999px;background:#26705c;transition:width .18s ease}
@@ -78,6 +81,10 @@
     left:8px!important;right:8px!important;bottom:8px!important;top:auto!important;width:auto;
     max-height:min(62vh,560px);padding:15px;border-radius:17px
   }
+  .dpro-tutorial-card__top{grid-template-columns:minmax(0,1fr) auto}
+  .dpro-tutorial-card__drag-handle{grid-column:1/-1;grid-row:1;justify-self:end;min-height:36px}
+  .dpro-tutorial-card__top>div:first-child{grid-column:1;grid-row:2}
+  .dpro-tutorial-card__progress{grid-column:2;grid-row:2}
   .dpro-tutorial-card__bar{width:64px}
   .dpro-tutorial-highlight{border-radius:11px}
 }

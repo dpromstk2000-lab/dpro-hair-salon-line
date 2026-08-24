@@ -1,9 +1,9 @@
-/* DPRO TUTORIAL HAIR / R3 FIRST10 V1.0
+/* DPRO TUTORIAL HAIR / R3 FIRST10 V1.1 DRAG CARD
    R2 FINAL LOCK consumer. Additive / mutation-zero. */
 (() => {
   "use strict";
 
-  const VERSION = "HAIR-R3-FIRST10-V1.0-20260822";
+  const VERSION = "HAIR-R3-FIRST10-V1.1-DRAG-CARD-20260824";
   const CONTENT_URL = "CONTENT_PACKAGE.json";
   const EXPECTED_CONTENT_SHA256 = "7b931958aac74ab7406ee2efeb54e462243f4f32574462ab2da25f5bfa94f143";
   const EXPECTED_SOURCE_COMMIT = "682b48772f5859199ae98cf87ef72d7e43bf389c";
@@ -79,7 +79,9 @@
     card: null,
     toast: null,
     lastFocused: null,
-    loadError: null
+    loadError: null,
+    dragState: null,
+    manuallyPlaced: false
   };
 
   function q(selector) {
@@ -331,8 +333,82 @@
     state.highlight.hidden = false;
   }
 
+  function viewportBox() {
+    const vv = window.visualViewport;
+    return { left: vv?.offsetLeft || 0, top: vv?.offsetTop || 0, width: vv?.width || innerWidth, height: vv?.height || innerHeight };
+  }
+
+  function clampDraggedCard(card = state.card, left = null, top = null) {
+    if (!card) return null;
+    const margin = matchMedia("(max-width:760px)").matches ? 8 : 12;
+    const vp = viewportBox();
+    const r = card.getBoundingClientRect();
+    const rawLeft = left == null ? r.left : left;
+    const rawTop = top == null ? r.top : top;
+    const maxLeft = vp.left + Math.max(margin, vp.width - r.width - margin);
+    const maxTop = vp.top + Math.max(margin, vp.height - r.height - margin);
+    const nextLeft = Math.min(Math.max(rawLeft, vp.left + margin), maxLeft);
+    const nextTop = Math.min(Math.max(rawTop, vp.top + margin), maxTop);
+    card.style.setProperty("left", `${Math.round(nextLeft)}px`, "important");
+    card.style.setProperty("top", `${Math.round(nextTop)}px`, "important");
+    card.style.setProperty("right", "auto", "important");
+    card.style.setProperty("bottom", "auto", "important");
+    return { left: nextLeft, top: nextTop };
+  }
+
+  function endCardDrag(pointerId = null) {
+    if (!state.dragState) return;
+    if (pointerId != null && state.dragState.pointerId !== pointerId) return;
+    const { handle, pointerId: activePointerId } = state.dragState;
+    state.dragState = null;
+    state.card?.classList.remove("is-dragging");
+    try { if (handle?.hasPointerCapture?.(activePointerId)) handle.releasePointerCapture(activePointerId); } catch (_) {}
+  }
+
+  function resetCardDrag() {
+    endCardDrag();
+    state.manuallyPlaced = false;
+    if (!state.card) return;
+    state.card.classList.remove("is-dragged", "is-dragging");
+    ["left","top","right","bottom","width"].forEach(prop => state.card.style.removeProperty(prop));
+  }
+
+  function enableCardDrag(card = state.card) {
+    const handle = card?.querySelector("[data-drag-handle]");
+    if (!card || !handle) return;
+    handle.addEventListener("pointerdown", event => {
+      if (!event.isPrimary || (event.pointerType === "mouse" && event.button !== 0)) return;
+      const r = card.getBoundingClientRect();
+      state.manuallyPlaced = true;
+      card.classList.add("is-dragged", "is-dragging");
+      card.style.setProperty("width", `${Math.min(r.width, viewportBox().width - 16)}px`, "important");
+      const start = clampDraggedCard(card, r.left, r.top);
+      state.dragState = { pointerId: event.pointerId, handle, offsetX: event.clientX - start.left, offsetY: event.clientY - start.top };
+      try { handle.setPointerCapture(event.pointerId); } catch (_) {}
+      event.preventDefault();
+      event.stopPropagation();
+    });
+    handle.addEventListener("pointermove", event => {
+      if (!state.dragState || state.dragState.pointerId !== event.pointerId) return;
+      clampDraggedCard(card, event.clientX - state.dragState.offsetX, event.clientY - state.dragState.offsetY);
+      event.preventDefault();
+      event.stopPropagation();
+    });
+    const finish = event => {
+      if (!state.dragState || state.dragState.pointerId !== event.pointerId) return;
+      clampDraggedCard(card);
+      endCardDrag(event.pointerId);
+      event.preventDefault();
+      event.stopPropagation();
+    };
+    handle.addEventListener("pointerup", finish);
+    handle.addEventListener("pointercancel", finish);
+    handle.addEventListener("lostpointercapture", event => endCardDrag(event.pointerId));
+  }
+
   function positionCard(target) {
     if (!state.card) return;
+    if (state.manuallyPlaced) { clampDraggedCard(state.card); return; }
     if (matchMedia("(max-width:760px)").matches) {
       state.card.style.left = "8px";
       state.card.style.top = "auto";
@@ -395,6 +471,7 @@
             <div>
               <div class="dpro-tutorial-card__chapter">${escapeHtml(chapter)}</div>
             </div>
+            <span class="dpro-tutorial-card__drag-handle" data-drag-handle aria-label="説明カードを移動" title="ドラッグして移動">↕ 移動</span>
             <div class="dpro-tutorial-card__progress">
               <span>${state.index + 1} / ${count}</span>
               <span class="dpro-tutorial-card__bar" aria-hidden="true"><span style="width:${progress}%"></span></span>
@@ -420,6 +497,7 @@
         state.card.querySelector('[data-role="skip"]').addEventListener("click", () => closeTutorial("skipped"));
         state.card.querySelector('[data-role="back"]').addEventListener("click", previousCard);
         state.card.querySelector('[data-role="next"]').addEventListener("click", nextCard);
+        enableCardDrag(state.card);
 
         positionCard(visibleTarget);
         saveProgress("in_progress");
@@ -441,6 +519,7 @@
     }
 
     createOverlay();
+    resetCardDrag();
     state.shield.hidden = false;
     state.highlight.hidden = true;
     state.card.hidden = false;
@@ -458,6 +537,7 @@
 
   function closeTutorial(status = "in_progress") {
     if (!state.open) return;
+    endCardDrag();
     if (status === "skipped") {
       saveProgress("skipped");
     } else if (status === "completed") {
@@ -534,6 +614,7 @@
     installEntryUI();
     window.addEventListener("resize", reposition, { passive: true });
     window.addEventListener("scroll", reposition, { passive: true, capture: true });
+    window.visualViewport?.addEventListener("resize", reposition, { passive: true });
     document.addEventListener("keydown", trapKeyboard, true);
 
     try {
