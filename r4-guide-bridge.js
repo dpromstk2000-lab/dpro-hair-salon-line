@@ -1,9 +1,9 @@
-/* DPRO TUTORIAL HAIR / R4 GUIDE BRIDGE V1.1
+/* DPRO TUTORIAL HAIR / R4 GUIDE BRIDGE V1.2
  * R3 Standard V1.1 companion: exactly-10 replay/resume + safe guide target navigation.
  */
 (() => {
   "use strict";
-  const VERSION = "HAIR-R4-GUIDE-BRIDGE-V1.1-STANDARD10-20260828";
+  const VERSION = "HAIR-R4-GUIDE-BRIDGE-V1.2-RESTART-SINGLE-OWNER-20260829";
   const OWNER_TARGETS = {
     OWNER_NAV:{selector:".nav",view:""}, OWNER_ADMIN_AREA:{selector:"#topAdminCodeArea",view:""}, OWNER_ADMIN_CLEAR:{selector:"#topAdminCodeClear",view:""},
     OWNER_TODAY_NAV:{selector:'[data-view="today"]',view:"today"}, OWNER_TODAY_STATS:{selector:"#todayStats",view:"today"}, OWNER_STATUS_PIPELINE:{selector:"#statusPipeline",view:"today"}, OWNER_TODAY_RESERVATIONS:{selector:"#todayReservationTable",view:"today"}, OWNER_ATTENTION:{selector:"#attentionList",view:"today"}, OWNER_TODAY_FOLLOW:{selector:"#todayFollowList",view:"today"}, OWNER_MANUAL_ENTRY:{selector:'[data-action="open-manual"]',view:"today"},
@@ -19,7 +19,6 @@
   };
 
   const guideButton = () => document.getElementById("dproGuideCenterLink");
-  const launcher = () => document.getElementById("dproTutorialLauncher");
 
   function syncGuideButton(){
     const button=guideButton(); if(!button)return false;
@@ -37,13 +36,10 @@
     if(!element.hasAttribute("tabindex")&&!/^(BUTTON|A|INPUT|SELECT|TEXTAREA)$/.test(element.tagName))element.setAttribute("tabindex","-1");
     try{element.focus({preventScroll:true})}catch{} setTimeout(()=>element.classList.remove("dpro-r4-guide-target"),7000);
   }
+  // R3 restart ownership: tutorial-first10.js is the only handler for ?tutorial=restart.
+  // This bridge handles Guide target navigation only, preventing duplicate replay/start calls.
   async function handleStartupParams(){
     const url=new URL(location.href);
-    if(url.searchParams.get("tutorial")==="restart"){
-      const button=await waitFor(()=>{const candidate=launcher();const api=window.DPRO_TUTORIAL_HAIR;const ready=Boolean(api&&api.getState().count===10);return candidate instanceof HTMLElement&&!candidate.disabled&&ready?candidate:null},80,100);
-      if(button instanceof HTMLElement){history.replaceState(null,"",url.pathname);window.DPRO_TUTORIAL_HAIR.replay()}
-      return;
-    }
     const targetId=url.searchParams.get("guideTarget");
     if(targetId){history.replaceState(null,"",url.pathname);await highlightOwnerTarget(targetId)}
   }
