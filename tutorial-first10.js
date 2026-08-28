@@ -37,7 +37,8 @@
     manuallyPlaced: false,
     loadError: null,
     targetSelector: null,
-    targetFound: false
+    targetFound: false,
+    renderToken: 0
   };
 
   const q = (selector, root = document) => {
@@ -405,23 +406,28 @@
     return "GUIDE CENTER";
   }
 
+  // Render token prevents stale deferred callbacks from repainting an older step.
   function renderCard() {
     if (!state.open || !state.steps[state.index]) return;
-    const step = state.steps[state.index];
+    const stepIndex = state.index;
+    const step = state.steps[stepIndex];
+    const renderToken = ++state.renderToken;
+    const isCurrentRender = () => state.open && state.renderToken === renderToken && state.index === stepIndex;
+
     if (step.route !== routeName()) {
-      routeToStep(state.index);
+      routeToStep(stepIndex);
       return;
     }
     safeViewNavigate(step);
     setTimeout(() => {
-      if (!state.open) return;
+      if (!isCurrentRender()) return;
       let target = resolveTarget(step);
       scrollTargetIntoView(target);
       setTimeout(() => {
-        if (!state.open) return;
+        if (!isCurrentRender()) return;
         target = resolveTarget(step);
         positionHighlight(target);
-        const progress = Math.round(((state.index + 1) / 10) * 100);
+        const progress = Math.round(((stepIndex + 1) / 10) * 100);
         const missing = target ? "" : '<div class="dpro-tutorial-card__missing">対象部分は現在の画面状態では表示されていません。安全な代替表示のまま次へ進めます。</div>';
         state.card.innerHTML = `
           <div class="dpro-tutorial-card__top">
@@ -431,7 +437,7 @@
               <button type="button" class="dpro-tutorial-card__close" data-role="close" aria-label="チュートリアルを閉じる">× 閉じる</button>
             </div>
             <div class="dpro-tutorial-card__progress">
-              <span>${state.index + 1} / 10</span>
+              <span>${stepIndex + 1} / 10</span>
               <span class="dpro-tutorial-card__bar" aria-hidden="true"><span style="width:${progress}%"></span></span>
             </div>
           </div>
@@ -442,8 +448,8 @@
           <div class="dpro-tutorial-card__controls">
             <div class="dpro-tutorial-card__left"><button type="button" data-role="skip">スキップ</button></div>
             <div class="dpro-tutorial-card__right">
-              <button type="button" data-role="back" ${state.index === 0 ? "disabled" : ""}>戻る</button>
-              <button type="button" data-role="next">${state.index === 9 ? "完了" : "次へ"}</button>
+              <button type="button" data-role="back" ${stepIndex === 0 ? "disabled" : ""}>戻る</button>
+              <button type="button" data-role="next">${stepIndex === 9 ? "完了" : "次へ"}</button>
             </div>
           </div>`;
         state.card.querySelector('[data-role="close"]').addEventListener("click", () => closeTutorial("in_progress"));
@@ -452,7 +458,7 @@
         state.card.querySelector('[data-role="next"]').addEventListener("click", nextCard);
         enableCardDrag(state.card);
         positionCard(target);
-        writeProgress("in_progress", state.index, step.route);
+        writeProgress("in_progress", stepIndex, step.route);
         state.card.querySelector('[data-role="next"]')?.focus({preventScroll: true});
       }, 70);
     }, 50);
