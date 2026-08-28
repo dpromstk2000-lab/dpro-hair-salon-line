@@ -1,5 +1,5 @@
 name: STEP DPRO TUTORIAL HAIR R3 FIRST10 V1.1 QA
-# Harness V1.4: stale-render token QA + rendered-step keyboard verification
+# Harness V1.5: exact production script URL cache gate + stale-render QA
 
 on:
   workflow_dispatch:
@@ -40,24 +40,38 @@ jobs:
           subprocess.run(['node','--check','tutorial-first10.js'],check=True)
           subprocess.run(['node','--check','r4-guide-bridge.js'],check=True)
 
-      - name: Wait for GitHub Pages R3 runtime
+      - name: Wait for exact production R3 runtime URLs
         shell: python
         run: |
           import time, urllib.request
-          base='https://dpromstk2000-lab.github.io/dpro-hair-salon-line/tutorial-first10.js'
-          marker='HAIR-R3-FIRST10-V1.1-STANDARD10-20260828'
-          for i in range(90):
-              try:
-                  with urllib.request.urlopen(base+'?r3qa='+str(time.time_ns()),timeout=15) as r:
-                      text=r.read().decode('utf-8','replace')
-                  if marker in text:
-                      print('R3 runtime LIVE')
-                      break
-              except Exception as e:
-                  print('poll',i,type(e).__name__,e)
+          urls=[
+            'https://dpromstk2000-lab.github.io/dpro-hair-salon-line/tutorial-first10.js?v=20260822-r3',
+            'https://dpromstk2000-lab.github.io/dpro-hair-salon-line/tutorial-first10.js?v=20260828-r3v11',
+          ]
+          marker='Render token prevents stale deferred callbacks'
+          headers={
+            'Cache-Control':'no-cache, no-store, max-age=0',
+            'Pragma':'no-cache',
+            'User-Agent':'DPRO-HAIR-R3-QA-V1.5'
+          }
+          for i in range(180):
+              states=[]
+              for url in urls:
+                  try:
+                      req=urllib.request.Request(url,headers=headers)
+                      with urllib.request.urlopen(req,timeout=15) as r:
+                          body=r.read().decode('utf-8','replace')
+                      states.append(marker in body)
+                  except Exception as e:
+                      print('poll',i,url,type(e).__name__,e)
+                      states.append(False)
+              print('production_runtime_gate',i,states)
+              if all(states):
+                  print('R3 exact production script URLs LIVE')
+                  break
               time.sleep(4)
           else:
-              raise SystemExit('R3 runtime did not become LIVE')
+              raise SystemExit('R3 exact production script URLs did not become LIVE')
 
       - name: Install Playwright
         shell: bash
