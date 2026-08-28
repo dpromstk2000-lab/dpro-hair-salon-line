@@ -1,5 +1,5 @@
 name: STEP DPRO TUTORIAL HAIR R3 FIRST10 V1.1 QA
-# Harness V1.3: rendered-step keyboard QA + durable Resume verification
+# Harness V1.4: stale-render token QA + rendered-step keyboard verification
 
 on:
   workflow_dispatch:
@@ -34,6 +34,9 @@ jobs:
           assert 'data-role="close"' in text and 'dpro_hair_tutorial_first10_v2' in text
           assert 'Persist synchronously before deferred card rendering' in text
           assert 'Keep Back navigation equally durable' in text
+          assert 'Render token prevents stale deferred callbacks' in text
+          assert 'const renderToken = ++state.renderToken' in text
+          assert 'state.renderToken === renderToken && state.index === stepIndex' in text
           subprocess.run(['node','--check','tutorial-first10.js'],check=True)
           subprocess.run(['node','--check','r4-guide-bridge.js'],check=True)
 
