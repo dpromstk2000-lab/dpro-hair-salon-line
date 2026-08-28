@@ -527,6 +527,9 @@
       return;
     }
     state.index = next;
+    // Persist synchronously before deferred card rendering so an immediate reload
+    // resumes the exact step the user just reached.
+    writeProgress("in_progress", state.index, state.steps[state.index]?.route || routeName());
     resetCardDrag();
     renderCard();
   }
@@ -540,6 +543,8 @@
       return;
     }
     state.index = previous;
+    // Keep Back navigation equally durable for immediate reload/route changes.
+    writeProgress("in_progress", state.index, state.steps[state.index]?.route || routeName());
     resetCardDrag();
     renderCard();
   }
