@@ -1,0 +1,285 @@
+{
+  "schema": "DPRO-TUTORIAL-FIRST10-CONTRACT-V1.1",
+  "system": "HAIR",
+  "industry": "美容室",
+  "batch": "07",
+  "date": "2026-08-28",
+  "status": "R1_COMPLETE_READ_ONLY",
+  "standard_target": "V1.1",
+  "first10_count": 10,
+  "source_lock": {
+    "repository": "dpromstk2000-lab/dpro-hair-salon-line",
+    "branch": "main",
+    "commit": "dd2f29110085ce59115f1b8548720dac0576d064",
+    "tree": "c8a30c3e024410257b51fd4034d8ec157a9a7700"
+  },
+  "global_rules": {
+    "repository_write": 0,
+    "business_mutation": 0,
+    "auto_login": false,
+    "credential_in_content": false,
+    "safe_navigation_only": true,
+    "cross_page_resume_required_for_r3": true,
+    "implementation_authorized": false
+  },
+  "steps": [
+    {
+      "id": "F10-01",
+      "order": 1,
+      "route": "owner.html",
+      "title": "最初の10分で覚える流れ",
+      "target": {
+        "primary": "#dproTutorialLauncher",
+        "fallback": [
+          ".topbar__right",
+          ".topbar",
+          "body"
+        ]
+      },
+      "action": "Tutorialの操作方法と、Owner PCが日常運用の中心であることを確認する。",
+      "cross_page": {
+        "required": false,
+        "resume_key": "dpro_hair_tutorial_first10_v2"
+      },
+      "auth_prerequisite": "none",
+      "safety": "Tutorial自身のNext/Back/Close/Skipだけを操作し、業務コントロールは押さない。",
+      "evidence": [
+        "tutorial-first10.js installs #dproTutorialLauncher",
+        "owner.html loads tutorial-first10.js"
+      ]
+    },
+    {
+      "id": "F10-02",
+      "order": 2,
+      "route": "owner.html",
+      "title": "管理コード接続の場所を確認",
+      "target": {
+        "primary": "#topAdminCodeArea",
+        "fallback": [
+          "#adminCodeChip",
+          ".topbar"
+        ]
+      },
+      "action": "接続欄と接続状態の場所だけ確認する。入力・送信は利用者の明示操作に任せる。",
+      "cross_page": {
+        "required": false
+      },
+      "auth_prerequisite": "店舗データ閲覧には利用者自身が正規の管理コードで接続する。Tutorialは値を持たない。",
+      "safety": "自動入力・自動送信・推測ログイン禁止。",
+      "evidence": [
+        "existing TARGET OWNER_ADMIN_AREA=#topAdminCodeArea",
+        "owner auth forms submit only on user action"
+      ]
+    },
+    {
+      "id": "F10-03",
+      "order": 3,
+      "route": "owner.html",
+      "title": "毎日は「今日」から始める",
+      "target": {
+        "primary": "[data-view=\"today\"]",
+        "secondary": [
+          "#todayStats"
+        ],
+        "fallback": [
+          ".nav"
+        ]
+      },
+      "action": "「今日」ビューと主要数値を確認する。",
+      "cross_page": {
+        "required": false
+      },
+      "auth_prerequisite": "未接続時はナビ位置の説明だけで継続可能。",
+      "safety": "view切替のみ許可。予約状態は変更しない。",
+      "evidence": [
+        "existing CARD_VIEW today",
+        "OWNER_TODAY_NAV and OWNER_TODAY_STATS selectors mapped"
+      ]
+    },
+    {
+      "id": "F10-04",
+      "order": 4,
+      "route": "owner.html",
+      "title": "予約の流れと要確認を見る",
+      "target": {
+        "primary": "#statusPipeline",
+        "secondary": [
+          "#todayReservationTable",
+          "#attentionList"
+        ],
+        "fallback": [
+          "[data-view=\"today\"]"
+        ]
+      },
+      "action": "予約済みから会計待ちまでの流れ、本日の予約、要確認領域を確認する。",
+      "cross_page": {
+        "required": false
+      },
+      "auth_prerequisite": "データ未接続なら説明のみ。",
+      "safety": "status buttons/manual reservation buttonsを自動操作しない。",
+      "evidence": [
+        "existing TARGET OWNER_STATUS_PIPELINE",
+        "OWNER_TODAY_RESERVATIONS",
+        "OWNER_ATTENTION"
+      ]
+    },
+    {
+      "id": "F10-05",
+      "order": 5,
+      "route": "owner.html",
+      "title": "予約一覧を安全に絞り込む",
+      "target": {
+        "primary": "[data-view=\"reservations\"]",
+        "secondary": [
+          "#reservationStatusFilter",
+          "#reservationPageList"
+        ],
+        "fallback": [
+          ".nav"
+        ]
+      },
+      "action": "予約画面・状態フィルター・一覧の場所を確認する。",
+      "cross_page": {
+        "required": false
+      },
+      "auth_prerequisite": "店舗データ閲覧時のみ内容が表示される。",
+      "safety": "表示フィルターは可。予約状態変更ボタンは押さない。",
+      "evidence": [
+        "existing reservation selectors in tutorial-first10.js and r4-guide-bridge.js"
+      ]
+    },
+    {
+      "id": "F10-06",
+      "order": 6,
+      "route": "owner.html",
+      "title": "顧客を検索して詳細へつなぐ",
+      "target": {
+        "primary": "[data-view=\"customers\"]",
+        "secondary": [
+          "#customerSearchInput",
+          "#customerDetailCard"
+        ],
+        "fallback": [
+          "#customerList",
+          ".nav"
+        ]
+      },
+      "action": "顧客検索欄と詳細カードの場所を確認する。Tutorialは検索語を自動入力しない。",
+      "cross_page": {
+        "required": false
+      },
+      "auth_prerequisite": "顧客一覧は管理接続が必要。",
+      "safety": "実顧客情報を教材へ転記しない。",
+      "evidence": [
+        "owner customer search uses admin GET",
+        "existing target selectors mapped"
+      ]
+    },
+    {
+      "id": "F10-07",
+      "order": 7,
+      "route": "owner.html",
+      "title": "360°美容カルテの場所を確認",
+      "target": {
+        "primary": "[data-view=\"carte\"]",
+        "secondary": [
+          "#carteContent"
+        ],
+        "fallback": [
+          "[data-view=\"customers\"]",
+          "#customerDetailCard"
+        ]
+      },
+      "action": "カルテ画面の構成を確認する。顧客未選択なら顧客画面へ戻る場所だけ説明する。",
+      "cross_page": {
+        "required": false
+      },
+      "auth_prerequisite": "実データ表示には顧客選択が必要な場合がある。",
+      "safety": "#carteAddRecord等の追加・保存操作は押さない。",
+      "evidence": [
+        "existing OWNER_CARTE_NAV / OWNER_CARTE_CONTENT selectors",
+        "owner source contains write-capable carte controls"
+      ]
+    },
+    {
+      "id": "F10-08",
+      "order": 8,
+      "route": "owner.html",
+      "title": "再来店フォローを見る",
+      "target": {
+        "primary": "[data-view=\"follow\"]",
+        "secondary": [
+          "#followTaskList",
+          "#proposalList"
+        ],
+        "fallback": [
+          "#followStats",
+          ".nav"
+        ]
+      },
+      "action": "誰に・なぜ・いつ連絡するか、次回来店提案の位置を確認する。",
+      "cross_page": {
+        "required": false
+      },
+      "auth_prerequisite": "管理接続が必要。",
+      "safety": "対応済み・送信・見送り・編集などの業務アクションは自動実行しない。",
+      "evidence": [
+        "existing OWNER_FOLLOW_NAV / OWNER_FOLLOW_LIST / OWNER_PROPOSAL_LIST"
+      ]
+    },
+    {
+      "id": "F10-09",
+      "order": 9,
+      "route": "owner.html",
+      "title": "共有端末での安全な終了",
+      "target": {
+        "primary": "#topAdminCodeClear",
+        "fallback": [
+          "#adminCodeChip",
+          "#topAdminCodeArea"
+        ]
+      },
+      "action": "保存コード削除の場所と意味を確認する。実行は利用者の明示操作に任せる。",
+      "cross_page": {
+        "required": false
+      },
+      "auth_prerequisite": "none",
+      "safety": "顧客/予約削除ではなくローカル接続情報の消去。Tutorialは自動クリックしない。",
+      "evidence": [
+        "existing OWNER_ADMIN_CLEAR=#topAdminCodeClear",
+        "current tutorial already teaches this as card 14"
+      ]
+    },
+    {
+      "id": "F10-10",
+      "order": 10,
+      "route": "guide-center.html",
+      "title": "操作ガイドで検索・復習する",
+      "target": {
+        "primary": "#guideSearch",
+        "secondary": [
+          "#articleList",
+          "#replayFirst10"
+        ],
+        "fallback": [
+          "#guideMain",
+          "body"
+        ]
+      },
+      "action": "Guide Centerで検索し、必要なら「最初の10分を再生」から復習できることを確認する。",
+      "cross_page": {
+        "required": true,
+        "from_route": "owner.html",
+        "from_target": "#dproGuideCenterLink",
+        "navigation_policy": "Tutorial/Guide navigation only. Persist progress before navigation.",
+        "resume_rule": "guide-center.html load must restore F10-10 state from tutorial progress; explicit replay resets to F10-01."
+      },
+      "auth_prerequisite": "none",
+      "safety": "Guide Centerは説明専用。業務データを変更しない。",
+      "evidence": [
+        "guide-center.html #guideSearch and #replayFirst10",
+        "r4-guide-bridge.js routes #dproGuideCenterLink to guide-center.html"
+      ]
+    }
+  ]
+}

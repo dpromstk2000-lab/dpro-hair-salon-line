@@ -1,77 +1,30 @@
-/* DPRO TUTORIAL HAIR / R3 FIRST10 V1.1 DRAG CARD
-   R2 FINAL LOCK consumer. Additive / mutation-zero. */
+/* DPRO TUTORIAL HAIR / R3 FIRST10 STANDARD V1.1
+ * Accepted R1 exactly-10 contract consumer.
+ * Tutorial-only UI/progress. Business mutation 0.
+ */
 (() => {
   "use strict";
 
-  const VERSION = "HAIR-R3-FIRST10-V1.1-DRAG-CARD-20260824";
-  const CONTENT_URL = "CONTENT_PACKAGE.json";
-  const EXPECTED_CONTENT_SHA256 = "7b931958aac74ab7406ee2efeb54e462243f4f32574462ab2da25f5bfa94f143";
-  const EXPECTED_SOURCE_COMMIT = "682b48772f5859199ae98cf87ef72d7e43bf389c";
-  const STORAGE_KEY = "dpro_hair_tutorial_first10_v1";
+  const VERSION = "HAIR-R3-FIRST10-V1.1-STANDARD10-20260828";
+  const CONTRACT_URL = "R1_FIRST10_CONTRACT.json";
+  const STORAGE_KEY = "dpro_hair_tutorial_first10_v2";
+  const OWNER_ROUTE = "owner.html";
+  const GUIDE_ROUTE = "guide-center.html";
 
-  const TARGETS = Object.freeze({
-    TUTORIAL_LAUNCHER: "#dproTutorialLauncher",
-    OWNER_NAV: ".nav",
-    OWNER_ADMIN_AREA: "#topAdminCodeArea",
-    OWNER_ADMIN_CLEAR: "#topAdminCodeClear",
-    OWNER_TODAY_NAV: '[data-view="today"]',
-    OWNER_TODAY_STATS: "#todayStats",
-    OWNER_STATUS_PIPELINE: "#statusPipeline",
-    OWNER_TODAY_RESERVATIONS: "#todayReservationTable",
-    OWNER_ATTENTION: "#attentionList",
-    OWNER_MANUAL_ENTRY: '[data-action="open-manual"]',
-    OWNER_RESERVATIONS_NAV: '[data-view="reservations"]',
-    OWNER_RESERVATION_STATUS: "#reservationStatusFilter",
-    OWNER_RESERVATION_LIST: "#reservationPageList",
-    OWNER_CUSTOMERS_NAV: '[data-view="customers"]',
-    OWNER_CUSTOMER_SEARCH: "#customerSearchInput",
-    OWNER_CUSTOMER_DETAIL: "#customerDetailCard",
-    OWNER_CARTE_NAV: '[data-view="carte"]',
-    OWNER_CARTE_CONTENT: "#carteContent",
-    OWNER_CARTE_RECORD: "#carteAddRecord",
-    OWNER_SIDEFOOT: ".sidefoot__links",
-    OWNER_FOLLOW_NAV: '[data-view="follow"]',
-    OWNER_FOLLOW_LIST: "#followTaskList",
-    OWNER_PROPOSAL_LIST: "#proposalList",
-    GUIDE_CENTER_LINK: "#dproGuideCenterLink"
-  });
-
-  const CARD_VIEW = Object.freeze({
+  const VIEW_BY_STEP = Object.freeze({
     "F10-03": "today",
     "F10-04": "today",
-    "F10-05": "today",
-    "F10-06": "today",
-    "F10-08": "reservations",
-    "F10-09": "customers",
-    "F10-10": "carte",
-    "F10-12": "follow"
-  });
-
-  const PRIMARY_TARGET = Object.freeze({
-    "F10-01": "TUTORIAL_LAUNCHER",
-    "F10-02": "OWNER_ADMIN_AREA",
-    "F10-03": "OWNER_TODAY_NAV",
-    "F10-04": "OWNER_TODAY_STATS",
-    "F10-05": "OWNER_STATUS_PIPELINE",
-    "F10-06": "OWNER_ATTENTION",
-    "F10-07": "OWNER_MANUAL_ENTRY",
-    "F10-08": "OWNER_RESERVATION_LIST",
-    "F10-09": "OWNER_CUSTOMER_SEARCH",
-    "F10-10": "OWNER_CARTE_CONTENT",
-    "F10-11": "OWNER_SIDEFOOT",
-    "F10-12": "OWNER_FOLLOW_LIST",
-    "F10-13": "OWNER_SIDEFOOT",
-    "F10-14": "OWNER_ADMIN_CLEAR",
-    "F10-15": "GUIDE_CENTER_LINK"
+    "F10-05": "reservations",
+    "F10-06": "customers",
+    "F10-07": "carte",
+    "F10-08": "follow"
   });
 
   const state = {
-    content: null,
-    cards: [],
-    chapters: new Map(),
+    contract: null,
+    steps: [],
     index: 0,
     open: false,
-    initialView: null,
     launcher: null,
     guideLink: null,
     shield: null,
@@ -79,13 +32,25 @@
     card: null,
     toast: null,
     lastFocused: null,
-    loadError: null,
+    initialView: null,
     dragState: null,
-    manuallyPlaced: false
+    manuallyPlaced: false,
+    loadError: null,
+    targetSelector: null,
+    targetFound: false
   };
 
-  function q(selector) {
-    try { return document.querySelector(selector); } catch (_) { return null; }
+  const q = (selector, root = document) => {
+    try { return root.querySelector(selector); } catch (_) { return null; }
+  };
+  const routeName = () => (location.pathname.split("/").pop() || OWNER_ROUTE).toLowerCase();
+  const isOwner = () => routeName() === OWNER_ROUTE;
+  const isGuide = () => routeName() === GUIDE_ROUTE;
+
+  function escapeHtml(value) {
+    return String(value ?? "").replace(/[&<>"']/g, ch => ({
+      "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+    }[ch]));
   }
 
   function isVisible(el) {
@@ -95,98 +60,58 @@
     return style.display !== "none" && style.visibility !== "hidden" && rect.width > 1 && rect.height > 1;
   }
 
-  function escapeHtml(value) {
-    return String(value ?? "").replace(/[&<>"']/g, c => ({
-      "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
-    }[c]));
+  function normalizedTargetSelectors(step) {
+    const target = step?.target || {};
+    return [
+      target.primary,
+      ...(Array.isArray(target.secondary) ? target.secondary : []),
+      ...(Array.isArray(target.fallback) ? target.fallback : [])
+    ].filter(Boolean);
   }
 
-  async function sha256Hex(text) {
-    const data = new TextEncoder().encode(text);
-    const hash = await crypto.subtle.digest("SHA-256", data);
-    return Array.from(new Uint8Array(hash), b => b.toString(16).padStart(2, "0")).join("");
+  function validateContract(data) {
+    if (!data || data.schema !== "DPRO-TUTORIAL-FIRST10-CONTRACT-V1.1") throw new Error("FIRST10 contract schema mismatch");
+    if (data.system !== "HAIR" || data.standard_target !== "V1.1") throw new Error("HAIR V1.1 contract required");
+    if (data.first10_count !== 10 || !Array.isArray(data.steps) || data.steps.length !== 10) throw new Error("FIRST10 must be exactly 10");
+    const ids = data.steps.map(step => step.id);
+    const expected = Array.from({length: 10}, (_, i) => `F10-${String(i + 1).padStart(2, "0")}`);
+    if (ids.join("|") !== expected.join("|")) throw new Error("FIRST10 IDs/order mismatch");
+    if (data.steps.slice(0, 9).some(step => step.route !== OWNER_ROUTE)) throw new Error("F10-01..09 must stay on owner.html");
+    if (data.steps[9].route !== GUIDE_ROUTE || data.steps[9].cross_page?.required !== true) throw new Error("F10-10 cross-page contract mismatch");
+    const text = JSON.stringify(data.steps);
+    if (/password\s*[:=]\s*["']?\d{4}/i.test(text)) throw new Error("credential-like content detected");
+    return data;
   }
 
-  function validateContent(data) {
-    if (!data || data.industry_code !== "HAIR") throw new Error("HAIR contentではありません。");
-    if (data.source_lock?.commit !== EXPECTED_SOURCE_COMMIT) throw new Error("SOURCE LOCKが一致しません。");
-    if (!Array.isArray(data.first10) || data.first10.length !== 15) throw new Error("FIRST10は15カード必要です。");
-    const ids = data.first10.map(x => x.id);
-    if (new Set(ids).size !== 15 || ids[0] !== "F10-01" || ids[14] !== "F10-15") {
-      throw new Error("FIRST10カードIDがR2 FINAL LOCKと一致しません。");
-    }
-    const customerText = JSON.stringify(data.first10);
-    ["system-check", "demo_prepare", "Worker/DB/API internal inspection"].forEach(term => {
-      if (customerText.includes(term)) throw new Error(`顧客Tutorial禁止語を検出: ${term}`);
-    });
-    data.first10.forEach(card => {
-      if (!Array.isArray(card.targets) || !card.targets.length) throw new Error(`${card.id}: targetなし`);
-      card.targets.forEach(targetId => {
-        if (!TARGETS[targetId]) throw new Error(`${card.id}: 未実装target ${targetId}`);
-      });
-    });
+  async function loadContract() {
+    const response = await fetch(CONTRACT_URL, {cache: "no-store", credentials: "same-origin"});
+    if (!response.ok) throw new Error(`${CONTRACT_URL} HTTP ${response.status}`);
+    state.contract = validateContract(await response.json());
+    state.steps = state.contract.steps;
   }
 
-  async function loadContent() {
-    const response = await fetch(CONTENT_URL, { cache: "no-store", credentials: "same-origin" });
-    if (!response.ok) throw new Error(`CONTENT_PACKAGE読込失敗: HTTP ${response.status}`);
-    const text = await response.text();
-    const digest = await sha256Hex(text);
-    if (digest !== EXPECTED_CONTENT_SHA256) throw new Error("CONTENT_PACKAGE SHA256不一致");
-    const data = JSON.parse(text);
-    validateContent(data);
-    state.content = data;
-    state.cards = data.first10;
-    state.chapters = new Map([
-      ["F10-C01", "最初に覚える3つ"],
-      ["F10-C02", "毎日の基本フロー"],
-      ["F10-C03", "予約・顧客検索"],
-      ["F10-C04", "美容カルテ・スタッフ施術"],
-      ["F10-C05", "再来店フォロー"],
-      ["F10-C06", "役割分担と安全終了"],
-      ["F10-C07", "困った時と復習"]
-    ]);
-  }
-
-  function loadProgress() {
+  function readProgress() {
     try {
       const parsed = JSON.parse(localStorage.getItem(STORAGE_KEY) || "null");
       if (!parsed || typeof parsed !== "object") return null;
-      if (!Number.isInteger(parsed.index) || parsed.index < 0 || parsed.index > 14) return null;
+      if (!Number.isInteger(parsed.index) || parsed.index < 0 || parsed.index > 9) return null;
       return parsed;
-    } catch (_) {
-      return null;
-    }
+    } catch (_) { return null; }
   }
 
-  function saveProgress(status = "in_progress") {
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify({
-        index: state.index,
-        status,
-        version: VERSION,
-        updatedAt: new Date().toISOString()
-      }));
-    } catch (_) {}
-    updateLauncherLabel();
+  function writeProgress(status = "in_progress", index = state.index, route = state.steps[index]?.route || routeName()) {
+    const value = {index, status, route, version: VERSION, updatedAt: new Date().toISOString()};
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(value)); } catch (_) {}
+    updateEntryLabels();
+    syncGuideReplayLink();
+    return value;
   }
 
-  function updateLauncherLabel() {
-    if (!state.launcher) return;
-    if (state.loadError) {
-      state.launcher.textContent = "チュートリアル読込エラー";
-      state.launcher.disabled = true;
-      return;
-    }
-    state.launcher.disabled = !state.cards.length;
-    const progress = loadProgress();
-    if (progress?.status === "in_progress" && progress.index > 0) {
-      state.launcher.textContent = "チュートリアルを続ける";
-    } else if (progress?.status === "completed") {
-      state.launcher.textContent = "チュートリアルをもう一度";
-    } else {
-      state.launcher.textContent = "10分チュートリアル";
-    }
+  function resetProgress() {
+    try { localStorage.removeItem(STORAGE_KEY); } catch (_) {}
+    state.index = 0;
+    updateEntryLabels();
+    syncGuideReplayLink();
   }
 
   function showToast(message) {
@@ -194,50 +119,99 @@
     state.toast.textContent = message;
     state.toast.hidden = false;
     clearTimeout(showToast.timer);
-    showToast.timer = setTimeout(() => { if (state.toast) state.toast.hidden = true; }, 3600);
+    showToast.timer = setTimeout(() => { if (state.toast) state.toast.hidden = true; }, 3400);
   }
 
-  function installEntryUI() {
-    if (q("#dproTutorialLauncher")) return;
-    const host = q(".topbar__right") || q(".topbar") || document.body;
-    const wrap = document.createElement("div");
-    wrap.className = "dpro-tutorial-actions";
-    wrap.dataset.dproTutorialVersion = VERSION;
+  function updateEntryLabels() {
+    if (!state.launcher) return;
+    if (state.loadError) {
+      state.launcher.textContent = "チュートリアル読込エラー";
+      state.launcher.disabled = true;
+      return;
+    }
+    state.launcher.disabled = state.steps.length !== 10;
+    const p = readProgress();
+    if (p?.status === "in_progress") state.launcher.textContent = "チュートリアルを続ける";
+    else if (p?.status === "completed" || p?.status === "skipped") state.launcher.textContent = "チュートリアルをもう一度";
+    else state.launcher.textContent = "10分チュートリアル";
+  }
 
-    const launcher = document.createElement("button");
-    launcher.type = "button";
-    launcher.id = "dproTutorialLauncher";
-    launcher.className = "dpro-tutorial-launcher";
-    launcher.textContent = "10分チュートリアル";
-    launcher.setAttribute("aria-haspopup", "dialog");
-    launcher.disabled = true;
+  function installOwnerEntryUI() {
+    if (!isOwner()) return;
+    let launcher = q("#dproTutorialLauncher");
+    let guide = q("#dproGuideCenterLink");
+    if (!launcher) {
+      const host = q(".topbar__right") || q(".topbar") || document.body;
+      const wrap = document.createElement("div");
+      wrap.className = "dpro-tutorial-actions";
+      wrap.dataset.dproTutorialVersion = VERSION;
 
-    const guide = document.createElement("button");
-    guide.type = "button";
-    guide.id = "dproGuideCenterLink";
-    guide.className = "dpro-guide-center-link";
-    guide.dataset.r4Pending = "true";
-    guide.textContent = "操作ガイド";
-    guide.title = "Guide CenterはR4で公開予定です";
+      launcher = document.createElement("button");
+      launcher.type = "button";
+      launcher.id = "dproTutorialLauncher";
+      launcher.className = "dpro-tutorial-launcher";
+      launcher.textContent = "10分チュートリアル";
+      launcher.setAttribute("aria-haspopup", "dialog");
+      launcher.disabled = true;
 
-    wrap.append(launcher, guide);
-    host.append(wrap);
+      guide = document.createElement("button");
+      guide.type = "button";
+      guide.id = "dproGuideCenterLink";
+      guide.className = "dpro-guide-center-link";
+      guide.dataset.r4Pending = "false";
+      guide.textContent = "操作ガイド";
+      guide.title = "DPRO 操作ガイドを開く";
 
-    const toast = document.createElement("div");
-    toast.className = "dpro-tutorial-toast";
-    toast.id = "dproTutorialToast";
-    toast.hidden = true;
-    toast.setAttribute("role", "status");
-    toast.setAttribute("aria-live", "polite");
-    document.body.append(toast);
+      wrap.append(launcher, guide);
+      host.append(wrap);
+    }
 
     state.launcher = launcher;
     state.guideLink = guide;
-    state.toast = toast;
+    launcher.addEventListener("click", () => resumeOrStart());
+    guide?.addEventListener("click", () => {
+      const p = readProgress();
+      if (p?.status === "in_progress" && p.index === 9) writeProgress("in_progress", 9, GUIDE_ROUTE);
+    });
+  }
 
-    launcher.addEventListener("click", () => openTutorial());
-    guide.addEventListener("click", () => {
-      showToast("操作ガイド（Guide Center）はR4で公開します。FIRST10は現在利用できます。");
+  function installToast() {
+    let toast = q("#dproTutorialToast");
+    if (!toast) {
+      toast = document.createElement("div");
+      toast.className = "dpro-tutorial-toast";
+      toast.id = "dproTutorialToast";
+      toast.hidden = true;
+      toast.setAttribute("role", "status");
+      toast.setAttribute("aria-live", "polite");
+      document.body.append(toast);
+    }
+    state.toast = toast;
+  }
+
+  function syncGuideReplayLink() {
+    if (!isGuide()) return;
+    const link = q("#replayFirst10");
+    if (!link) return;
+    const p = readProgress();
+    if (p?.status === "in_progress" && p.index === 9) {
+      link.textContent = "チュートリアルを続ける";
+      link.href = "guide-center.html?tutorial=resume";
+      link.dataset.tutorialAction = "resume";
+    } else {
+      link.textContent = "最初の10分を再生";
+      link.href = "owner.html?tutorial=restart";
+      link.dataset.tutorialAction = "replay";
+    }
+  }
+
+  function bindGuideReplay() {
+    if (!isGuide()) return;
+    document.addEventListener("click", event => {
+      const link = event.target.closest?.("#replayFirst10[data-tutorial-action=\"resume\"]");
+      if (!link) return;
+      event.preventDefault();
+      openTutorial({startAt: 9});
     });
   }
 
@@ -246,6 +220,7 @@
     const shield = document.createElement("div");
     shield.className = "dpro-tutorial-shield";
     shield.id = "dproTutorialShield";
+    shield.hidden = true;
     shield.setAttribute("aria-hidden", "true");
 
     const highlight = document.createElement("div");
@@ -257,6 +232,7 @@
     const card = document.createElement("section");
     card.className = "dpro-tutorial-card";
     card.id = "dproTutorialCard";
+    card.hidden = true;
     card.setAttribute("role", "dialog");
     card.setAttribute("aria-modal", "true");
     card.setAttribute("aria-labelledby", "dproTutorialTitle");
@@ -267,55 +243,36 @@
     state.highlight = highlight;
     state.card = card;
 
-    shield.addEventListener("click", e => {
-      e.preventDefault();
-      e.stopPropagation();
-    }, true);
-    shield.addEventListener("pointerdown", e => {
-      e.preventDefault();
-      e.stopPropagation();
-    }, true);
+    ["click", "pointerdown"].forEach(type => shield.addEventListener(type, event => {
+      event.preventDefault();
+      event.stopPropagation();
+    }, true));
   }
 
-  function currentView() {
+  function currentOwnerView() {
     return q('[data-view][aria-current="page"]')?.dataset.view || null;
   }
 
-  function switchViewForCard(card) {
-    const view = CARD_VIEW[card.id];
+  function safeViewNavigate(step) {
+    if (!isOwner()) return;
+    const view = VIEW_BY_STEP[step.id];
     if (!view) return;
     const nav = q(`[data-view="${view}"]`);
-    if (nav && nav.getAttribute("aria-current") !== "page") {
-      // Existing navigation only; does not submit/save business data.
-      nav.click();
-    }
+    if (nav && nav.getAttribute("aria-current") !== "page") nav.click();
   }
 
-  function candidateElements(card) {
-    const ids = [];
-    if (PRIMARY_TARGET[card.id]) ids.push(PRIMARY_TARGET[card.id]);
-    [...card.targets].reverse().forEach(id => { if (!ids.includes(id)) ids.push(id); });
-
-    const elements = [];
-    ids.forEach(id => {
-      const selector = TARGETS[id];
-      const el = selector ? q(selector) : null;
-      if (el && !elements.includes(el)) elements.push(el);
-    });
-
-    if (card.id === "F10-02") {
-      const fallback = q("#adminCodeChip");
-      if (fallback && !elements.includes(fallback)) elements.push(fallback);
+  function resolveTarget(step) {
+    state.targetSelector = null;
+    state.targetFound = false;
+    for (const selector of normalizedTargetSelectors(step)) {
+      const el = q(selector);
+      if (isVisible(el)) {
+        state.targetSelector = selector;
+        state.targetFound = true;
+        return el;
+      }
     }
-    if (card.id === "F10-14") {
-      const fallback = q("#adminCodeChip");
-      if (fallback && !elements.includes(fallback)) elements.push(fallback);
-    }
-    return elements;
-  }
-
-  function findVisibleTarget(card) {
-    return candidateElements(card).find(isVisible) || null;
+    return null;
   }
 
   function positionHighlight(target) {
@@ -328,20 +285,20 @@
     const pad = 6;
     state.highlight.style.left = `${Math.max(4, rect.left - pad)}px`;
     state.highlight.style.top = `${Math.max(4, rect.top - pad)}px`;
-    state.highlight.style.width = `${Math.min(innerWidth - 8, rect.width + pad * 2)}px`;
-    state.highlight.style.height = `${Math.min(innerHeight - 8, rect.height + pad * 2)}px`;
+    state.highlight.style.width = `${Math.max(2, Math.min(innerWidth - 8, rect.width + pad * 2))}px`;
+    state.highlight.style.height = `${Math.max(2, Math.min(innerHeight - 8, rect.height + pad * 2))}px`;
     state.highlight.hidden = false;
   }
 
   function viewportBox() {
     const vv = window.visualViewport;
-    return { left: vv?.offsetLeft || 0, top: vv?.offsetTop || 0, width: vv?.width || innerWidth, height: vv?.height || innerHeight };
+    return {left: vv?.offsetLeft || 0, top: vv?.offsetTop || 0, width: vv?.width || innerWidth, height: vv?.height || innerHeight};
   }
 
   function clampDraggedCard(card = state.card, left = null, top = null) {
     if (!card) return null;
-    const margin = matchMedia("(max-width:760px)").matches ? 8 : 12;
     const vp = viewportBox();
+    const margin = vp.width <= 760 ? 8 : 12;
     const r = card.getBoundingClientRect();
     const rawLeft = left == null ? r.left : left;
     const rawTop = top == null ? r.top : top;
@@ -353,13 +310,13 @@
     card.style.setProperty("top", `${Math.round(nextTop)}px`, "important");
     card.style.setProperty("right", "auto", "important");
     card.style.setProperty("bottom", "auto", "important");
-    return { left: nextLeft, top: nextTop };
+    return {left: nextLeft, top: nextTop};
   }
 
   function endCardDrag(pointerId = null) {
     if (!state.dragState) return;
     if (pointerId != null && state.dragState.pointerId !== pointerId) return;
-    const { handle, pointerId: activePointerId } = state.dragState;
+    const {handle, pointerId: activePointerId} = state.dragState;
     state.dragState = null;
     state.card?.classList.remove("is-dragging");
     try { if (handle?.hasPointerCapture?.(activePointerId)) handle.releasePointerCapture(activePointerId); } catch (_) {}
@@ -370,7 +327,7 @@
     state.manuallyPlaced = false;
     if (!state.card) return;
     state.card.classList.remove("is-dragged", "is-dragging");
-    ["left","top","right","bottom","width"].forEach(prop => state.card.style.removeProperty(prop));
+    ["left", "top", "right", "bottom", "width"].forEach(prop => state.card.style.removeProperty(prop));
   }
 
   function enableCardDrag(card = state.card) {
@@ -383,7 +340,7 @@
       card.classList.add("is-dragged", "is-dragging");
       card.style.setProperty("width", `${Math.min(r.width, viewportBox().width - 16)}px`, "important");
       const start = clampDraggedCard(card, r.left, r.top);
-      state.dragState = { pointerId: event.pointerId, handle, offsetX: event.clientX - start.left, offsetY: event.clientY - start.top };
+      state.dragState = {pointerId: event.pointerId, handle, offsetX: event.clientX - start.left, offsetY: event.clientY - start.top};
       try { handle.setPointerCapture(event.pointerId); } catch (_) {}
       event.preventDefault();
       event.stopPropagation();
@@ -410,26 +367,22 @@
     if (!state.card) return;
     if (state.manuallyPlaced) { clampDraggedCard(state.card); return; }
     if (matchMedia("(max-width:760px)").matches) {
-      state.card.style.left = "8px";
-      state.card.style.top = "auto";
+      state.card.style.removeProperty("left");
+      state.card.style.removeProperty("top");
+      state.card.style.removeProperty("right");
+      state.card.style.removeProperty("bottom");
       return;
     }
-    const cardRect = state.card.getBoundingClientRect();
+    const rCard = state.card.getBoundingClientRect();
     const margin = 12;
-    let left = Math.max(margin, (innerWidth - cardRect.width) / 2);
-    let top = Math.max(margin, (innerHeight - cardRect.height) / 2);
-
+    let left = Math.max(margin, (innerWidth - rCard.width) / 2);
+    let top = Math.max(margin, (innerHeight - rCard.height) / 2);
     if (target && isVisible(target)) {
       const r = target.getBoundingClientRect();
       const below = r.bottom + margin;
-      const above = r.top - cardRect.height - margin;
-      top = below + cardRect.height <= innerHeight - margin ? below
-        : above >= margin ? above
-        : Math.max(margin, innerHeight - cardRect.height - margin);
-      left = Math.min(
-        Math.max(margin, r.left + (r.width - cardRect.width) / 2),
-        Math.max(margin, innerWidth - cardRect.width - margin)
-      );
+      const above = r.top - rCard.height - margin;
+      top = below + rCard.height <= innerHeight - margin ? below : (above >= margin ? above : Math.max(margin, innerHeight - rCard.height - margin));
+      left = Math.min(Math.max(margin, r.left + (r.width - rCard.width) / 2), Math.max(margin, innerWidth - rCard.width - margin));
     }
     state.card.style.left = `${Math.round(left)}px`;
     state.card.style.top = `${Math.round(top)}px`;
@@ -439,85 +392,93 @@
     if (!target || !isVisible(target)) return;
     const r = target.getBoundingClientRect();
     const safeTop = 90;
-    const safeBottom = innerHeight - 260;
-    if (r.top < safeTop || r.bottom > safeBottom) {
-      target.scrollIntoView({ block: "center", inline: "nearest", behavior: "smooth" });
-    }
+    const safeBottom = innerHeight - Math.min(260, Math.max(140, innerHeight * 0.28));
+    if (r.top < safeTop || r.bottom > safeBottom) target.scrollIntoView({block: "center", inline: "nearest", behavior: "auto"});
+  }
+
+  function stepChapter(step) {
+    if (step.id === "F10-01") return "START";
+    if (["F10-02", "F10-03", "F10-04"].includes(step.id)) return "毎日の開始";
+    if (["F10-05", "F10-06"].includes(step.id)) return "予約・顧客";
+    if (["F10-07", "F10-08"].includes(step.id)) return "カルテ・再来店";
+    if (step.id === "F10-09") return "安全な終了";
+    return "GUIDE CENTER";
   }
 
   function renderCard() {
-    if (!state.open || !state.cards[state.index]) return;
-    const item = state.cards[state.index];
-    switchViewForCard(item);
-
+    if (!state.open || !state.steps[state.index]) return;
+    const step = state.steps[state.index];
+    if (step.route !== routeName()) {
+      routeToStep(state.index);
+      return;
+    }
+    safeViewNavigate(step);
     setTimeout(() => {
       if (!state.open) return;
-      const target = findVisibleTarget(item);
+      let target = resolveTarget(step);
       scrollTargetIntoView(target);
-
       setTimeout(() => {
         if (!state.open) return;
-        const visibleTarget = findVisibleTarget(item);
-        positionHighlight(visibleTarget);
-
-        const chapter = state.chapters.get(item.chapter) || item.chapter || "FIRST 10 MINUTES";
-        const count = state.cards.length;
-        const progress = Math.round(((state.index + 1) / count) * 100);
-        const missing = visibleTarget ? "" :
-          `<div class="dpro-tutorial-card__missing">対象部分は現在の画面状態では非表示です。場所と役割を確認して次へ進めます。</div>`;
-
+        target = resolveTarget(step);
+        positionHighlight(target);
+        const progress = Math.round(((state.index + 1) / 10) * 100);
+        const missing = target ? "" : '<div class="dpro-tutorial-card__missing">対象部分は現在の画面状態では表示されていません。安全な代替表示のまま次へ進めます。</div>';
         state.card.innerHTML = `
           <div class="dpro-tutorial-card__top">
-            <div>
-              <div class="dpro-tutorial-card__chapter">${escapeHtml(chapter)}</div>
+            <div class="dpro-tutorial-card__chapter">${escapeHtml(stepChapter(step))}</div>
+            <div class="dpro-tutorial-card__tools">
+              <span class="dpro-tutorial-card__drag-handle" data-drag-handle tabindex="0" role="button" aria-label="説明カードを移動" title="ドラッグして移動">↕ 移動</span>
+              <button type="button" class="dpro-tutorial-card__close" data-role="close" aria-label="チュートリアルを閉じる">× 閉じる</button>
             </div>
-            <span class="dpro-tutorial-card__drag-handle" data-drag-handle aria-label="説明カードを移動" title="ドラッグして移動">↕ 移動</span>
             <div class="dpro-tutorial-card__progress">
-              <span>${state.index + 1} / ${count}</span>
+              <span>${state.index + 1} / 10</span>
               <span class="dpro-tutorial-card__bar" aria-hidden="true"><span style="width:${progress}%"></span></span>
             </div>
           </div>
-          <h3 id="dproTutorialTitle">${escapeHtml(item.title)}</h3>
-          <p class="dpro-tutorial-card__body" id="dproTutorialBody">${escapeHtml(item.body)}</p>
-          <div class="dpro-tutorial-card__action">ここを確認：${escapeHtml(item.action)}</div>
-          <div class="dpro-tutorial-card__safety">安全：${escapeHtml(item.safety)}</div>
+          <h3 id="dproTutorialTitle">${escapeHtml(step.title)}</h3>
+          <p class="dpro-tutorial-card__body" id="dproTutorialBody">${escapeHtml(step.action)}</p>
+          <div class="dpro-tutorial-card__safety">安全：${escapeHtml(step.safety)}</div>
           ${missing}
           <div class="dpro-tutorial-card__controls">
-            <div class="dpro-tutorial-card__left">
-              <button type="button" data-role="later">あとで</button>
-              <button type="button" data-role="skip">スキップ</button>
-            </div>
+            <div class="dpro-tutorial-card__left"><button type="button" data-role="skip">スキップ</button></div>
             <div class="dpro-tutorial-card__right">
               <button type="button" data-role="back" ${state.index === 0 ? "disabled" : ""}>戻る</button>
-              <button type="button" data-role="next">${state.index === count - 1 ? "完了" : "次へ"}</button>
+              <button type="button" data-role="next">${state.index === 9 ? "完了" : "次へ"}</button>
             </div>
           </div>`;
-
-        state.card.querySelector('[data-role="later"]').addEventListener("click", () => closeTutorial("in_progress"));
+        state.card.querySelector('[data-role="close"]').addEventListener("click", () => closeTutorial("in_progress"));
         state.card.querySelector('[data-role="skip"]').addEventListener("click", () => closeTutorial("skipped"));
         state.card.querySelector('[data-role="back"]').addEventListener("click", previousCard);
         state.card.querySelector('[data-role="next"]').addEventListener("click", nextCard);
         enableCardDrag(state.card);
-
-        positionCard(visibleTarget);
-        saveProgress("in_progress");
-        state.card.querySelector('[data-role="next"]')?.focus({ preventScroll: true });
-      }, 80);
-    }, 60);
+        positionCard(target);
+        writeProgress("in_progress", state.index, step.route);
+        state.card.querySelector('[data-role="next"]')?.focus({preventScroll: true});
+      }, 70);
+    }, 50);
   }
 
-  function openTutorial({ startAt = null } = {}) {
-    if (!state.cards.length || state.open) return;
-    state.lastFocused = document.activeElement;
-    state.initialView = currentView();
+  function routeToStep(index) {
+    const step = state.steps[index];
+    if (!step) return;
+    writeProgress("in_progress", index, step.route);
+    if (step.route === GUIDE_ROUTE) location.href = `${GUIDE_ROUTE}?tutorial=resume`;
+    else location.href = `${OWNER_ROUTE}?tutorial=resume`;
+  }
 
-    if (Number.isInteger(startAt)) {
-      state.index = Math.max(0, Math.min(14, startAt));
-    } else {
-      const progress = loadProgress();
-      state.index = progress?.status === "in_progress" ? progress.index : 0;
+  function openTutorial({startAt = null} = {}) {
+    if (state.steps.length !== 10 || state.open) return;
+    const p = readProgress();
+    let index = Number.isInteger(startAt) ? startAt : (p?.status === "in_progress" ? p.index : 0);
+    index = Math.max(0, Math.min(9, index));
+    const step = state.steps[index];
+    if (step.route !== routeName()) {
+      routeToStep(index);
+      return;
     }
-
+    state.lastFocused = document.activeElement;
+    state.initialView = isOwner() ? currentOwnerView() : null;
+    state.index = index;
     createOverlay();
     resetCardDrag();
     state.shield.hidden = false;
@@ -525,12 +486,12 @@
     state.card.hidden = false;
     document.body.classList.add("dpro-tutorial-active");
     state.open = true;
-    saveProgress("in_progress");
+    writeProgress("in_progress", index, step.route);
     renderCard();
   }
 
   function restoreInitialView() {
-    if (!state.initialView) return;
+    if (!isOwner() || !state.initialView) return;
     const nav = q(`[data-view="${state.initialView}"]`);
     if (nav && nav.getAttribute("aria-current") !== "page") nav.click();
   }
@@ -538,44 +499,63 @@
   function closeTutorial(status = "in_progress") {
     if (!state.open) return;
     endCardDrag();
-    if (status === "skipped") {
-      saveProgress("skipped");
-    } else if (status === "completed") {
-      saveProgress("completed");
-    } else {
-      saveProgress("in_progress");
-    }
+    writeProgress(status, state.index, state.steps[state.index]?.route || routeName());
     state.open = false;
     document.body.classList.remove("dpro-tutorial-active");
     if (state.shield) state.shield.hidden = true;
     if (state.highlight) state.highlight.hidden = true;
     if (state.card) state.card.hidden = true;
     restoreInitialView();
-    state.lastFocused?.focus?.({ preventScroll: true });
+    state.lastFocused?.focus?.({preventScroll: true});
     state.initialView = null;
+    if (status === "skipped") showToast("チュートリアルをスキップしました。いつでも最初から再生できます。");
   }
 
   function nextCard() {
     if (!state.open) return;
-    if (state.index >= state.cards.length - 1) {
+    if (state.index >= 9) {
+      writeProgress("completed", 9, GUIDE_ROUTE);
       closeTutorial("completed");
-      showToast("FIRST 10 MINUTES を完了しました。いつでも「チュートリアルをもう一度」から再確認できます。");
+      showToast("FIRST 10 MINUTES を完了しました。いつでも再生できます。");
+      syncGuideReplayLink();
       return;
     }
-    state.index += 1;
+    const next = state.index + 1;
+    if (state.steps[next]?.route !== routeName()) {
+      state.open = false;
+      routeToStep(next);
+      return;
+    }
+    state.index = next;
+    resetCardDrag();
     renderCard();
   }
 
   function previousCard() {
     if (!state.open || state.index <= 0) return;
-    state.index -= 1;
+    const previous = state.index - 1;
+    if (state.steps[previous]?.route !== routeName()) {
+      state.open = false;
+      routeToStep(previous);
+      return;
+    }
+    state.index = previous;
+    resetCardDrag();
     renderCard();
+  }
+
+  function resumeOrStart() {
+    const p = readProgress();
+    if (p?.status === "in_progress" && p.index === 9 && isOwner()) {
+      routeToStep(9);
+      return;
+    }
+    openTutorial();
   }
 
   function reposition() {
     if (!state.open) return;
-    const item = state.cards[state.index];
-    const target = findVisibleTarget(item);
+    const target = resolveTarget(state.steps[state.index]);
     positionHighlight(target);
     positionCard(target);
   }
@@ -590,59 +570,97 @@
     }
     if (event.key === "ArrowRight") {
       event.preventDefault();
+      event.stopPropagation();
       nextCard();
       return;
     }
     if (event.key === "ArrowLeft") {
       event.preventDefault();
+      event.stopPropagation();
       previousCard();
       return;
     }
     if (event.key === "Tab" && state.card) {
-      const focusable = [...state.card.querySelectorAll("button:not(:disabled)")];
+      const focusable = [...state.card.querySelectorAll('button:not(:disabled), [tabindex="0"]')].filter(isVisible);
       if (!focusable.length) return;
       const first = focusable[0], last = focusable[focusable.length - 1];
-      if (event.shiftKey && document.activeElement === first) {
-        event.preventDefault(); last.focus();
-      } else if (!event.shiftKey && document.activeElement === last) {
-        event.preventDefault(); first.focus();
-      }
+      if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+      else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
     }
+  }
+
+  function inspect() {
+    const p = readProgress();
+    const cardRect = state.card && !state.card.hidden ? state.card.getBoundingClientRect() : null;
+    const highlightRect = state.highlight && !state.highlight.hidden ? state.highlight.getBoundingClientRect() : null;
+    return {
+      version: VERSION,
+      route: routeName(),
+      open: state.open,
+      index: state.index,
+      count: state.steps.length,
+      progress: p,
+      targetSelector: state.targetSelector,
+      targetFound: state.targetFound,
+      cardRect: cardRect ? {left: cardRect.left, top: cardRect.top, right: cardRect.right, bottom: cardRect.bottom, width: cardRect.width, height: cardRect.height} : null,
+      highlightRect: highlightRect ? {left: highlightRect.left, top: highlightRect.top, right: highlightRect.right, bottom: highlightRect.bottom, width: highlightRect.width, height: highlightRect.height} : null,
+      activeElement: document.activeElement?.getAttribute?.("data-role") || document.activeElement?.id || document.activeElement?.tagName || null
+    };
+  }
+
+  async function handleStartup() {
+    const params = new URLSearchParams(location.search);
+    const action = params.get("tutorial");
+    if (isOwner() && action === "restart") {
+      resetProgress();
+      openTutorial({startAt: 0});
+      return;
+    }
+    if (action === "resume") {
+      const p = readProgress();
+      if (p?.status === "in_progress") openTutorial({startAt: p.index});
+      return;
+    }
+    const p = readProgress();
+    if (isGuide() && p?.status === "in_progress" && p.index === 9) openTutorial({startAt: 9});
   }
 
   async function init() {
-    installEntryUI();
-    window.addEventListener("resize", reposition, { passive: true });
-    window.addEventListener("scroll", reposition, { passive: true, capture: true });
-    window.visualViewport?.addEventListener("resize", reposition, { passive: true });
+    installOwnerEntryUI();
+    installToast();
+    bindGuideReplay();
+    createOverlay();
+    window.addEventListener("resize", reposition, {passive: true});
+    window.addEventListener("scroll", reposition, {passive: true, capture: true});
+    window.visualViewport?.addEventListener("resize", reposition, {passive: true});
     document.addEventListener("keydown", trapKeyboard, true);
 
     try {
-      await loadContent();
+      await loadContract();
     } catch (error) {
-      console.error("[DPRO Tutorial]", error);
+      console.error("[DPRO Tutorial R3]", error);
       state.loadError = error;
-      showToast("チュートリアル本文を読み込めませんでした。CONTENT_PACKAGEを確認してください。");
+      showToast("チュートリアル本文を読み込めませんでした。");
     }
-    updateLauncherLabel();
+    updateEntryLabels();
+    syncGuideReplayLink();
 
     window.DPRO_TUTORIAL_HAIR = Object.freeze({
       version: VERSION,
-      start: () => openTutorial({ startAt: 0 }),
-      resume: () => openTutorial(),
+      start: () => { resetProgress(); isOwner() ? openTutorial({startAt: 0}) : (location.href = `${OWNER_ROUTE}?tutorial=restart`); },
+      resume: () => resumeOrStart(),
+      replay: () => { resetProgress(); isOwner() ? openTutorial({startAt: 0}) : (location.href = `${OWNER_ROUTE}?tutorial=restart`); },
       close: () => closeTutorial("in_progress"),
-      getState: () => ({
-        open: state.open,
-        index: state.index,
-        count: state.cards.length,
-        contentSha256: EXPECTED_CONTENT_SHA256
-      })
+      reset: () => resetProgress(),
+      getState: () => ({open: state.open, index: state.index, count: state.steps.length, progress: readProgress(), route: routeName()}),
+      inspect
     });
+
+    if (!state.loadError) await handleStartup();
+    document.documentElement.dataset.dproTutorialReady = state.loadError ? "error" : "true";
+    document.documentElement.dataset.dproTutorialVersion = VERSION;
   }
 
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", init, { once: true });
-  } else {
-    init();
-  }
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init, {once: true});
+  else init();
 })();
