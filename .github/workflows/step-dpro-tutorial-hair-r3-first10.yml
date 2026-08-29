@@ -1,5 +1,5 @@
 name: STEP DPRO TUTORIAL HAIR R3 FIRST10 V1.1 QA
-# Harness V1.9: real touch upward drag + mobile overflow + zero console errors
+# Harness V2.0: 320 launcher fit + real touch + zero console errors
 
 on:
   workflow_dispatch:
@@ -48,6 +48,9 @@ jobs:
           assert 'body.hair-operation-owner #topAdminCodeForm' in css
           assert 'body.hair-operation-owner #topAdminConnectionStatus' in css
           assert 'width:0!important' in css
+          assert 'R3 NARROW LAUNCHER FIX V1.2' in css
+          assert 'body.hair-operation-owner #dproTutorialLauncher' in css
+          assert 'max-width:96px!important' in css
           subprocess.run(['node','--check','r4-guide-bridge.js'],check=True)
 
       - name: Wait for exact production R3 runtime URLs
@@ -58,13 +61,13 @@ jobs:
             ('https://dpromstk2000-lab.github.io/dpro-hair-salon-line/tutorial-first10.js?v=20260822-r3','Render token prevents stale deferred callbacks'),
             ('https://dpromstk2000-lab.github.io/dpro-hair-salon-line/tutorial-first10.js?v=20260828-r3v11','Render token prevents stale deferred callbacks'),
             ('https://dpromstk2000-lab.github.io/dpro-hair-salon-line/r4-guide-bridge.js?v=20260822-r4','R3 restart ownership: tutorial-first10.js is the only handler'),
-            ('https://dpromstk2000-lab.github.io/dpro-hair-salon-line/tutorial-first10.css?v=20260822-r3','R3 MOBILE OVERFLOW FIX V1.1'),
-            ('https://dpromstk2000-lab.github.io/dpro-hair-salon-line/tutorial-first10.css?v=20260828-r3v11','R3 MOBILE OVERFLOW FIX V1.1'),
+            ('https://dpromstk2000-lab.github.io/dpro-hair-salon-line/tutorial-first10.css?v=20260822-r3','R3 NARROW LAUNCHER FIX V1.2'),
+            ('https://dpromstk2000-lab.github.io/dpro-hair-salon-line/tutorial-first10.css?v=20260828-r3v11','R3 NARROW LAUNCHER FIX V1.2'),
           ]
           headers={
             'Cache-Control':'no-cache, no-store, max-age=0',
             'Pragma':'no-cache',
-            'User-Agent':'DPRO-HAIR-R3-QA-V1.9'
+            'User-Agent':'DPRO-HAIR-R3-QA-V2.0'
           }
           for i in range(180):
               states=[]
