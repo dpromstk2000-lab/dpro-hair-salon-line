@@ -37,3 +37,29 @@
 }
 @media(max-width:340px){.dpro-tutorial-card__tools{gap:4px}.dpro-tutorial-card__drag-handle{min-width:60px;padding-inline:7px}.dpro-tutorial-card__close{padding-inline:7px!important}.dpro-tutorial-card__controls{align-items:flex-end}.dpro-tutorial-card__right{justify-content:flex-end}}
 @media(prefers-reduced-motion:reduce){.dpro-tutorial-highlight,.dpro-tutorial-card__bar>span{transition:none}}
+
+/* R3 MOBILE OVERFLOW FIX V1.1: keep the owner admin-code row inside the viewport. */
+@media(max-width:760px){
+  body.hair-operation-owner #topAdminCodeForm,
+  body.hair-operation-owner #topAdminConnectionStatus{
+    width:100%!important;
+    max-width:100%!important;
+    min-width:0!important;
+    box-sizing:border-box;
+  }
+  body.hair-operation-owner #topAdminCodeForm .top-admin-code__input{
+    flex:1 1 0!important;
+    width:0!important;
+    min-width:0!important;
+  }
+  body.hair-operation-owner #topAdminCodeForm .top-admin-code__save,
+  body.hair-operation-owner #topAdminCodeForm .top-admin-code__clear{
+    flex:0 1 auto!important;
+    min-width:0!important;
+    padding-left:8px!important;
+    padding-right:8px!important;
+  }
+  body.hair-operation-owner #topAdminConnectionStatus{
+    overflow-wrap:anywhere;
+  }
+}
