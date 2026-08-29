@@ -63,3 +63,22 @@
     overflow-wrap:anywhere;
   }
 }
+
+/* R3 NARROW LAUNCHER FIX V1.2: keep tutorial entry inside 320px topbar. */
+@media(max-width:340px){
+  body.hair-operation-owner .dpro-tutorial-actions{
+    flex:0 1 96px!important;
+    width:96px!important;
+    max-width:96px!important;
+    min-width:0!important;
+  }
+  body.hair-operation-owner #dproTutorialLauncher{
+    width:96px!important;
+    max-width:96px!important;
+    min-width:0!important;
+    padding:5px 6px!important;
+    white-space:normal!important;
+    line-height:1.15!important;
+    text-align:center;
+  }
+}
